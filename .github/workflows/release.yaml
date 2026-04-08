@@ -51,6 +51,9 @@ jobs:
           python3 -m pip install build
           chmod +x script/release
           chmod +x script/build_frontend
+          # Create necessary directories before building
+          mkdir -p hass_frontend/frontend_latest
+          mkdir -p hass_frontend/frontend_es5
           export SKIP_FETCH_NIGHTLY_TRANSLATIONS=1
           script/release
 
