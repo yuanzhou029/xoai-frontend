@@ -49,6 +49,7 @@ jobs:
       - name: Build and release package
         run: |
           python3 -m pip install build
+          chmod +x script/release
           export SKIP_FETCH_NIGHTLY_TRANSLATIONS=1
           script/release
 
