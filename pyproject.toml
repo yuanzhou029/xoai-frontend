@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name         = "xoai-frontend"
-version      = "20260408.4"
+version      = "20260408.5"
 license      = "Apache-2.0"
 license-files = ["LICENSE*"]
 description  = "The Home Assistant frontend"
