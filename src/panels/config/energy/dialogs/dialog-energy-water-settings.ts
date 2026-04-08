@@ -1,0 +1,374 @@
+import type { CSSResultGroup } from "lit";
+import { css, html, LitElement, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators";
+import { fireEvent } from "../../../../common/dom/fire_event";
+import "../../../../components/entity/ha-entity-picker";
+import "../../../../components/entity/ha-statistic-picker";
+import "../../../../components/ha-button";
+import "../../../../components/ha-dialog-footer";
+import "../../../../components/ha-formfield";
+import "../../../../components/ha-radio";
+import "../../../../components/ha-markdown";
+import "../../../../components/ha-dialog";
+import type { HaRadio } from "../../../../components/ha-radio";
+import "../../../../components/input/ha-input";
+import type { WaterSourceTypeEnergyPreference } from "../../../../data/energy";
+import {
+  emptyWaterEnergyPreference,
+  energyStatisticHelpUrl,
+} from "../../../../data/energy";
+import { isExternalStatistic } from "../../../../data/recorder";
+import { getSensorDeviceClassConvertibleUnits } from "../../../../data/sensor";
+import type { HassDialog } from "../../../../dialogs/make-dialog-manager";
+import { haStyle, haStyleDialog } from "../../../../resources/styles";
+import type { HomeAssistant, ValueChangedEvent } from "../../../../types";
+import type { EnergySettingsWaterDialogParams } from "./show-dialogs-energy";
+
+const flowRateUnitClasses = ["volume_flow_rate"];
+
+@customElement("dialog-energy-water-settings")
+export class DialogEnergyWaterSettings
+  extends LitElement
+  implements HassDialog<EnergySettingsWaterDialogParams>
+{
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @state() private _params?: EnergySettingsWaterDialogParams;
+
+  @state() private _open = false;
+
+  @state() private _source?: WaterSourceTypeEnergyPreference;
+
+  @state() private _costs?: "no-costs" | "number" | "entity" | "statistic";
+
+  @state() private _water_units?: string[];
+
+  @state() private _flow_rate_units?: string[];
+
+  @state() private _error?: string;
+
+  private _excludeList?: string[];
+
+  private _excludeListFlowRate?: string[];
+
+  public async showDialog(
+    params: EnergySettingsWaterDialogParams
+  ): Promise<void> {
+    this._params = params;
+    this._source = params.source
+      ? { ...params.source }
+      : emptyWaterEnergyPreference();
+    this._costs = this._source.entity_energy_price
+      ? "entity"
+      : this._source.number_energy_price
+        ? "number"
+        : this._source.stat_cost
+          ? "statistic"
+          : "no-costs";
+    this._water_units = (
+      await getSensorDeviceClassConvertibleUnits(this.hass, "water")
+    ).units;
+    this._flow_rate_units = (
+      await getSensorDeviceClassConvertibleUnits(this.hass, "volume_flow_rate")
+    ).units;
+    this._excludeList = this._params.water_sources
+      .map((entry) => entry.stat_energy_from)
+      .filter((id) => id !== this._source?.stat_energy_from);
+    this._excludeListFlowRate = this._params.water_sources
+      .map((entry) => entry.stat_rate)
+      .filter((id) => id && id !== this._source?.stat_rate) as string[];
+
+    this._open = true;
+  }
+
+  public closeDialog() {
+    this._open = false;
+    return true;
+  }
+
+  private _dialogClosed() {
+    this._params = undefined;
+    this._source = undefined;
+    this._error = undefined;
+    this._excludeList = undefined;
+    this._excludeListFlowRate = undefined;
+    fireEvent(this, "dialog-closed", { dialog: this.localName });
+  }
+
+  protected render() {
+    if (!this._params || !this._source) {
+      return nothing;
+    }
+
+    const pickableUnit = this._water_units?.join(", ") || "";
+
+    const unitPriceFixed = `${this.hass.config.currency}/${
+      this.hass.config.unit_system.volume === "gal" ? "gal" : "m³"
+    }`;
+
+    const externalSource =
+      this._source.stat_energy_from &&
+      isExternalStatistic(this._source.stat_energy_from);
+
+    return html`
+      <ha-dialog
+        .hass=${this.hass}
+        .open=${this._open}
+        header-title=${this.hass.localize(
+          "ui.panel.config.energy.water.dialog.header"
+        )}
+        prevent-scrim-close
+        @closed=${this._dialogClosed}
+      >
+        ${this._error ? html`<p class="error">${this._error}</p>` : ""}
+
+        <ha-statistic-picker
+          .hass=${this.hass}
+          .helpMissingEntityUrl=${energyStatisticHelpUrl}
+          include-unit-class="volume"
+          include-device-class="water"
+          .value=${this._source.stat_energy_from}
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.water_usage"
+          )}
+          .excludeStatistics=${this._excludeList}
+          @value-changed=${this._statisticChanged}
+          .helper=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.entity_para",
+            { unit: pickableUnit }
+          )}
+          autofocus
+        ></ha-statistic-picker>
+
+        <ha-statistic-picker
+          .hass=${this.hass}
+          .includeUnitClass=${flowRateUnitClasses}
+          .value=${this._source.stat_rate}
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.water_flow_rate"
+          )}
+          .excludeStatistics=${this._excludeListFlowRate}
+          @value-changed=${this._flowRateStatisticChanged}
+          .helper=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.flow_rate_para",
+            { unit: this._flow_rate_units?.join(", ") || "" }
+          )}
+        ></ha-statistic-picker>
+
+        <p>
+          ${this.hass.localize("ui.panel.config.energy.water.dialog.cost_para")}
+        </p>
+
+        <ha-formfield
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.no_cost"
+          )}
+        >
+          <ha-radio
+            value="no-costs"
+            name="costs"
+            .checked=${this._costs === "no-costs"}
+            @change=${this._handleCostChanged}
+          ></ha-radio>
+        </ha-formfield>
+        <ha-formfield
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.cost_stat"
+          )}
+        >
+          <ha-radio
+            value="statistic"
+            name="costs"
+            .checked=${this._costs === "statistic"}
+            @change=${this._handleCostChanged}
+          ></ha-radio>
+        </ha-formfield>
+        ${this._costs === "statistic"
+          ? html`<ha-statistic-picker
+              class="price-options"
+              .hass=${this.hass}
+              statistic-types="sum"
+              .value=${this._source.stat_cost}
+              .label=${`${this.hass.localize(
+                "ui.panel.config.energy.water.dialog.cost_stat_input"
+              )} (${this.hass.config.currency})`}
+              @value-changed=${this._priceStatChanged}
+            ></ha-statistic-picker>`
+          : ""}
+        <ha-formfield
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.cost_entity"
+          )}
+        >
+          <ha-radio
+            value="entity"
+            name="costs"
+            .checked=${this._costs === "entity"}
+            .disabled=${externalSource}
+            @change=${this._handleCostChanged}
+          ></ha-radio>
+        </ha-formfield>
+        ${this._costs === "entity"
+          ? html`<ha-entity-picker
+              class="price-options"
+              .hass=${this.hass}
+              include-domains='["sensor", "input_number"]'
+              .value=${this._source.entity_energy_price}
+              .label=${this.hass.localize(
+                "ui.panel.config.energy.water.dialog.cost_entity_input"
+              )}
+              .helper=${html`<ha-markdown
+                .content=${this.hass.localize(
+                  "ui.panel.config.energy.water.dialog.cost_entity_helper",
+                  { currency: this.hass.config.currency }
+                )}
+              ></ha-markdown>`}
+              @value-changed=${this._priceEntityChanged}
+            ></ha-entity-picker>`
+          : ""}
+        <ha-formfield
+          .label=${this.hass.localize(
+            "ui.panel.config.energy.water.dialog.cost_number"
+          )}
+        >
+          <ha-radio
+            value="number"
+            name="costs"
+            .checked=${this._costs === "number"}
+            .disabled=${externalSource}
+            @change=${this._handleCostChanged}
+          ></ha-radio>
+        </ha-formfield>
+        ${this._costs === "number"
+          ? html`<ha-input
+              .label=${`${this.hass.localize(
+                "ui.panel.config.energy.water.dialog.cost_number_input"
+              )} (${unitPriceFixed})`}
+              class="price-options"
+              step="any"
+              type="number"
+              .value=${this._source.number_energy_price !== null
+                ? String(this._source.number_energy_price)
+                : ""}
+              @change=${this._numberPriceChanged}
+            >
+              <span slot="end">${unitPriceFixed}</span>
+            </ha-input>`
+          : ""}
+
+        <ha-dialog-footer slot="footer">
+          <ha-button
+            appearance="plain"
+            @click=${this.closeDialog}
+            slot="secondaryAction"
+          >
+            ${this.hass.localize("ui.common.cancel")}
+          </ha-button>
+          <ha-button
+            @click=${this._save}
+            .disabled=${!this._source.stat_energy_from}
+            slot="primaryAction"
+          >
+            ${this.hass.localize("ui.common.save")}
+          </ha-button>
+        </ha-dialog-footer>
+      </ha-dialog>
+    `;
+  }
+
+  private _handleCostChanged(ev: CustomEvent) {
+    const input = ev.currentTarget as HaRadio;
+    this._costs = input.value as any;
+  }
+
+  private _numberPriceChanged(ev: InputEvent) {
+    this._source = {
+      ...this._source!,
+      number_energy_price: Number((ev.target as HTMLInputElement).value),
+      entity_energy_price: null,
+      stat_cost: null,
+    };
+  }
+
+  private _priceStatChanged(ev: CustomEvent) {
+    this._source = {
+      ...this._source!,
+      entity_energy_price: null,
+      number_energy_price: null,
+      stat_cost: ev.detail.value,
+    };
+  }
+
+  private _priceEntityChanged(ev: CustomEvent) {
+    this._source = {
+      ...this._source!,
+      entity_energy_price: ev.detail.value,
+      number_energy_price: null,
+      stat_cost: null,
+    };
+  }
+
+  private _flowRateStatisticChanged(ev: ValueChangedEvent<string>) {
+    this._source = {
+      ...this._source!,
+      stat_rate: ev.detail.value || undefined,
+    };
+  }
+
+  private async _statisticChanged(ev: ValueChangedEvent<string>) {
+    if (
+      ev.detail.value &&
+      isExternalStatistic(ev.detail.value) &&
+      this._costs !== "statistic"
+    ) {
+      this._costs = "no-costs";
+    }
+    this._source = {
+      ...this._source!,
+      stat_energy_from: ev.detail.value,
+    };
+  }
+
+  private async _save() {
+    try {
+      if (this._costs === "no-costs") {
+        this._source!.entity_energy_price = null;
+        this._source!.number_energy_price = null;
+        this._source!.stat_cost = null;
+      }
+      await this._params!.saveCallback(this._source!);
+      this.closeDialog();
+    } catch (err: any) {
+      this._error = err.message;
+    }
+  }
+
+  static get styles(): CSSResultGroup {
+    return [
+      haStyle,
+      haStyleDialog,
+      css`
+        ha-statistic-picker {
+          display: block;
+          margin-bottom: var(--ha-space-4);
+        }
+        ha-formfield {
+          display: block;
+        }
+        .price-options {
+          display: block;
+          padding-left: 52px;
+          padding-inline-start: 52px;
+          padding-inline-end: initial;
+          margin-top: -8px;
+        }
+      `,
+    ];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "dialog-energy-water-settings": DialogEnergyWaterSettings;
+  }
+}

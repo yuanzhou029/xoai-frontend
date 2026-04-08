@@ -1,0 +1,49 @@
+import { html, LitElement } from "lit";
+import { customElement, property, query } from "lit/decorators";
+import type { DateSelector } from "../../data/selector";
+import type { HomeAssistant } from "../../types";
+import "../ha-date-input";
+import type { HaDateInput } from "../ha-date-input";
+
+@customElement("ha-selector-date")
+export class HaDateSelector extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ attribute: false }) public selector!: DateSelector;
+
+  @property() public value?: string;
+
+  @property() public label?: string;
+
+  @property() public helper?: string;
+
+  @property({ type: Boolean, reflect: true }) public disabled = false;
+
+  @property({ type: Boolean }) public required = true;
+
+  @query("ha-date-input", true) private _input?: HaDateInput;
+
+  public reportValidity(): boolean {
+    return this._input?.reportValidity() ?? true;
+  }
+
+  protected render() {
+    return html`
+      <ha-date-input
+        .label=${this.label}
+        .locale=${this.hass.locale}
+        .disabled=${this.disabled}
+        .value=${typeof this.value === "string" ? this.value : undefined}
+        .required=${this.required}
+        .helper=${this.helper}
+      >
+      </ha-date-input>
+    `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "ha-selector-date": HaDateSelector;
+  }
+}

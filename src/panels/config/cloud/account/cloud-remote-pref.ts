@@ -1,0 +1,310 @@
+import { mdiHelpCircleOutline } from "@mdi/js";
+import { LitElement, css, html, nothing } from "lit";
+import { customElement, property } from "lit/decorators";
+import { fireEvent } from "../../../../common/dom/fire_event";
+import "../../../../components/ha-alert";
+import "../../../../components/ha-button";
+import "../../../../components/ha-card";
+import "../../../../components/ha-expansion-panel";
+import "../../../../components/ha-md-list-item";
+import "../../../../components/ha-switch";
+
+import { formatDate } from "../../../../common/datetime/format_date";
+import type { HaSwitch } from "../../../../components/ha-switch";
+import "../../../../components/input/ha-input-copy";
+import type { CloudStatusLoggedIn } from "../../../../data/cloud";
+import {
+  connectCloudRemote,
+  disconnectCloudRemote,
+  updateCloudPref,
+} from "../../../../data/cloud";
+import type { HomeAssistant } from "../../../../types";
+import { showToast } from "../../../../util/toast";
+import { obfuscateUrl } from "../../../../util/url";
+import { showCloudCertificateDialog } from "../dialog-cloud-certificate/show-dialog-cloud-certificate";
+
+@customElement("cloud-remote-pref")
+export class CloudRemotePref extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ attribute: false }) public cloudStatus?: CloudStatusLoggedIn;
+
+  protected render() {
+    if (!this.cloudStatus) {
+      return nothing;
+    }
+
+    const { remote_enabled, remote_allow_remote_enable, strict_connection } =
+      this.cloudStatus.prefs;
+
+    const {
+      remote_connected,
+      remote_domain,
+      remote_certificate,
+      remote_certificate_status,
+    } = this.cloudStatus;
+
+    if (!remote_certificate || remote_certificate_status !== "ready") {
+      return html`
+        <ha-card
+          outlined
+          header=${this.hass.localize(
+            "ui.panel.config.cloud.account.remote.title"
+          )}
+        >
+          <div class="preparing">
+            ${remote_certificate_status === "error"
+              ? this.hass.localize(
+                  "ui.panel.config.cloud.account.remote.cerificate_error"
+                )
+              : remote_certificate_status === "loading"
+                ? this.hass.localize(
+                    "ui.panel.config.cloud.account.remote.cerificate_loading"
+                  )
+                : remote_certificate_status === "loaded"
+                  ? this.hass.localize(
+                      "ui.panel.config.cloud.account.remote.cerificate_loaded"
+                    )
+                  : this.hass.localize(
+                      "ui.panel.config.cloud.account.remote.access_is_being_prepared"
+                    )}
+          </div>
+        </ha-card>
+      `;
+    }
+
+    return html`
+      <ha-card
+        outlined
+        header=${this.hass.localize(
+          "ui.panel.config.cloud.account.remote.title"
+        )}
+      >
+        <div class="header-actions">
+          <ha-icon-button
+            .label=${this.hass.localize(
+              "ui.panel.config.cloud.account.remote.link_learn_how_it_works"
+            )}
+            .path=${mdiHelpCircleOutline}
+            href="https://www.nabucasa.com/config/remote/"
+            target="_blank"
+            rel="noreferrer"
+            class="icon-link"
+          ></ha-icon-button>
+          <ha-switch
+            .checked=${remote_enabled}
+            @change=${this._toggleChanged}
+          ></ha-switch>
+        </div>
+
+        <div class="card-content">
+          ${!remote_connected && remote_enabled
+            ? html`
+                <ha-alert
+                  .title=${this.hass.localize(
+                    `ui.panel.config.cloud.account.remote.reconnecting`
+                  )}
+                ></ha-alert>
+              `
+            : strict_connection === "drop_connection"
+              ? html`<ha-alert
+                  alert-type="warning"
+                  .title=${this.hass.localize(
+                    `ui.panel.config.cloud.account.remote.drop_connection_warning_title`
+                  )}
+                  >${this.hass.localize(
+                    `ui.panel.config.cloud.account.remote.drop_connection_warning`
+                  )}</ha-alert
+                >`
+              : nothing}
+          <p>
+            ${this.hass.localize("ui.panel.config.cloud.account.remote.info")}
+          </p>
+          ${remote_connected
+            ? nothing
+            : html`
+                <p>
+                  ${this.hass.localize(
+                    "ui.panel.config.cloud.account.remote.info_instance_will_be_available"
+                  )}
+                </p>
+              `}
+
+          <ha-input-copy
+            readonly
+            .value=${`https://${remote_domain}`}
+            .maskedValue=${obfuscateUrl(`https://${remote_domain}`)}
+            .label=${this.hass!.localize("ui.panel.config.common.copy_link")}
+          ></ha-input-copy>
+
+          <ha-expansion-panel
+            outlined
+            .header=${this.hass.localize(
+              "ui.panel.config.cloud.account.remote.security_options"
+            )}
+          >
+            <ha-md-list-item>
+              <span slot="headline"
+                >${this.hass.localize(
+                  "ui.panel.config.cloud.account.remote.external_activation"
+                )}</span
+              >
+              <span slot="supporting-text"
+                >${this.hass.localize(
+                  "ui.panel.config.cloud.account.remote.external_activation_secondary"
+                )}</span
+              >
+              <ha-switch
+                slot="end"
+                .checked=${remote_allow_remote_enable}
+                @change=${this._toggleAllowRemoteEnabledChanged}
+              >
+              </ha-switch>
+            </ha-md-list-item>
+            <hr />
+            <ha-md-list-item>
+              <span slot="headline"
+                >${this.hass.localize(
+                  "ui.panel.config.cloud.account.remote.certificate_info"
+                )}</span
+              >
+              <span slot="supporting-text"
+                >${this.cloudStatus!.remote_certificate
+                  ? this.hass.localize(
+                      "ui.panel.config.cloud.account.remote.certificate_expire",
+                      {
+                        date: formatDate(
+                          new Date(
+                            this.cloudStatus.remote_certificate.expire_date
+                          ),
+                          this.hass.locale,
+                          this.hass.config
+                        ),
+                      }
+                    )
+                  : nothing}</span
+              >
+              <ha-button
+                slot="end"
+                appearance="plain"
+                size="small"
+                @click=${this._openCertInfo}
+              >
+                ${this.hass.localize(
+                  "ui.panel.config.cloud.account.remote.more_info"
+                )}
+              </ha-button>
+            </ha-md-list-item>
+          </ha-expansion-panel>
+        </div>
+      </ha-card>
+    `;
+  }
+
+  private _openCertInfo() {
+    showCloudCertificateDialog(this, {
+      certificateInfo: this.cloudStatus!.remote_certificate!,
+    });
+  }
+
+  private async _toggleChanged(ev) {
+    const toggle = ev.target as HaSwitch;
+
+    try {
+      if (toggle.checked) {
+        await connectCloudRemote(this.hass);
+      } else {
+        await disconnectCloudRemote(this.hass);
+      }
+      fireEvent(this, "ha-refresh-cloud-status");
+    } catch (err: any) {
+      showToast(this, { message: err.message });
+      toggle.checked = !toggle.checked;
+    }
+  }
+
+  private async _toggleAllowRemoteEnabledChanged(ev) {
+    const toggle = ev.target as HaSwitch;
+
+    try {
+      await updateCloudPref(this.hass, {
+        remote_allow_remote_enable: toggle.checked,
+      });
+      fireEvent(this, "ha-refresh-cloud-status");
+    } catch (err: any) {
+      showToast(this, { message: err.message });
+      toggle.checked = !toggle.checked;
+    }
+  }
+
+  static styles = css`
+    .preparing {
+      padding: 0 16px 16px;
+    }
+    .header-actions {
+      position: absolute;
+      right: 16px;
+      inset-inline-end: 16px;
+      inset-inline-start: initial;
+      top: 24px;
+      display: flex;
+      flex-direction: row;
+    }
+    .header-actions .icon-link {
+      margin-top: -16px;
+      margin-right: 8px;
+      margin-inline-end: 8px;
+      margin-inline-start: initial;
+      direction: var(--direction);
+      color: var(--secondary-text-color);
+    }
+    .warning {
+      font-weight: var(--ha-font-weight-bold);
+      margin-bottom: 1em;
+    }
+    .break-word {
+      overflow-wrap: break-word;
+    }
+    .connection-status {
+      position: absolute;
+      right: 24px;
+      top: 24px;
+      inset-inline-end: 24px;
+      inset-inline-start: initial;
+    }
+    .card-actions {
+      display: flex;
+    }
+    .card-actions a {
+      text-decoration: none;
+    }
+    ha-expansion-panel {
+      margin-top: 16px;
+    }
+    ha-md-list-item {
+      --md-list-item-leading-space: 0;
+      --md-list-item-trailing-space: 0;
+      --md-item-overflow: visible;
+    }
+    ha-expansion-panel {
+      --expansion-panel-content-padding: 0 16px;
+      --expansion-panel-summary-padding: 0 16px;
+    }
+    ha-alert {
+      display: block;
+      margin-bottom: 16px;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background-color: var(--divider-color);
+      margin: 8px 0;
+    }
+  `;
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "cloud-remote-pref": CloudRemotePref;
+  }
+}

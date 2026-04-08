@@ -1,0 +1,60 @@
+.DS_Store
+.reify-cache
+
+# build
+build/
+dist/
+/hass_frontend/
+/translations/
+
+# yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+node_modules/
+yarn-error.log
+npm-debug.log
+
+# Python stuff
+*.py[cod]
+*.egg
+*.egg-info
+
+# venv stuff
+pyvenv.cfg
+pip-selfcheck.json
+/venv/
+.venv
+
+# vscode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Cast dev settings
+src/cast/dev_const.ts
+
+# Secrets
+.lokalise_token
+
+# asdf
+.tool-versions
+
+# Home Assistant config
+/config/
+
+# Jetbrains
+/.idea/
+
+# test coverage
+test/coverage/
+
+# AI tooling
+.claude
+.cursor
+

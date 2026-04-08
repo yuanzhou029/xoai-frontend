@@ -1,0 +1,1006 @@
+import "@home-assistant/webawesome/dist/components/divider/divider";
+import { consume } from "@lit/context";
+import {
+  mdiAlertCircleCheck,
+  mdiAppleKeyboardCommand,
+  mdiArrowDown,
+  mdiArrowRightThin,
+  mdiArrowUp,
+  mdiCheckboxBlankOutline,
+  mdiCheckboxOutline,
+  mdiContentCopy,
+  mdiContentCut,
+  mdiDelete,
+  mdiDotsVertical,
+  mdiPlay,
+  mdiPlayCircleOutline,
+  mdiPlaylistEdit,
+  mdiPlusCircleMultipleOutline,
+  mdiRenameBox,
+  mdiStopCircleOutline,
+} from "@mdi/js";
+import deepClone from "deep-clone-simple";
+import type { HassServiceTarget } from "home-assistant-js-websocket";
+import { dump } from "js-yaml";
+import type { PropertyValues, TemplateResult } from "lit";
+import { css, html, LitElement, nothing } from "lit";
+import { customElement, property, query, state } from "lit/decorators";
+import memoizeOne from "memoize-one";
+import { ensureArray } from "../../../../common/array/ensure-array";
+import { storage } from "../../../../common/decorators/storage";
+import { fireEvent } from "../../../../common/dom/fire_event";
+import { preventDefaultStopPropagation } from "../../../../common/dom/prevent_default_stop_propagation";
+import { stopPropagation } from "../../../../common/dom/stop_propagation";
+import { capitalizeFirstLetter } from "../../../../common/string/capitalize-first-letter";
+import { handleStructError } from "../../../../common/structs/handle-errors";
+import { copyToClipboard } from "../../../../common/util/copy-clipboard";
+import "../../../../components/ha-automation-row";
+import type { HaAutomationRow } from "../../../../components/ha-automation-row";
+import "../../../../components/ha-card";
+import "../../../../components/ha-dropdown";
+import type { HaDropdownSelectEvent } from "../../../../components/ha-dropdown";
+import "../../../../components/ha-dropdown-item";
+import "../../../../components/ha-expansion-panel";
+import "../../../../components/ha-icon-button";
+import "../../../../components/ha-service-icon";
+import "../../../../components/ha-tooltip";
+import {
+  ACTION_BUILDING_BLOCKS,
+  ACTION_COMBINED_BLOCKS,
+  ACTION_ICONS,
+  YAML_ONLY_ACTION_TYPES,
+} from "../../../../data/action";
+import type {
+  ActionSidebarConfig,
+  AutomationClipboard,
+  Condition,
+} from "../../../../data/automation";
+import { CONDITION_BUILDING_BLOCKS } from "../../../../data/condition";
+import { validateConfig } from "../../../../data/config";
+import { fullEntitiesContext } from "../../../../data/context";
+import type { EntityRegistryEntry } from "../../../../data/entity/entity_registry";
+import type {
+  Action,
+  DeviceAction,
+  NonConditionAction,
+  RepeatAction,
+  ServiceAction,
+} from "../../../../data/script";
+import { getActionType, isAction } from "../../../../data/script";
+import { describeAction } from "../../../../data/script_i18n";
+import { callExecuteScript } from "../../../../data/service";
+import {
+  showAlertDialog,
+  showPromptDialog,
+} from "../../../../dialogs/generic/show-dialog-box";
+import type { HomeAssistant } from "../../../../types";
+import { isMac } from "../../../../util/is_mac";
+import { showToast } from "../../../../util/toast";
+import "../ha-automation-editor-warning";
+import { overflowStyles, rowStyles } from "../styles";
+import "../target/ha-automation-row-targets";
+import "./ha-automation-action-editor";
+import type HaAutomationActionEditor from "./ha-automation-action-editor";
+import "./types/ha-automation-action-choose";
+import "./types/ha-automation-action-condition";
+import "./types/ha-automation-action-delay";
+import "./types/ha-automation-action-device_id";
+import "./types/ha-automation-action-event";
+import "./types/ha-automation-action-if";
+import "./types/ha-automation-action-parallel";
+import { getRepeatType } from "./types/ha-automation-action-repeat";
+import "./types/ha-automation-action-sequence";
+import "./types/ha-automation-action-service";
+import "./types/ha-automation-action-set_conversation_response";
+import "./types/ha-automation-action-stop";
+import "./types/ha-automation-action-wait_for_trigger";
+import "./types/ha-automation-action-wait_template";
+import { computeDomain } from "../../../../common/entity/compute_domain";
+import { computeObjectId } from "../../../../common/entity/compute_object_id";
+
+export const getAutomationActionType = memoizeOne(
+  (action: Action | undefined) => {
+    if (!action) {
+      return undefined;
+    }
+    if ("action" in action) {
+      return getActionType(action) as "action";
+    }
+    if (CONDITION_BUILDING_BLOCKS.some((key) => key in action)) {
+      return "condition" as const;
+    }
+    return Object.keys(ACTION_ICONS).find(
+      (option) => option in action
+    ) as keyof typeof ACTION_ICONS;
+  }
+);
+
+export interface ActionElement extends LitElement {
+  action: Action;
+  expandAll?: () => void;
+  collapseAll?: () => void;
+}
+
+export const handleChangeEvent = (element: ActionElement, ev: CustomEvent) => {
+  ev.stopPropagation();
+  const name = (ev.target as any)?.name;
+  if (!name) {
+    return;
+  }
+  const newVal = ev.detail?.value || (ev.target as any).value;
+
+  if ((element.action[name] || "") === newVal) {
+    return;
+  }
+
+  let newAction: Action;
+  if (!newVal) {
+    newAction = { ...element.action };
+    delete newAction[name];
+  } else {
+    newAction = { ...element.action, [name]: newVal };
+  }
+  fireEvent(element, "value-changed", { value: newAction });
+};
+
+@customElement("ha-automation-action-row")
+export default class HaAutomationActionRow extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ attribute: false }) public action!: Action;
+
+  @property({ type: Boolean }) public narrow = false;
+
+  @property({ type: Boolean }) public disabled = false;
+
+  @property({ type: Boolean }) public root = false;
+
+  @property({ type: Boolean }) public first?: boolean;
+
+  @property({ type: Boolean }) public last?: boolean;
+
+  @property({ type: Boolean }) public highlight?: boolean;
+
+  @property({ type: Boolean, attribute: "sidebar" })
+  public optionsInSidebar = false;
+
+  @property({ type: Boolean, attribute: "sort-selected" })
+  public sortSelected = false;
+
+  @storage({
+    key: "automationClipboard",
+    state: false,
+    subscribe: true,
+    storage: "sessionStorage",
+  })
+  public _clipboard?: AutomationClipboard;
+
+  @state()
+  @consume({ context: fullEntitiesContext, subscribe: true })
+  _entityReg: EntityRegistryEntry[] = [];
+
+  @state() private _uiModeAvailable = true;
+
+  @state() private _yamlMode = false;
+
+  @state() private _selected = false;
+
+  @state() private _collapsed = true;
+
+  @state() private _isNew = false;
+
+  @state() private _warnings?: string[];
+
+  @query("ha-automation-action-editor")
+  private _actionEditor?: HaAutomationActionEditor;
+
+  @query("ha-automation-row")
+  private _automationRowElement?: HaAutomationRow;
+
+  get selected() {
+    return this._selected;
+  }
+
+  protected firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    if (this.root) {
+      this._collapsed = false;
+    }
+  }
+
+  protected willUpdate(changedProperties: PropertyValues) {
+    if (changedProperties.has("yamlMode")) {
+      this._warnings = undefined;
+    }
+    if (!changedProperties.has("action")) {
+      return;
+    }
+    const type = getAutomationActionType(this.action);
+    this._uiModeAvailable =
+      type !== undefined && !YAML_ONLY_ACTION_TYPES.has(type as any);
+    if (!this._uiModeAvailable && !this._yamlMode) {
+      this._yamlMode = true;
+    }
+  }
+
+  private _renderOverflowLabel(label: string, shortcut?: TemplateResult) {
+    return html`
+      <div class="overflow-label">
+        ${label}
+        ${this.optionsInSidebar && !this.narrow
+          ? shortcut ||
+            html`<span
+              class="shortcut-placeholder ${isMac ? "mac" : ""}"
+            ></span>`
+          : nothing}
+      </div>
+    `;
+  }
+
+  private _renderRow() {
+    const type = getAutomationActionType(this.action);
+
+    const action = type === "service" && (this.action as ServiceAction).action;
+
+    const actionHasTarget =
+      action &&
+      "target" in
+        (this.hass.services?.[computeDomain(action)]?.[
+          computeObjectId(action)
+        ] || {});
+
+    const target = actionHasTarget
+      ? (this.action as ServiceAction).target
+      : type === "device_id" && (this.action as DeviceAction).device_id
+        ? { device_id: (this.action as DeviceAction).device_id }
+        : undefined;
+
+    return html`
+      ${type === "service" && "action" in this.action && this.action.action
+        ? html`
+            <ha-service-icon
+              slot="leading-icon"
+              class="action-icon"
+              .hass=${this.hass}
+              .service=${this.action.action}
+            ></ha-service-icon>
+          `
+        : html`
+            <ha-svg-icon
+              slot="leading-icon"
+              class="action-icon"
+              .path=${ACTION_ICONS[type!]}
+            ></ha-svg-icon>
+          `}
+      <h3 slot="header">
+        ${capitalizeFirstLetter(
+          describeAction(this.hass, this._entityReg, this.action)
+        )}
+        ${target !== undefined || (actionHasTarget && !this._isNew)
+          ? this._renderTargets(target, actionHasTarget && !this._isNew)
+          : nothing}
+        ${type !== "condition" &&
+        (this.action as NonConditionAction).continue_on_error === true
+          ? html`<ha-svg-icon
+                class="arrow-right"
+                .path=${mdiArrowRightThin}
+              ></ha-svg-icon
+              ><ha-svg-icon
+                id="svg-icon"
+                .path=${mdiAlertCircleCheck}
+              ></ha-svg-icon>
+              <ha-tooltip for="svg-icon">
+                ${this.hass.localize(
+                  "ui.panel.config.automation.editor.actions.continue_on_error"
+                )}
+              </ha-tooltip>`
+          : nothing}
+      </h3>
+
+      <slot name="icons" slot="icons"></slot>
+
+      <ha-dropdown
+        slot="icons"
+        @click=${preventDefaultStopPropagation}
+        @keydown=${stopPropagation}
+        @wa-select=${this._handleDropdownSelect}
+        placement="bottom-end"
+      >
+        <ha-icon-button
+          slot="trigger"
+          .label=${this.hass.localize("ui.common.menu")}
+          .path=${mdiDotsVertical}
+        ></ha-icon-button>
+
+        <ha-dropdown-item value="run">
+          <ha-svg-icon slot="icon" .path=${mdiPlay}></ha-svg-icon>
+          ${this._renderOverflowLabel(
+            this.hass.localize("ui.panel.config.automation.editor.actions.run")
+          )}
+        </ha-dropdown-item>
+        <ha-dropdown-item value="rename" .disabled=${this.disabled}>
+          <ha-svg-icon slot="icon" .path=${mdiRenameBox}></ha-svg-icon>
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              "ui.panel.config.automation.editor.triggers.rename"
+            )
+          )}
+        </ha-dropdown-item>
+        <wa-divider></wa-divider>
+        <ha-dropdown-item value="duplicate" .disabled=${this.disabled}>
+          <ha-svg-icon
+            slot="icon"
+            .path=${mdiPlusCircleMultipleOutline}
+          ></ha-svg-icon>
+
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              "ui.panel.config.automation.editor.actions.duplicate"
+            )
+          )}
+        </ha-dropdown-item>
+
+        <ha-dropdown-item value="copy" .disabled=${this.disabled}>
+          <ha-svg-icon slot="icon" .path=${mdiContentCopy}></ha-svg-icon>
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              "ui.panel.config.automation.editor.triggers.copy"
+            ),
+            html`<span class="shortcut">
+              <span
+                >${isMac
+                  ? html`<ha-svg-icon
+                      .path=${mdiAppleKeyboardCommand}
+                    ></ha-svg-icon>`
+                  : this.hass.localize(
+                      "ui.panel.config.automation.editor.ctrl"
+                    )}</span
+              >
+              <span>+</span>
+              <span>C</span>
+            </span>`
+          )}
+        </ha-dropdown-item>
+
+        <ha-dropdown-item value="cut" .disabled=${this.disabled}>
+          <ha-svg-icon slot="icon" .path=${mdiContentCut}></ha-svg-icon>
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              "ui.panel.config.automation.editor.triggers.cut"
+            ),
+            html`<span class="shortcut">
+              <span
+                >${isMac
+                  ? html`<ha-svg-icon
+                      .path=${mdiAppleKeyboardCommand}
+                    ></ha-svg-icon>`
+                  : this.hass.localize(
+                      "ui.panel.config.automation.editor.ctrl"
+                    )}</span
+              >
+              <span>+</span>
+              <span>X</span>
+            </span>`
+          )}
+        </ha-dropdown-item>
+
+        ${!this.optionsInSidebar
+          ? html`
+              <ha-dropdown-item
+                value="move_up"
+                .disabled=${this.disabled || !!this.first}
+              >
+                ${this.hass.localize(
+                  "ui.panel.config.automation.editor.move_up"
+                )}
+                <ha-svg-icon slot="icon" .path=${mdiArrowUp}></ha-svg-icon
+              ></ha-dropdown-item>
+              <ha-dropdown-item
+                value="move_down"
+                .disabled=${this.disabled || !!this.last}
+              >
+                ${this.hass.localize(
+                  "ui.panel.config.automation.editor.move_down"
+                )}
+                <ha-svg-icon slot="icon" .path=${mdiArrowDown}></ha-svg-icon
+              ></ha-dropdown-item>
+            `
+          : nothing}
+
+        <ha-dropdown-item
+          value="toggle_yaml_mode"
+          .disabled=${!this._uiModeAvailable || !!this._warnings}
+        >
+          <ha-svg-icon slot="icon" .path=${mdiPlaylistEdit}></ha-svg-icon>
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              `ui.panel.config.automation.editor.edit_${!this._yamlMode ? "yaml" : "ui"}`
+            )
+          )}
+        </ha-dropdown-item>
+
+        <wa-divider></wa-divider>
+
+        <ha-dropdown-item value="disable" .disabled=${this.disabled}>
+          <ha-svg-icon
+            slot="icon"
+            .path=${this.action.enabled === false
+              ? mdiPlayCircleOutline
+              : mdiStopCircleOutline}
+          ></ha-svg-icon>
+
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              `ui.panel.config.automation.editor.actions.${this.action.enabled === false ? "enable" : "disable"}`
+            )
+          )}
+        </ha-dropdown-item>
+
+        ${type !== "condition"
+          ? html`<ha-dropdown-item
+                value="continue_on_error"
+                .disabled=${this.disabled}
+              >
+                <ha-svg-icon
+                  slot="icon"
+                  .path=${(this.action as NonConditionAction).continue_on_error
+                    ? mdiCheckboxOutline
+                    : mdiCheckboxBlankOutline}
+                ></ha-svg-icon>
+                ${this._renderOverflowLabel(
+                  this.hass.localize(
+                    `ui.panel.config.automation.editor.actions.continue_on_error`
+                  )
+                )}
+              </ha-dropdown-item>
+              <wa-divider></wa-divider>`
+          : nothing}
+
+        <ha-dropdown-item
+          value="delete"
+          variant="danger"
+          .disabled=${this.disabled}
+        >
+          <ha-svg-icon
+            class="warning"
+            slot="icon"
+            .path=${mdiDelete}
+          ></ha-svg-icon>
+
+          ${this._renderOverflowLabel(
+            this.hass.localize(
+              "ui.panel.config.automation.editor.actions.delete"
+            ),
+            html`<span class="shortcut">
+              <span
+                >${isMac
+                  ? html`<ha-svg-icon
+                      .path=${mdiAppleKeyboardCommand}
+                    ></ha-svg-icon>`
+                  : this.hass.localize(
+                      "ui.panel.config.automation.editor.ctrl"
+                    )}</span
+              >
+              <span>+</span>
+              <span
+                >${this.hass.localize(
+                  "ui.panel.config.automation.editor.del"
+                )}</span
+              >
+            </span>`
+          )}
+        </ha-dropdown-item>
+      </ha-dropdown>
+
+      ${!this.optionsInSidebar
+        ? html`${this._warnings
+              ? html`<ha-automation-editor-warning
+                  .localize=${this.hass.localize}
+                  .warnings=${this._warnings}
+                >
+                </ha-automation-editor-warning>`
+              : nothing}
+            <ha-automation-action-editor
+              .hass=${this.hass}
+              .action=${this.action}
+              .disabled=${this.disabled}
+              .yamlMode=${this._yamlMode}
+              .narrow=${this.narrow}
+              .uiSupported=${this._uiSupported(type!)}
+              @ui-mode-not-available=${this._handleUiModeNotAvailable}
+            ></ha-automation-action-editor>`
+        : nothing}
+    `;
+  }
+
+  protected render() {
+    if (!this.action) return nothing;
+
+    const type = getAutomationActionType(this.action);
+
+    const blockType =
+      type === "repeat"
+        ? `repeat_${getRepeatType((this.action as RepeatAction).repeat)}`
+        : type;
+
+    return html`
+      <ha-card outlined>
+        ${this.action.enabled === false
+          ? html`
+              <div class="disabled-bar">
+                ${this.hass.localize(
+                  "ui.panel.config.automation.editor.actions.disabled"
+                )}
+              </div>
+            `
+          : nothing}
+        ${this.optionsInSidebar
+          ? html`<ha-automation-row
+              .disabled=${this.action.enabled === false}
+              .leftChevron=${[
+                ...ACTION_BUILDING_BLOCKS,
+                ...ACTION_COMBINED_BLOCKS,
+              ].includes(blockType!) ||
+              (blockType === "condition" &&
+                CONDITION_BUILDING_BLOCKS.includes(
+                  (this.action as Condition).condition
+                ))}
+              .collapsed=${this._collapsed}
+              .selected=${this._selected}
+              .highlight=${this.highlight}
+              .buildingBlock=${[
+                ...ACTION_BUILDING_BLOCKS,
+                ...ACTION_COMBINED_BLOCKS,
+              ].includes(blockType!)}
+              .sortSelected=${this.sortSelected}
+              @click=${this._toggleSidebar}
+              @toggle-collapsed=${this._toggleCollapse}
+              >${this._renderRow()}</ha-automation-row
+            >`
+          : html`
+              <ha-expansion-panel
+                left-chevron
+                @expanded-changed=${this._expansionPanelChanged}
+              >
+                ${this._renderRow()}
+              </ha-expansion-panel>
+            `}
+      </ha-card>
+
+      ${this.optionsInSidebar &&
+      ([...ACTION_BUILDING_BLOCKS, ...ACTION_COMBINED_BLOCKS].includes(
+        blockType!
+      ) ||
+        (blockType === "condition" &&
+          CONDITION_BUILDING_BLOCKS.includes(
+            (this.action as Condition).condition
+          )))
+        ? html`<ha-automation-action-editor
+            class=${this._collapsed ? "hidden" : ""}
+            .hass=${this.hass}
+            .action=${this.action}
+            .narrow=${this.narrow}
+            .disabled=${this.disabled}
+            .uiSupported=${this._uiSupported(type!)}
+            indent
+            .selected=${this._selected}
+            @value-changed=${this._onValueChange}
+          ></ha-automation-action-editor>`
+        : nothing}
+    `;
+  }
+
+  private _renderTargets = memoizeOne(
+    (target?: HassServiceTarget, targetRequired = false) =>
+      html`<ha-automation-row-targets
+        .hass=${this.hass}
+        .target=${target}
+        .targetRequired=${targetRequired}
+      ></ha-automation-row-targets>`
+  );
+
+  private _onValueChange(event: CustomEvent) {
+    // reload sidebar if sort, deleted,... happend
+    if (this._selected && this.optionsInSidebar) {
+      this.openSidebar(event.detail.value);
+    }
+  }
+
+  private _setClipboard() {
+    this._clipboard = {
+      ...this._clipboard,
+      action: deepClone(this.action),
+    };
+    let action = this.action;
+    if ("sequence" in action) {
+      action = { ...this.action, metadata: {} };
+    }
+    copyToClipboard(dump(action));
+  }
+
+  private _onDisable = () => {
+    const enabled = !(this.action.enabled ?? true);
+    const value = { ...this.action, enabled };
+    fireEvent(this, "value-changed", { value });
+
+    if (this._selected && this.optionsInSidebar) {
+      this.openSidebar(value); // refresh sidebar
+    }
+
+    if (this._yamlMode && !this.optionsInSidebar) {
+      this._actionEditor?.yamlEditor?.setValue(value);
+    }
+  };
+
+  private _continueOnError = () => {
+    const value = { ...this.action };
+
+    if ((value as NonConditionAction).continue_on_error) {
+      delete (value as NonConditionAction).continue_on_error;
+    } else {
+      (value as NonConditionAction).continue_on_error = true;
+    }
+
+    fireEvent(this, "value-changed", { value });
+
+    if (this._selected && this.optionsInSidebar) {
+      this.openSidebar(value); // refresh sidebar
+    }
+    if (this._yamlMode && !this.optionsInSidebar) {
+      this._actionEditor?.yamlEditor?.setValue(value);
+    }
+  };
+
+  private _runAction = async () => {
+    requestAnimationFrame(() => {
+      // @ts-ignore is supported in all browsers except firefox
+      if (this.scrollIntoViewIfNeeded) {
+        // @ts-ignore is supported in all browsers except firefox
+        this.scrollIntoViewIfNeeded();
+        return;
+      }
+      this.scrollIntoView();
+    });
+    const validated = await validateConfig(this.hass, {
+      actions: this.action,
+    });
+
+    if (!validated.actions.valid) {
+      showAlertDialog(this, {
+        title: this.hass.localize(
+          "ui.panel.config.automation.editor.actions.invalid_action"
+        ),
+        text: validated.actions.error,
+      });
+      return;
+    }
+
+    try {
+      await callExecuteScript(this.hass, this.action);
+    } catch (err: any) {
+      showAlertDialog(this, {
+        title: this.hass.localize(
+          "ui.panel.config.automation.editor.actions.run_action_error"
+        ),
+        text: err.message || err,
+      });
+      return;
+    }
+
+    showToast(this, {
+      message: this.hass.localize(
+        "ui.panel.config.automation.editor.actions.run_action_success"
+      ),
+    });
+  };
+
+  private _onDelete = () => {
+    fireEvent(this, "value-changed", { value: null });
+    if (this._selected) {
+      fireEvent(this, "close-sidebar");
+    }
+
+    showToast(this, {
+      message: this.hass.localize("ui.common.successfully_deleted"),
+      duration: 4000,
+      action: {
+        text: this.hass.localize("ui.common.undo"),
+        action: () => {
+          fireEvent(window, "undo-change");
+        },
+      },
+    });
+  };
+
+  private _switchUiMode() {
+    this._yamlMode = false;
+  }
+
+  private _switchYamlMode() {
+    this._yamlMode = true;
+  }
+
+  private _renameAction = async (): Promise<void> => {
+    const alias = await showPromptDialog(this, {
+      title: this.hass.localize(
+        "ui.panel.config.automation.editor.actions.change_alias"
+      ),
+      inputLabel: this.hass.localize(
+        "ui.panel.config.automation.editor.actions.alias"
+      ),
+      inputType: "string",
+      placeholder: capitalizeFirstLetter(
+        describeAction(this.hass, this._entityReg, this.action, undefined, true)
+      ),
+      defaultValue: this.action.alias,
+      confirmText: this.hass.localize("ui.common.submit"),
+    });
+    if (alias !== null) {
+      const value = { ...this.action };
+      if (alias === "") {
+        delete value.alias;
+      } else {
+        value.alias = alias;
+      }
+      fireEvent(this, "value-changed", {
+        value,
+      });
+
+      if (this._selected && this.optionsInSidebar) {
+        this.openSidebar(value); // refresh sidebar
+      } else if (this._yamlMode) {
+        this._actionEditor?.yamlEditor?.setValue(value);
+      }
+    }
+  };
+
+  private _duplicateAction = () => {
+    fireEvent(this, "duplicate");
+  };
+
+  private _insertAfter = (value: Action | Action[]) => {
+    if (ensureArray(value).some((val) => !isAction(val))) {
+      return false;
+    }
+    fireEvent(this, "insert-after", { value });
+    return true;
+  };
+
+  private _copyAction = () => {
+    this._setClipboard();
+    showToast(this, {
+      message: this.hass.localize(
+        "ui.panel.config.automation.editor.actions.copied_to_clipboard"
+      ),
+      duration: 2000,
+    });
+  };
+
+  private _cutAction = () => {
+    this._setClipboard();
+    fireEvent(this, "value-changed", { value: null });
+    if (this._selected) {
+      fireEvent(this, "close-sidebar");
+    }
+    showToast(this, {
+      message: this.hass.localize(
+        "ui.panel.config.automation.editor.actions.cut_to_clipboard"
+      ),
+      duration: 2000,
+    });
+  };
+
+  private _moveUp = () => {
+    fireEvent(this, "move-up");
+  };
+
+  private _moveDown = () => {
+    fireEvent(this, "move-down");
+  };
+
+  private _toggleYamlMode = (item?: HTMLElement) => {
+    if (this._yamlMode) {
+      this._switchUiMode();
+    } else {
+      this._switchYamlMode();
+    }
+
+    if (!this.optionsInSidebar) {
+      this.expand();
+    } else if (item) {
+      this.openSidebar();
+    }
+  };
+
+  private _handleUiModeNotAvailable(ev: CustomEvent) {
+    this._warnings = handleStructError(this.hass, ev.detail).warnings;
+    if (!this._yamlMode) {
+      this._yamlMode = true;
+    }
+  }
+
+  private _expansionPanelChanged(ev: CustomEvent) {
+    if (!ev.detail.expanded) {
+      this._isNew = false;
+    }
+  }
+
+  private _toggleSidebar(ev: Event) {
+    ev?.stopPropagation();
+
+    if (this._selected) {
+      fireEvent(this, "request-close-sidebar");
+      return;
+    }
+    this.openSidebar();
+  }
+
+  public markAsNew(): void {
+    this._isNew = true;
+  }
+
+  public openSidebar(action?: Action): void {
+    const sidebarAction = action ?? this.action;
+    const actionType = getAutomationActionType(sidebarAction);
+
+    fireEvent(this, "open-sidebar", {
+      save: (value) => {
+        fireEvent(this, "value-changed", { value });
+      },
+      close: (focus?: boolean) => {
+        this._selected = false;
+        this._isNew = false;
+        fireEvent(this, "close-sidebar");
+        if (focus) {
+          this.focus();
+        }
+      },
+      rename: () => {
+        this._renameAction();
+      },
+      toggleYamlMode: () => {
+        this._toggleYamlMode();
+        this.openSidebar();
+      },
+      disable: this._onDisable,
+      continueOnError: this._continueOnError,
+      delete: this._onDelete,
+      copy: this._copyAction,
+      cut: this._cutAction,
+      duplicate: this._duplicateAction,
+      insertAfter: this._insertAfter,
+      run: this._runAction,
+      config: {
+        action: sidebarAction,
+      },
+      uiSupported: actionType ? this._uiSupported(actionType) : false,
+      yamlMode: this._yamlMode,
+    } satisfies ActionSidebarConfig);
+    this._selected = true;
+    this._collapsed = false;
+
+    if (this.narrow) {
+      window.setTimeout(() => {
+        this.scrollIntoView({
+          block: "start",
+          behavior: "smooth",
+        });
+      }, 180); // duration of transition of added padding for bottom sheet
+    }
+  }
+
+  public expand() {
+    if (this.optionsInSidebar) {
+      this._collapsed = false;
+      return;
+    }
+
+    this.updateComplete.then(() => {
+      this.shadowRoot!.querySelector("ha-expansion-panel")!.expanded = true;
+    });
+  }
+
+  public collapse() {
+    if (this.optionsInSidebar) {
+      this._collapsed = true;
+      return;
+    }
+
+    this.updateComplete.then(() => {
+      this.shadowRoot!.querySelector("ha-expansion-panel")!.expanded = false;
+    });
+  }
+
+  public expandAll() {
+    this.expand();
+
+    this._actionEditor?.expandAll();
+  }
+
+  public collapseAll() {
+    this.collapse();
+
+    this._actionEditor?.collapseAll();
+  }
+
+  private _uiSupported = memoizeOne(
+    (type: string) =>
+      customElements.get(`ha-automation-action-${type}`) !== undefined
+  );
+
+  private _toggleCollapse() {
+    this._collapsed = !this._collapsed;
+  }
+
+  public focus() {
+    this._automationRowElement?.focus();
+  }
+
+  private _handleDropdownSelect(ev: HaDropdownSelectEvent) {
+    ev.stopPropagation();
+    const action = ev.detail?.item?.value;
+
+    if (!action) {
+      return;
+    }
+
+    switch (action) {
+      case "run":
+        this._runAction();
+        break;
+      case "rename":
+        this._renameAction();
+        break;
+      case "duplicate":
+        this._duplicateAction();
+        break;
+      case "copy":
+        this._copyAction();
+        break;
+      case "cut":
+        this._cutAction();
+        break;
+      case "move_up":
+        this._moveUp();
+        break;
+      case "move_down":
+        this._moveDown();
+        break;
+      case "toggle_yaml_mode":
+        this._toggleYamlMode(ev.target as HTMLElement);
+        break;
+      case "disable":
+        this._onDisable();
+        break;
+      case "continue_on_error":
+        this._continueOnError();
+        break;
+      case "delete":
+        this._onDelete();
+        break;
+    }
+  }
+
+  static styles = [
+    rowStyles,
+    overflowStyles,
+    css`
+      ha-svg-icon.arrow-right {
+        --icon-primary-color: var(--ha-color-fill-neutral-normal-resting);
+      }
+      ha-svg-icon#svg-icon {
+        --icon-primary-color: var(--ha-color-fill-neutral-loud-active);
+      }
+      ha-svg-icon#svg-icon:hover {
+        --icon-primary-color: var(--ha-color-fill-neutral-loud-hover);
+      }
+    `,
+  ];
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "ha-automation-action-row": HaAutomationActionRow;
+  }
+}

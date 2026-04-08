@@ -1,0 +1,43 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "configMigration": true,
+  "extends": [
+    ":ignoreModulesAndTests",
+    ":label(Dependencies)",
+    ":pinVersions",
+    ":prConcurrentLimit10",
+    ":semanticCommitsDisabled",
+    "group:monorepos",
+    "group:recommended",
+    "security:minimumReleaseAgeNpm"
+  ],
+  "enabledManagers": ["npm", "nvm"],
+  "postUpdateOptions": ["yarnDedupeHighest"],
+  "lockFileMaintenance": {
+    "description": ["Run after patch releases but before next beta"],
+    "enabled": true,
+    "schedule": ["on the 19th day of the month before 4am"]
+  },
+  "packageRules": [
+    {
+      "description": "MDC packages are pinned to the same version as MWC",
+      "extends": ["monorepo:material-components-web"],
+      "enabled": false
+    },
+    {
+      "description": "Group MDI packages",
+      "groupName": "Material Design Icons",
+      "matchPackageNames": ["@mdi/js", "@mdi/svg"]
+    },
+    {
+      "description": "Group tsparticles engine and presets",
+      "groupName": "tsparticles",
+      "matchPackageNames": ["@tsparticles/engine", "@tsparticles/preset-{/,}**"]
+    },
+    {
+      "description": "Group date-fns with dependent timezone package",
+      "groupName": "date-fns",
+      "matchPackageNames": ["date-fns", "date-fns-tz"]
+    }
+  ]
+}

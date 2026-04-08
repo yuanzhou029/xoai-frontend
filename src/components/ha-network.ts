@@ -1,0 +1,209 @@
+import { mdiInformationOutline, mdiStar } from "@mdi/js";
+import type { CSSResultGroup, TemplateResult } from "lit";
+import { css, html, LitElement, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators";
+import { fireEvent } from "../common/dom/fire_event";
+import type {
+  Adapter,
+  IPv4ConfiguredAddress,
+  IPv6ConfiguredAddress,
+  NetworkConfig,
+} from "../data/network";
+import { haStyle } from "../resources/styles";
+import type { HomeAssistant } from "../types";
+import "./ha-checkbox";
+import type { HaCheckbox } from "./ha-checkbox";
+import "./ha-settings-row";
+import "./ha-svg-icon";
+
+const format_addresses = (
+  addresses: IPv6ConfiguredAddress[] | IPv4ConfiguredAddress[]
+): TemplateResult =>
+  html`${addresses.map((address, i) => [
+    html`<span>${address.address}/${address.network_prefix}</span>`,
+    i < addresses.length - 1 ? ", " : nothing,
+  ])}`;
+
+const format_auto_detected_interfaces = (
+  adapters: Adapter[]
+): (TemplateResult | string)[] =>
+  adapters.map((adapter) =>
+    adapter.auto
+      ? html`${adapter.name}
+        (${format_addresses([...adapter.ipv4, ...adapter.ipv6])})`
+      : ""
+  );
+
+declare global {
+  interface HASSDomEvents {
+    "network-config-changed": { configured_adapters: string[] };
+  }
+}
+@customElement("ha-network")
+export class HaNetwork extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ attribute: false }) public networkConfig?: NetworkConfig;
+
+  @state() private _expanded?: boolean;
+
+  protected render() {
+    if (this.networkConfig === undefined) {
+      return nothing;
+    }
+    const configured_adapters = this.networkConfig.configured_adapters || [];
+    return html`
+      <ha-settings-row>
+        <span slot="prefix">
+          <ha-checkbox
+            id="auto_configure"
+            @change=${this._handleAutoConfigureCheckboxClick}
+            .checked=${!configured_adapters.length}
+            name="auto_configure"
+          >
+          </ha-checkbox>
+        </span>
+        <span slot="heading" data-for="auto_configure">
+          ${this.hass.localize(
+            "ui.panel.config.network.adapter.auto_configure"
+          )}
+        </span>
+        <span slot="description" data-for="auto_configure">
+          ${this.hass.localize("ui.panel.config.network.adapter.detected")}:
+          ${format_auto_detected_interfaces(this.networkConfig.adapters)}
+          ${!configured_adapters.length
+            ? html`<div class="info-text">
+                <ha-svg-icon
+                  .path=${mdiInformationOutline}
+                  class="info-icon"
+                ></ha-svg-icon>
+                ${this.hass.localize(
+                  "ui.panel.config.network.adapter.auto_configure_manual_hint"
+                )}
+              </div>`
+            : nothing}
+        </span>
+      </ha-settings-row>
+      ${configured_adapters.length || this._expanded
+        ? this.networkConfig.adapters.map(
+            (adapter) =>
+              html`<ha-settings-row>
+                <span slot="prefix">
+                  <ha-checkbox
+                    id=${adapter.name}
+                    @change=${this._handleAdapterCheckboxClick}
+                    .checked=${configured_adapters.includes(adapter.name)}
+                    .adapter=${adapter.name}
+                    name=${adapter.name}
+                  >
+                  </ha-checkbox>
+                </span>
+                <span slot="heading">
+                  ${this.hass.localize(
+                    "ui.panel.config.network.adapter.adapter"
+                  )}:
+                  ${adapter.name}
+                  ${adapter.default
+                    ? html`<ha-svg-icon .path=${mdiStar}></ha-svg-icon>
+                        (${this.hass.localize("ui.common.default")})`
+                    : nothing}
+                </span>
+                <span slot="description">
+                  ${format_addresses([...adapter.ipv4, ...adapter.ipv6])}
+                </span>
+              </ha-settings-row>`
+          )
+        : nothing}
+    `;
+  }
+
+  private _handleAutoConfigureCheckboxClick(ev: Event) {
+    const checkbox = ev.currentTarget as HaCheckbox;
+    if (this.networkConfig === undefined) {
+      return;
+    }
+
+    let configured_adapters = [...this.networkConfig.configured_adapters];
+
+    if (checkbox.checked) {
+      this._expanded = false;
+      configured_adapters = [];
+    } else {
+      this._expanded = true;
+      for (const adapter of this.networkConfig.adapters) {
+        if (adapter.default) {
+          configured_adapters = [adapter.name];
+          break;
+        }
+      }
+    }
+
+    fireEvent(this, "network-config-changed", {
+      configured_adapters: configured_adapters,
+    });
+  }
+
+  private _handleAdapterCheckboxClick(ev: Event) {
+    const checkbox = ev.currentTarget as HaCheckbox;
+    const adapter_name = (checkbox as any).name;
+    if (this.networkConfig === undefined) {
+      return;
+    }
+
+    const configured_adapters = [...this.networkConfig.configured_adapters];
+
+    if (checkbox.checked) {
+      configured_adapters.push(adapter_name);
+    } else {
+      const index = configured_adapters.indexOf(adapter_name, 0);
+      configured_adapters.splice(index, 1);
+    }
+
+    fireEvent(this, "network-config-changed", {
+      configured_adapters: configured_adapters,
+    });
+  }
+
+  static get styles(): CSSResultGroup {
+    return [
+      haStyle,
+      css`
+        .error {
+          color: var(--error-color);
+        }
+
+        ha-settings-row {
+          padding: 0;
+          --settings-row-content-display: contents;
+          --settings-row-prefix-display: contents;
+        }
+
+        span[slot="heading"],
+        span[slot="description"] {
+          cursor: pointer;
+        }
+
+        .info-text {
+          display: flex;
+          align-items: center;
+          margin-top: 8px;
+          color: var(--secondary-text-color);
+        }
+
+        .info-icon {
+          width: 18px;
+          height: 18px;
+          color: var(--info-color, var(--primary-color));
+          margin-right: 8px;
+          flex-shrink: 0;
+        }
+      `,
+    ];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "ha-network": HaNetwork;
+  }
+}

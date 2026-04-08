@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Assistant Demo</title>
+    <%= renderTemplate("../../../src/html/_header.html.template") %>
+    <link rel="mask-icon" href="/static/icons/mask-icon.svg" color="#03a9f4" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/static/icons/favicon-apple-180x180.png"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="msapplication-square70x70logo"
+      content="/static/icons/tile-win-70x70.png"
+    />
+    <meta
+      name="msapplication-square150x150logo"
+      content="/static/icons/tile-win-150x150.png"
+    />
+    <meta
+      name="msapplication-wide310x150logo"
+      content="/static/icons/tile-win-310x150.png"
+    />
+    <meta
+      name="msapplication-square310x310logo"
+      content="/static/icons/tile-win-310x310.png"
+    />
+    <meta name="msapplication-TileColor" content="#03a9f4ff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="referrer" content="same-origin" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#03a9f4" />
+    <%= renderTemplate("_social_meta.html.template") %>
+    <style>
+      html {
+        background-color: var(--primary-background-color, #fafafa);
+        color: var(--primary-text-color, #212121);
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          background-color: var(--primary-background-color, #111111);
+          color: var(--primary-text-color, #e1e1e1);
+        }
+      }
+      body {
+        font-family: Roboto, Noto, sans-serif;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-weight: 400;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      #ha-launch-screen {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #ha-launch-screen svg {
+        width: 112px;
+        flex-shrink: 0;
+      }
+      #ha-launch-screen .ha-launch-screen-spacer-top {
+        flex: 1;
+        margin-top: calc( 2 * max(var(--safe-area-inset-top, 0px), 48px) + 46px );
+        padding-top: 48px;
+      }
+      #ha-launch-screen .ha-launch-screen-spacer-bottom {
+        flex: 1;
+        padding-top: 48px;
+      }
+      .ohf-logo {
+        margin: max(var(--safe-area-inset-bottom, 0px), 48px) 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: .66;
+      }
+      @media (prefers-color-scheme: dark) {
+        .ohf-logo {
+          filter: invert(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ha-launch-screen">
+      <div class="ha-launch-screen-spacer-top"></div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+        <path fill="#18BCF2" d="M240 224.762a15 15 0 0 1-15 15H15a15 15 0 0 1-15-15v-90c0-8.25 4.77-19.769 10.61-25.609l98.78-98.7805c5.83-5.83 15.38-5.83 21.21 0l98.79 98.7895c5.83 5.83 10.61 17.36 10.61 25.61v90-.01Z"/>
+        <path fill="#F2F4F9" d="m107.27 239.762-40.63-40.63c-2.09.72-4.32 1.13-6.64 1.13-11.3 0-20.5-9.2-20.5-20.5s9.2-20.5 20.5-20.5 20.5 9.2 20.5 20.5c0 2.33-.41 4.56-1.13 6.65l31.63 31.63v-115.88c-6.8-3.3395-11.5-10.3195-11.5-18.3895 0-11.3 9.2-20.5 20.5-20.5s20.5 9.2 20.5 20.5c0 8.07-4.7 15.05-11.5 18.3895v81.27l31.46-31.46c-.62-1.96-.96-4.04-.96-6.2 0-11.3 9.2-20.5 20.5-20.5s20.5 9.2 20.5 20.5-9.2 20.5-20.5 20.5c-2.5 0-4.88-.47-7.09-1.29L129 208.892v30.88z"/>
+      </svg>
+      <div id="ha-launch-screen-info-box" class="ha-launch-screen-spacer-bottom"></div>
+      <div class="ohf-logo">
+        <img src="/static/images/ohf-badge.svg" alt="Home Assistant is a project by the Open Home Foundation" height="46">
+      </div>
+    </div>
+    <ha-demo></ha-demo>
+    <%= renderTemplate("../../../src/html/_js_base.html.template") %>
+    <%= renderTemplate("../../../src/html/_preload_roboto.html.template") %>
+    <%= renderTemplate("../../../src/html/_script_loader.html.template") %>
+  </body>
+</html>

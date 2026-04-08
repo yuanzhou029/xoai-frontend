@@ -1,0 +1,111 @@
+import type { CSSResultGroup, TemplateResult } from "lit";
+import { css, html, LitElement } from "lit";
+import { customElement, property } from "lit/decorators";
+import { goBack } from "../common/navigate";
+import "../components/ha-icon-button-arrow-prev";
+import "../components/ha-button";
+import "../components/ha-menu-button";
+import type { HomeAssistant } from "../types";
+import "../components/ha-alert";
+
+@customElement("hass-error-screen")
+class HassErrorScreen extends LitElement {
+  @property({ attribute: false }) public hass!: HomeAssistant;
+
+  @property({ type: Boolean }) public toolbar = true;
+
+  @property({ type: Boolean }) public rootnav = false;
+
+  @property({ type: Boolean }) public narrow = false;
+
+  @property() public error?: string;
+
+  protected render(): TemplateResult {
+    return html`
+      ${this.toolbar
+        ? html`<div class="toolbar">
+            ${this.rootnav || history.state?.root
+              ? html`
+                  <ha-menu-button
+                    .hass=${this.hass}
+                    .narrow=${this.narrow}
+                  ></ha-menu-button>
+                `
+              : html`
+                  <ha-icon-button-arrow-prev
+                    .hass=${this.hass}
+                    @click=${this._handleBack}
+                  ></ha-icon-button-arrow-prev>
+                `}
+          </div>`
+        : ""}
+      <div class="content">
+        <ha-alert alert-type="error">${this.error}</ha-alert>
+        <slot>
+          <ha-button appearance="plain" size="small" @click=${this._handleBack}>
+            ${this.hass?.localize("ui.common.back")}
+          </ha-button>
+        </slot>
+      </div>
+    `;
+  }
+
+  private _handleBack(): void {
+    goBack();
+  }
+
+  static get styles(): CSSResultGroup {
+    return [
+      css`
+        :host {
+          display: block;
+          height: 100%;
+          background-color: var(--primary-background-color);
+        }
+        .toolbar {
+          display: flex;
+          align-items: center;
+          font-size: var(--ha-font-size-xl);
+          height: var(--header-height);
+          padding: 8px 12px;
+          pointer-events: none;
+          background-color: var(--app-header-background-color);
+          font-weight: var(--ha-font-weight-normal);
+          color: var(--app-header-text-color, white);
+          border-bottom: var(--app-header-border-bottom, none);
+          box-sizing: border-box;
+        }
+        @media (max-width: 599px) {
+          .toolbar {
+            padding: 4px;
+          }
+        }
+        ha-icon-button-arrow-prev {
+          pointer-events: auto;
+        }
+        .content {
+          color: var(--primary-text-color);
+          height: calc(100% - var(--header-height));
+          display: flex;
+          padding: 16px;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          box-sizing: border-box;
+        }
+        a {
+          color: var(--primary-color);
+        }
+        ha-alert {
+          margin-bottom: 16px;
+        }
+      `,
+    ];
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "hass-error-screen": HassErrorScreen;
+  }
+}
