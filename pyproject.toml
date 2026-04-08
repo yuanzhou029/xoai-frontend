@@ -3,8 +3,8 @@ requires = ["setuptools~=77.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name         = "home-assistant-frontend"
-version      = "20260325.0"
+name         = "xoai-frontend"
+version      = "20260408.1"
 license      = "Apache-2.0"
 license-files = ["LICENSE*"]
 description  = "The Home Assistant frontend"
