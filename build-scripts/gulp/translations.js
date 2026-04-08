@@ -14,7 +14,7 @@ import env from "../env.cjs";
 import paths from "../paths.cjs";
 import "./fetch-nightly-translations.js";
 
-const inFrontendDir = "translations/frontend";
+const inFrontendDir = paths.translations_src;
 const inBackendDir = "translations/backend";
 const workDir = "build/translations";
 const outDir = join(workDir, "output");
