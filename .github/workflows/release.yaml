@@ -62,6 +62,14 @@ jobs:
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           skip-existing: true
+      
+      - name: Create ZIP with WHL file
+        run: |
+          WHL_FILE=$(ls dist/*.whl | head -n 1)
+          WHL_FILENAME=$(basename "$WHL_FILE")
+          cd dist
+          zip "${WHL_FILENAME%.whl}.zip" "$WHL_FILENAME"
+          cd .. 
 
       - name: Upload release assets
         uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
@@ -69,11 +77,13 @@ jobs:
           files: |
             dist/*.whl
             dist/*.tar.gz
+            dist/*.zip
 
   wheels-init:
     name: Init wheels build
     needs: release
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'false'
     steps:
       - name: Generate requirements.txt
         run: |
@@ -98,6 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # Required to upload release assets
+    if: github.repository_owner == 'false'  
     steps:
       - name: Checkout the repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
