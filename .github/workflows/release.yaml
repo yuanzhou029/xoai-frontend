@@ -50,6 +50,7 @@ jobs:
         run: |
           python3 -m pip install build
           chmod +x script/release
+          chmod +x script/build_frontend
           export SKIP_FETCH_NIGHTLY_TRANSLATIONS=1
           script/release
 
@@ -106,7 +107,9 @@ jobs:
         run: yarn install
       # Skip download translations step, using translations from src/translations directory
       - name: Build landing-page
-        run: landing-page/script/build_landing_page
+        run: |
+          chmod +x landing-page/script/build_landing_page
+          landing-page/script/build_landing_page
       - name: Tar folder
         run: tar -czf landing-page/home_assistant_frontend_landingpage-${{ github.event.release.tag_name }}.tar.gz -C landing-page/dist .
       - name: Upload release asset
