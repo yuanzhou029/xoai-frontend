@@ -1,0 +1,174 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  PYTHON_VERSION: "3.14"
+  NODE_OPTIONS: --max_old_space_size=6144
+
+permissions:
+  actions: none
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: write # Required to upload release assets
+    if: github.repository_owner == 'yuanzhou029'
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Validate Translation Files
+        run: |
+          echo "Validating translation file structure..."
+          if [ -d "src/translations/app" ] && [ -d "src/translations/config" ] && [ -d "src/translations/custom" ]; then
+            echo "✓ Translation directory structure validated"
+            app_count=$(ls src/translations/app/*.json 2>/dev/null | wc -l)
+            config_count=$(ls src/translations/config/*.json 2>/dev/null | wc -l)
+            custom_count=$(ls src/translations/custom/*.json 2>/dev/null | wc -l)
+            echo "✓ Found $app_count app translations, $config_count config translations, $custom_count custom translations"
+          else
+            echo "✗ Translation directory structure is incomplete"
+            exit 1
+          fi
+          echo "Translation validation completed successfully"
+
+      - name: Build frontend bundles
+        env:
+          SKIP_FETCH_NIGHTLY_TRANSLATIONS: "1"
+        run: |
+          mkdir -p build
+          ./node_modules/.bin/gulp build-app 2>&1 | tee build/rsbuild.log
+
+      - name: Verify bundles exist (fail fast)
+        run: |
+          if [ ! -d "xoai_frontend/static" ]; then
+            echo "ERROR: xoai_frontend/static missing. See build/rsbuild.log for details."
+            ls -R xoai_frontend || true
+            exit 1
+          fi
+          if [ ! -f "xoai_frontend/index.html" ]; then
+            echo "ERROR: xoai_frontend/index.html missing. Frontend build may have failed."
+            exit 1
+          fi
+          echo "✓ Frontend bundles built successfully"
+          echo "✓ Found xoai_frontend/static/ directory"
+          echo "✓ Found xoai_frontend/index.html"
+
+      - name: Ensure xoai_frontend is a Python package
+        run: |
+          echo "__all__ = []" > xoai_frontend/__init__.py
+          echo "__version__ = \"${{ github.event.release.tag_name }}\"" >> xoai_frontend/__init__.py
+
+      - name: Build Python wheel (includes bundles)
+        run: |
+          python3 -m pip install build
+          rm -rf dist xoai-frontend.egg-info
+          python3 -m build -q
+          echo "Built files:" && ls -lh dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
+        with:
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
+
+  wheels-init:
+    name: Init wheels build
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Generate requirements.txt
+        run: |
+          # Extract version from pyproject.toml to ensure consistency
+          version=$(python3 -c "import tomllib; import pathlib; print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])")
+          # Sleep to give pypi time to populate the new version across mirrors
+          sleep 300
+          echo "xoai-frontend==$version" > ./requirements.txt
+
+      # Use custom wheels service for building wheels
+      - name: Build wheels
+        uses: yuanzhou029/hass-wheels@main
+        with:
+          abi: cp314
+          tag: musllinux_1_2
+          arch: amd64
+          # 上传到本地路径而非服务器
+          local-wheels-repo-path: "/tmp/wheels_output"
+          wheels-host: ""
+          wheels-user: ""
+          # 保持原有配置
+          env-file: true
+          requirements: "requirements.txt"
+
+  release-landing-page:
+    name: Release landing-page frontend
+    if: github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to upload release assets
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version-file: ".nvmrc"
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Validate Translation Files
+        run: |
+          echo "Validating translation file structure..."
+          if [ -d "src/translations/app" ] && [ -d "src/translations/config" ] && [ -d "src/translations/custom" ]; then
+            echo "✓ Translation directory structure validated"
+            app_count=$(ls src/translations/app/*.json 2>/dev/null | wc -l)
+            config_count=$(ls src/translations/config/*.json 2>/dev/null | wc -l)
+            custom_count=$(ls src/translations/custom/*.json 2>/dev/null | wc -l)
+            echo "✓ Found $app_count app translations, $config_count config translations, $custom_count custom translations"
+          else
+            echo "✗ Translation directory structure is incomplete"
+            exit 1
+          fi
+          echo "Translation validation completed successfully"
+      - name: Build landing-page
+        run: ./node_modules/.bin/gulp build-landing-page
+      - name: Tar folder
+        run: tar -czf landing-page/home_assistant_frontend_landingpage-${{ github.event.release.tag_name }}.tar.gz -C landing-page/dist .
+      - name: Upload release asset
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
+        with:
+          files: landing-page/home_assistant_frontend_landingpage-${{ github.event.release.tag_name }}.tar.gz
