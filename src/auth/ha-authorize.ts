@@ -59,17 +59,111 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
   protected render() {
     if (this._error) {
       return html`
-        <style>
-          ha-authorize ha-alert {
-            display: block;
-            margin: 16px 0;
-            background-color: var(--primary-background-color, #fafafa);
-          }
-        </style>
-        <ha-alert alert-type="error"
-          >${this._error} ${this.redirectUri}</ha-alert
-        >
-      `;
+    <style>
+      :host {
+        display: flex;
+        flex-direction: row; /* 强制水平排列 */
+        height: 100vh;
+        width: 100vw;
+        background-color: var(--primary-background-color);
+        overflow: hidden;
+      }
+
+      .promo-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0096c7 0%, #f0a500 100%);
+        color: white;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .promo-section h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .promo-section p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .login-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background-color: var(--primary-background-color);
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        background-color: var(--card-background-color);
+        border-radius: var(--ha-card-border-radius, 8px);
+        box-shadow: var(--ha-card-box-shadow, 0 2px 4px rgba(0,0,0,0.1));
+      }
+
+      /* 隐藏原有的顶部 Logo，因为左侧已经有宣传语了，或者你可以选择保留 */
+      .header {
+        display: none; 
+      }
+
+      @media (max-width: 768px) {
+        :host {
+          flex-direction: column;
+        }
+        .promo-section {
+          padding: 20px;
+          min-height: 200px;
+        }
+        .promo-section h1 {
+          font-size: 2em;
+        }
+      }
+    </style>
+
+    <div class="promo-section">
+      <h1>欢迎回家</h1>
+      <p>智能 · 便捷 · 安全<br>掌控你的每一个生活细节</p>
+    </div>
+
+    <div class="login-section">
+      <div class="login-container">
+        <div class="header">
+          <img src="/static/icons/favicon-apple-180x180.png" alt="Home Assistant" />
+        </div>
+        
+        <ha-auth-form
+          .hass="${this.hass}"
+          .oauth2State="${this.oauth2State}"
+          .clientId="${this.clientId}"
+          .redirectUri="${this.redirectUri}"
+          .state="${this.state}"
+          .scope="${this.scope}"
+          .responseType="${this.responseType}"
+          .codeChallenge="${this.codeChallenge}"
+          .codeChallengeMethod="${this.codeChallengeMethod}"
+          .prompt="${this.prompt}"
+          .loginFlow="${this.loginFlow}"
+          .step="${this.step}"
+          .error="${this.error}"
+          @ha-auth-step-changed="${this._handleStepChanged}"
+        ></ha-auth-form>
+
+        <div class="footer-links">
+          <a href="/?external_auth=1">${this.localize("ui.auth.authorize.external_return")}</a>
+        </div>
+      </div>
+    </div>
+`;
     }
 
     const inactiveProviders = this._authProviders?.filter(
