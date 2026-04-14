@@ -80,131 +80,124 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
 
     return html`
       <style>
-        ha-pick-auth-provider {
-          display: block;
-          margin-top: 24px;
-        }
-        ha-auth-flow {
+        /* 1. 设置整个页面的布局为 Flexbox */
+        :host {
           display: flex;
-          justify-content: center;
+          height: 100vh;
+          width: 100vw;
+          background-color: var(--primary-background-color);
+        }
+
+        /* 2. 左侧宣传区域 */
+        .promo-section {
+          flex: 1;
+          display: flex;
           flex-direction: column;
-          align-items: center;
-        }
-        ha-alert {
-          display: block;
-          margin: 16px 0;
-          background-color: var(--primary-background-color, #fafafa);
-        }
-        p {
-          font-size: var(--ha-font-size-m);
-          line-height: var(--ha-line-height-normal);
-        }
-        .card-content {
-          background: var(
-            --ha-card-background,
-            var(--card-background-color, white)
-          );
-          box-shadow: var(--ha-card-box-shadow, none);
-          box-sizing: border-box;
-          border-radius: var(
-            --ha-card-border-radius,
-            var(--ha-border-radius-lg)
-          );
-          border-width: var(--ha-card-border-width, 1px);
-          border-style: solid;
-          border-color: var(
-            --ha-card-border-color,
-            var(--divider-color, #e0e0e0)
-          );
-          color: var(--primary-text-color);
-          position: relative;
-          padding: 16px;
-        }
-        .action {
-          margin: 16px 0 8px;
-          display: flex;
-          width: 100%;
-          max-width: 336px;
           justify-content: center;
-        }
-        .space-between {
-          justify-content: space-between;
-        }
-        .footer {
-          padding-top: 8px;
-          display: flex;
-          justify-content: space-between;
           align-items: center;
+          padding: 40px;
+          background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+          color: white;
+          text-align: center;
         }
-        .footer ha-svg-icon {
-          --mdc-icon-size: var(--ha-space-5);
+        .promo-title {
+          font-size: 3rem;
+          font-weight: bold;
+          margin-bottom: 20px;
         }
-        h1 {
-          font-size: var(--ha-font-size-3xl);
-          font-weight: var(--ha-font-weight-normal);
-          margin-top: 16px;
+        .promo-text {
+          font-size: 1.2rem;
+          opacity: 0.9;
+        }
+
+        /* 3. 右侧登录区域 */
+        .login-section {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+        }
+
+        /* 保持原有的卡片样式 */
+        .card-content {
+          background: var(--ha-card-background, var(--card-background-color, white));
+          box-shadow: var(--ha-card-box-shadow, none);
+          border-radius: var(--ha-card-border-radius, 12px);
+          border: 1px solid var(--divider-color);
+          padding: 24px;
+          width: 100%;
+          max-width: 400px;
+        }
+        
+        /* 隐藏原有的全屏背景警告，使其融入卡片 */
+        ha-alert {
           margin-bottom: 16px;
         }
       </style>
 
-      ${!this._ownInstance
-        ? html`<ha-alert .alertType=${app ? "info" : "warning"}>
-            ${app
-              ? this.localize("ui.panel.page-authorize.authorizing_app", {
-                  app: appNames[this.clientId!],
-                })
-              : this.localize("ui.panel.page-authorize.authorizing_client", {
-                  clientId: html`<b
-                    >${this.clientId
-                      ? punycode.toASCII(this.clientId)
-                      : this.clientId}</b
-                  >`,
-                })}
-          </ha-alert>`
-        : nothing}
+      <!-- 左侧：宣传标语 -->
+      <div class="promo-section">
+        <div class="promo-title">欢迎回家</div>
+        <div class="promo-text">智能 · 便捷 · 安全<br>掌控你的每一个生活细节</div>
+      </div>
 
-      <div class="card-content">
-        ${!this._authProvider
-          ? html`<p>
-              ${this.localize("ui.panel.page-authorize.initializing")}
-            </p> `
-          : html`<ha-auth-flow
-                .clientId=${this.clientId}
-                .redirectUri=${this.redirectUri}
-                .oauth2State=${this.oauth2State}
-                .authProvider=${this._authProvider}
-                .localize=${this.localize}
-                .initStoreToken=${this._preselectStoreToken}
-              ></ha-auth-flow>
-              ${inactiveProviders!.length > 0
-                ? html`
-                    <ha-pick-auth-provider
+      <!-- 右侧：登录界面 -->
+      <div class="login-section">
+        ${!this._ownInstance
+          ? html`<ha-alert .alertType=${app ? "info" : "warning"}>
+              ${app
+                ? this.localize("ui.panel.page-authorize.authorizing_app", {
+                    app: appNames[this.clientId!],
+                  })
+                : this.localize("ui.panel.page-authorize.authorizing_client", {
+                    clientId: html`<b>${this.clientId ? punycode.toASCII(this.clientId) : this.clientId}</b>`,
+                  })}
+            </ha-alert>`
+          : nothing}
+
+        <div class="card-content">
+          ${!this._authProvider
+            ? html`<p>${this.localize("ui.panel.page-authorize.initializing")}</p>`
+            : html`<ha-auth-flow
+                  .clientId=${this.clientId}
+                  .redirectUri=${this.redirectUri}
+                  .oauth2State=${this.oauth2State}
+                  .authProvider=${this._authProvider}
+                  .localize=${this.localize}
+                  .initStoreToken=${this._preselectStoreToken}
+                ></ha-auth-flow>
+                ${inactiveProviders!.length > 0
+                  ? html`<ha-pick-auth-provider
                       .localize=${this.localize}
                       .clientId=${this.clientId}
                       .authProviders=${inactiveProviders!}
                       @pick-auth-provider=${this._handleAuthProviderPick}
-                    ></ha-pick-auth-provider>
-                  `
-                : ""}`}
-      </div>
-      <div class="footer">
-        <ha-language-picker
-          .value=${this.language}
-          .label=${""}
-          button-style
-          native-name
-          @value-changed=${this._languageChanged}
-        ></ha-language-picker>
-        <ha-button
-          appearance="plain"
-          variant="neutral"
-          href="https://www.home-assistant.io/docs/authentication/"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          ${this.localize("ui.panel.page-authorize.help")}
-          <ha-svg-icon slot="end" .path=${mdiOpenInNew}></ha-svg-icon>
-        </ha-button>
+                    ></ha-pick-auth-provider>`
+                  : ""}`}
+        </div>
+        
+        <div class="footer" style="width: 100%; max-width: 400px; margin-top: 16px;">
+          <!-- 底部语言选择和帮助链接保持不变 -->
+          <ha-language-picker
+            .value=${this.language}
+            .label=${""}
+            button-style
+            native-name
+            @value-changed=${this._languageChanged}
+          ></ha-language-picker>
+          <ha-button
+            appearance="plain"
+            variant="neutral"
+            href="https://www.home-assistant.io/docs/authentication/"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            ${this.localize("ui.panel.page-authorize.help")}
+            <ha-svg-icon slot="end" .path=${mdiOpenInNew}></ha-svg-icon>
+          </ha-button>
+        </div>
       </div>
     `;
   }
