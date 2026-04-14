@@ -59,111 +59,10 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
   protected render() {
     if (this._error) {
       return html`
-    <style>
-      :host {
-        display: flex;
-        flex-direction: row; /* 强制水平排列 */
-        height: 100vh;
-        width: 100vw;
-        background-color: var(--primary-background-color);
-        overflow: hidden;
-      }
-
-      .promo-section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #0096c7 0%, #f0a500 100%);
-        color: white;
-        padding: 40px;
-        text-align: center;
-      }
-
-      .promo-section h1 {
-        font-size: 3em;
-        margin-bottom: 20px;
-        font-weight: bold;
-      }
-
-      .promo-section p {
-        font-size: 1.2em;
-        opacity: 0.9;
-      }
-
-      .login-section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 40px;
-        background-color: var(--primary-background-color);
-      }
-
-      .login-container {
-        width: 100%;
-        max-width: 400px;
-        padding: 30px;
-        background-color: var(--card-background-color);
-        border-radius: var(--ha-card-border-radius, 8px);
-        box-shadow: var(--ha-card-box-shadow, 0 2px 4px rgba(0,0,0,0.1));
-      }
-
-      /* 隐藏原有的顶部 Logo，因为左侧已经有宣传语了，或者你可以选择保留 */
-      .header {
-        display: none; 
-      }
-
-      @media (max-width: 768px) {
-        :host {
-          flex-direction: column;
-        }
-        .promo-section {
-          padding: 20px;
-          min-height: 200px;
-        }
-        .promo-section h1 {
-          font-size: 2em;
-        }
-      }
-    </style>
-
-    <div class="promo-section">
-      <h1>欢迎回家</h1>
-      <p>智能 · 便捷 · 安全<br>掌控你的每一个生活细节</p>
-    </div>
-
-    <div class="login-section">
-      <div class="login-container">
-        <div class="header">
-          <img src="/static/icons/favicon-apple-180x180.png" alt="Home Assistant" />
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <ha-alert alertType="error">${this._error}</ha-alert>
         </div>
-        
-        <ha-auth-form
-          .hass="${this.hass}"
-          .oauth2State="${this.oauth2State}"
-          .clientId="${this.clientId}"
-          .redirectUri="${this.redirectUri}"
-          .state="${this.state}"
-          .scope="${this.scope}"
-          .responseType="${this.responseType}"
-          .codeChallenge="${this.codeChallenge}"
-          .codeChallengeMethod="${this.codeChallengeMethod}"
-          .prompt="${this.prompt}"
-          .loginFlow="${this.loginFlow}"
-          .step="${this.step}"
-          .error="${this.error}"
-          @ha-auth-step-changed="${this._handleStepChanged}"
-        ></ha-auth-form>
-
-        <div class="footer-links">
-          <a href="/?external_auth=1">${this.localize("ui.auth.authorize.external_return")}</a>
-        </div>
-      </div>
-    </div>
-`;
+      `;
     }
 
     const inactiveProviders = this._authProviders?.filter(
@@ -174,15 +73,14 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
 
     return html`
       <style>
-        /* 1. 设置整个页面的布局为 Flexbox */
         :host {
           display: flex;
+          flex-direction: row;
           height: 100vh;
           width: 100vw;
-          background-color: var(--primary-background-color);
+          overflow: hidden;
         }
 
-        /* 2. 左侧宣传区域 */
         .promo-section {
           flex: 1;
           display: flex;
@@ -190,21 +88,22 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           justify-content: center;
           align-items: center;
           padding: 40px;
-          background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+          background: linear-gradient(135deg, #0096c7 0%, #f0a500 100%);
           color: white;
           text-align: center;
         }
+
         .promo-title {
           font-size: 3rem;
           font-weight: bold;
           margin-bottom: 20px;
         }
+
         .promo-text {
           font-size: 1.2rem;
           opacity: 0.9;
         }
 
-        /* 3. 右侧登录区域 */
         .login-section {
           flex: 1;
           display: flex;
@@ -212,22 +111,43 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           justify-content: center;
           align-items: center;
           padding: 20px;
+          background-color: var(--primary-background-color, #fafafa);
         }
 
-        /* 保持原有的卡片样式 */
         .card-content {
           background: var(--ha-card-background, var(--card-background-color, white));
-          box-shadow: var(--ha-card-box-shadow, none);
-          border-radius: var(--ha-card-border-radius, 12px);
+          box-shadow: var(--ha-card-box-shadow, 0 2px 4px rgba(0,0,0,0.1));
+          border-radius: var(--ha-card-border-radius, 8px);
           border: 1px solid var(--divider-color);
           padding: 24px;
           width: 100%;
           max-width: 400px;
         }
-        
-        /* 隐藏原有的全屏背景警告，使其融入卡片 */
+
         ha-alert {
           margin-bottom: 16px;
+        }
+
+        .footer {
+          width: 100%;
+          max-width: 400px;
+          margin-top: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        @media (max-width: 768px) {
+          :host {
+            flex-direction: column;
+          }
+          .promo-section {
+            min-height: 200px;
+            padding: 20px;
+          }
+          .promo-title {
+            font-size: 2rem;
+          }
         }
       </style>
 
@@ -272,8 +192,7 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
                   : ""}`}
         </div>
         
-        <div class="footer" style="width: 100%; max-width: 400px; margin-top: 16px;">
-          <!-- 底部语言选择和帮助链接保持不变 -->
+        <div class="footer">
           <ha-language-picker
             .value=${this.language}
             .label=${""}
