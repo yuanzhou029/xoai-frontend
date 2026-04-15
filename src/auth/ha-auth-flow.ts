@@ -192,13 +192,18 @@ export class HaAuthFlow extends LitElement {
           --ha-text-field-background: rgba(255, 255, 255, 0.08);
           --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.15);
           --ha-text-field-border-radius: 8px;
-          --ha-text-field-color: #f1f5f9;
-          --ha-text-field-placeholder-color: #64748b;
+          --ha-text-field-color: #ffffff;  /* 【优化】从 #f1f5f9 提升到纯白色，提高对比度 */
+          --ha-text-field-placeholder-color: #94a3b8;  /* 【优化】从 #64748b 提升到更浅的灰色 */
         }
         /* 复选框样式 */
         ha-formfield {
           color: #cbd5e1;
           font-size: 0.9rem;
+        }
+        /* 【优化】密码可见图标颜色为浅蓝色，与主题协调 */
+        ha-auth-form ha-icon-button {
+          --mdc-icon-button-icon-color: #60a5fa;
+          color: #60a5fa;
         }
         ha-checkbox {
           --ha-checkbox-background: rgba(255, 255, 255, 0.1);
