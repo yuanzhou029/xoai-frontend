@@ -106,11 +106,14 @@ export class HaAuthFlow extends LitElement {
           color: var(--primary-color);
           text-decoration: none;
           font-size: 0.875rem;
+          margin-left: auto;
         }
         .space-between {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-end;
           align-items: center;
+          gap: 16px;
+          margin-top: 8px;
         }
         form {
           text-align: center;
@@ -264,9 +267,8 @@ export class HaAuthFlow extends LitElement {
               : ""}
             <a
               class="forgot-password"
-              href="https://www.home-assistant.io/docs/locked_out/#forgot-password"
-              target="_blank"
-              rel="noreferrer noopener"
+              href="/auth/forgot-password"
+              
               >${this.localize("ui.panel.page-authorize.forgot_password")}</a
             >
           </div>
