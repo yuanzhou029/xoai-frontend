@@ -107,7 +107,7 @@ export class HaAuthFlow extends LitElement {
           margin-inline-end: initial;
         }
         a.forgot-password {
-          color: var(--primary-color, #03a9f4);
+          color: #60a5fa;
           text-decoration: none;
           font-size: 0.875rem;
           white-space: nowrap;
@@ -115,7 +115,7 @@ export class HaAuthFlow extends LitElement {
           font-weight: 500;
         }
         a.forgot-password:hover {
-          color: var(--primary-color-dark, #0288d1);
+          color: #93c5fd;
           text-decoration: underline;
         }
         .space-between {
@@ -140,27 +140,57 @@ export class HaAuthFlow extends LitElement {
         .action ha-button {
           width: 100%;
           margin-top: 8px;
+          background: linear-gradient(135deg, #3b82f6, #6366f1);
+          border: none;
+          border-radius: 8px;
+          padding: 12px 24px;
+          color: white;
+          font-weight: 600;
+          font-size: 1rem;
+          letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .action ha-button:hover {
+          background: linear-gradient(135deg, #2563eb, #4f46e5);
+          box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+          transform: translateY(-1px);
+        }
+        .action ha-button:active {
+          transform: translateY(0);
         }
         h1.welcome-title {
           font-size: 1.75rem;
-          font-weight: 600;
+          font-weight: 700;
           margin: 0 0 8px 0;
-          color: var(--primary-text-color, #212121);
+          color: #f8fafc;
           line-height: 1.3;
+          letter-spacing: 0.5px;
         }
         .subtitle-text {
           font-size: 0.95rem;
-          color: var(--secondary-text-color, #757575);
+          color: #94a3b8;
           margin: 0 0 20px 0;
           line-height: 1.5;
         }
-        @media (prefers-color-scheme: dark) {
-          h1.welcome-title {
-            color: #f8fafc;
-          }
-          .subtitle-text {
-            color: #94a3b8;
-          }
+        /* 适配透明卡片的表单样式 */
+        ha-auth-form input,
+        ha-auth-form ha-textfield {
+          --ha-text-field-background: rgba(255, 255, 255, 0.08);
+          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.15);
+          --ha-text-field-border-radius: 8px;
+          --ha-text-field-color: #f1f5f9;
+          --ha-text-field-placeholder-color: #64748b;
+        }
+        /* 复选框样式 */
+        ha-formfield {
+          color: #cbd5e1;
+          font-size: 0.9rem;
+        }
+        ha-checkbox {
+          --ha-checkbox-background: rgba(255, 255, 255, 0.1);
+          --ha-checkbox-border: 1px solid rgba(255, 255, 255, 0.2);
+          --ha-checkbox-checked-color: #60a5fa;
         }
       </style>
       <form>${this._renderForm()}</form>
