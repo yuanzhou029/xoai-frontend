@@ -126,6 +126,13 @@ export class HaAuthFlow extends LitElement {
           margin-bottom: 8px;
           padding: 0 4px;
         }
+        /* 【新增】确保 .action 容器没有背景或边框 */
+        .action {
+          background: transparent;
+          border: none;
+          padding: 0;
+          margin: 0;
+        }
         form {
           text-align: center;
           max-width: 336px;
@@ -150,11 +157,17 @@ export class HaAuthFlow extends LitElement {
           letter-spacing: 0.5px;
           transition: all 0.3s ease;
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+          /* 【新增】确保按钮没有额外的边框或底框 */
+          outline: none;
+          position: relative;
+          overflow: hidden;
         }
         .action ha-button:hover {
           background: linear-gradient(135deg, #2563eb, #4f46e5);
           box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
           transform: translateY(-1px);
+          /* 【新增】确保悬停状态也没有额外边框 */
+          outline: none;
         }
         .action ha-button:active {
           transform: translateY(0);
