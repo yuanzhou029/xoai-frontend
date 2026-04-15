@@ -73,11 +73,11 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
 
     return html`
       <style>
-        :host {
+        ha-authorize {
           display: flex;
           flex-direction: row;
-          height: 100vh;
-          width: 100vw;
+          height: 100%;
+          width: 100%;
           overflow: hidden;
         }
 
@@ -138,7 +138,7 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
         }
 
         @media (max-width: 768px) {
-          :host {
+          ha-authorize {
             flex-direction: column;
           }
           .promo-section {
