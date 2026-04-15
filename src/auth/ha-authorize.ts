@@ -179,16 +179,17 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
         }
 
         .login-card {
-          background: rgba(13, 33, 55, 0.8);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(0, 150, 255, 0.3);
-          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
           padding: 40px;
           width: 100%;
           max-width: 400px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           position: relative;
+          overflow: hidden;
         }
 
         .login-card::before {
@@ -208,6 +209,25 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           text-align: center;
           margin-bottom: 30px;
           text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .subtitle {
+          text-align: center;
+          color: rgba(255, 255, 255, 0.7);
+          font-size: 14px;
+          margin-bottom: 20px;
+          animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         ha-alert {
@@ -531,6 +551,7 @@ ha-auth-flow h1 {
               </ha-alert>`
             : nothing}
 
+          <h2 class="subtitle">欢迎回家！</h2>
           <div class="login-card">
             <div class="login-title">用户登录</div>
             
