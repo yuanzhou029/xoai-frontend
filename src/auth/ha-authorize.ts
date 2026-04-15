@@ -89,38 +89,70 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           display: flex;
           height: 100%;
           width: 100%;
+          background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
+          position: relative;
+        }
+        /* 网格背景纹理 */
+        .split-layout::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 50px 50px;
+          pointer-events: none;
         }
         /* --- 左侧宣传区 --- */
         .promo-side {
           flex: 1;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          background: transparent;
           color: white;
           display: flex;
           justify-content: center;
           align-items: center;
           position: relative;
           overflow: hidden;
+          padding: 40px;
         }
         .promo-content {
           z-index: 2;
           text-align: center;
-          padding: 24px;
+          max-width: 500px;
         }
         .promo-content h1 {
-          font-size: 3rem;
-          font-weight: 700;
+          font-size: 3.5rem;
+          font-weight: 800;
           margin-bottom: 1rem;
-          letter-spacing: 2px;
-          text-shadow: 0 0 20px rgba(66, 153, 225, 0.6);
+          letter-spacing: 3px;
+          background: linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: gradient 3s ease infinite;
+          text-shadow: none;
         }
-        .promo-content p {
-          font-size: 1.2rem;
-          opacity: 0.8;
+        @keyframes gradient {
+          0% { background-position: 0% center; }
+          50% { background-position: 100% center; }
+          100% { background-position: 0% center; }
+        }
+        .promo-content .subtitle {
+          font-size: 1.4rem;
+          opacity: 0.9;
+          margin-bottom: 3rem;
+          color: #94a3b8;
+          font-weight: 300;
+          letter-spacing: 1px;
         }
         .tech-circle {
-          width: 200px;
-          height: 200px;
-          border: 2px solid rgba(66, 153, 225, 0.3);
+          width: 180px;
+          height: 180px;
+          border: 2px solid rgba(96, 165, 250, 0.3);
           border-radius: 50%;
           position: absolute;
           top: 50%;
@@ -128,15 +160,65 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           transform: translate(-50%, -50%);
           animation: pulse 4s infinite;
         }
+        .tech-circle::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 120px;
+          height: 120px;
+          border: 1px solid rgba(167, 139, 250, 0.2);
+          border-radius: 50%;
+          animation: pulse 4s infinite 1s;
+        }
         @keyframes pulse {
-          0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(66, 153, 225, 0.7); }
-          70% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 50px rgba(66, 153, 225, 0); }
-          100% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(66, 153, 225, 0); }
+          0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4); }
+          70% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 30px rgba(96, 165, 250, 0); }
+          100% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+        }
+        /* --- 广告区域 --- */
+        .ad-section {
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ad-section .ad-title {
+          font-size: 1.1rem;
+          color: #60a5fa;
+          margin-bottom: 1rem;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+        }
+        .ad-section .ad-text {
+          font-size: 0.95rem;
+          color: #64748b;
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+        }
+        .ad-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+        }
+        .ad-tag {
+          padding: 6px 14px;
+          background: rgba(96, 165, 250, 0.1);
+          border: 1px solid rgba(96, 165, 250, 0.2);
+          border-radius: 20px;
+          font-size: 0.8rem;
+          color: #93c5fd;
+          transition: all 0.3s ease;
+        }
+        .ad-tag:hover {
+          background: rgba(96, 165, 250, 0.2);
+          border-color: rgba(96, 165, 250, 0.4);
         }
         /* --- 右侧登录区 --- */
         .login-side {
           flex: 1;
-          background-color: var(--ha-color-surface-default, #f5f5f5);
+          background: transparent;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -145,24 +227,29 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           position: relative;
         }
         .card-content {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.5);
-          border-radius: var(--ha-border-radius-lg, 16px);
-          padding: 40px 32px 32px 32px;
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 20px;
+          padding: 48px 40px 40px 40px;
           width: 100%;
           max-width: 420px;
-          box-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.12);
+          box-shadow: 
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          position: relative;
+          overflow: hidden;
         }
-        @media (prefers-color-scheme: dark) {
-          .card-content {
-            background: rgba(30, 41, 59, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: white;
-          }
-          .login-side {
-            background-color: #0f172a;
-          }
+        /* 顶部渐变光条装饰 */
+        .card-content::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.6), transparent);
         }
         ha-auth-flow {
           display: flex;
@@ -179,7 +266,9 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
         ha-alert {
           display: block;
           margin: 16px 0;
-          background-color: var(--primary-background-color, #fafafa);
+          background-color: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #e2e8f0;
         }
         p {
           font-size: var(--ha-font-size-m);
@@ -223,8 +312,22 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
         <div class="promo-side">
           <div class="promo-content">
             <h1>XOAI Home</h1>
-            <p>智控未来 · 极简生活</p>
+            <p class="subtitle">智控未来 · 极简生活</p>
             <div class="tech-circle"></div>
+            
+            <!-- 广告区域 -->
+            <div class="ad-section">
+              <div class="ad-title">智慧生活 从这里开始</div>
+              <div class="ad-text">
+                一站式智能家居控制中心，让您的生活更加便捷、舒适、安全。<br>
+                支持多种设备接入，场景自由定制。              </div>
+              <div class="ad-tags">
+                <span class="ad-tag">全屋智能</span>
+                <span class="ad-tag">语音控制</span>
+                <span class="ad-tag">场景联动</span>
+                <span class="ad-tag">远程控制</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -343,12 +446,13 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
       );
     }
 
-    if (
-      window.innerWidth > 450 &&
-      !matchMedia("(prefers-reduced-motion)").matches
-    ) {
-      import("../resources/particles");
-    }
+    // 移除粒子效果加载
+    // if (
+    //   window.innerWidth > 450 &&
+    //   !matchMedia("(prefers-reduced-motion)").matches
+    // ) {
+    //   import("../resources/particles");
+    // }
 
     // If we are logging into the instance that is hosting this auth form
     // we will register the service worker to start preloading.
