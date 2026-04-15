@@ -104,6 +104,13 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
           opacity: 0.9;
         }
 
+        .promo-image {
+          max-width: 300px;
+          margin-bottom: 2rem;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
         .login-section {
           flex: 1;
           display: flex;
@@ -153,6 +160,7 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
 
       <!-- 左侧：宣传标语 -->
       <div class="promo-section">
+        <img src="/static/images/yuanzhou.png" alt="智能家居宣传图" class="promo-image">
         <div class="promo-title">欢迎回家</div>
         <div class="promo-text">智能 · 便捷 · 安全<br>掌控你的每一个生活细节</div>
       </div>
