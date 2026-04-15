@@ -39,6 +39,16 @@ const appNames = {
 // ═══════════════════════════════════════════════════════
 const sharedStyles = html`
   <style>
+    /* 【修改】将渐变背景应用到 html 和 body，确保在 Light DOM 下生效 */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
+    }
+
     :host {
       display: block;
       height: 100vh;
@@ -46,7 +56,6 @@ const sharedStyles = html`
       overflow: hidden;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
     }
 
     /* 【标注】深色主题表单 CSS 变量 —— 统一控制所有子组件的颜色 */
@@ -222,7 +231,7 @@ const sharedStyles = html`
     .ad-section .ad-title {
       font-size: 1.1rem;
       color: #60a5fa;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;  /* 【优化】从 1rem 增加到 1.2rem，增加标题与副标题间距 */
       font-weight: 500;
       letter-spacing: 0.5px;
     }
@@ -337,8 +346,20 @@ const sharedStyles = html`
       font-size: 0.9rem;
     }
 
+    /* 【优化】底部链接和按钮颜色为浅蓝色，增强可点击性 */
+    .footer ha-button {
+      --ha-color-button-text: #60a5fa;
+      color: #60a5fa;
+    }
+
+    .footer ha-language-picker {
+      --ha-color-button-text: #60a5fa;
+      color: #60a5fa;
+    }
+
     .footer ha-svg-icon {
       --mdc-icon-size: var(--ha-space-5);
+      color: #60a5fa;
     }
 
     h1 {
