@@ -295,7 +295,121 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
             height: 45px;
           }
         }
-      </style>
+      
+/* ========================================
+   修复1: 确保全屏显示
+   ======================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.login-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0a1628 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========================================
+   修复2: 输入框深色主题样式
+   ======================================== */
+ha-auth-form,
+ha-textfield,
+paper-input,
+vaadin-text-field,
+mwc-textfield,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  --mdc-text-field-fill-color: rgba(0, 20, 40, 0.6) !important;
+  --mdc-text-field-ink-color: #00d4ff !important;
+  --mdc-text-field-label-ink-color: rgba(0, 212, 255, 0.7) !important;
+  --mdc-text-field-idle-line-color: rgba(0, 150, 255, 0.3) !important;
+  --mdc-text-field-hover-line-color: rgba(0, 212, 255, 0.6) !important;
+  --mdc-text-field-focus-line-color: #00d4ff !important;
+  --mdc-theme-primary: #00d4ff !important;
+  
+  background: rgba(0, 20, 40, 0.6) !important;
+  color: #00d4ff !important;
+  border: 1px solid rgba(0, 150, 255, 0.3) !important;
+  border-radius: 8px !important;
+}
+
+ha-auth-form:focus-within,
+ha-textfield:focus-within,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: #00d4ff !important;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3) !important;
+}
+
+::placeholder {
+  color: rgba(0, 212, 255, 0.5) !important;
+}
+
+/* ========================================
+   修复3: h1 标题样式（欢迎回家）
+   ======================================== */
+ha-auth-flow h1 {
+  color: #00d4ff !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin-bottom: 24px !important;
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.4) !important;
+  letter-spacing: 1px !important;
+}
+
+@media (max-width: 768px) {
+  ha-auth-flow h1 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ========================================
+   其他增强样式
+   ======================================== */
+.login-card,
+.login-card * {
+  color: #e0f7ff !important;
+}
+
+.login-card a {
+  color: #00d4ff !important;
+}
+
+.login-card ha-button,
+.login-card button {
+  background: linear-gradient(135deg, #0066cc, #00d4ff) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+}
+
+.login-card ha-button:hover,
+.login-card button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4) !important;
+}
+
+</style>
 
       <div class="login-container">
         <!-- 左侧：科技宣传区域 -->
