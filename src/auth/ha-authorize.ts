@@ -594,22 +594,20 @@ export class HaAuthorize extends litLocalizeLiteMixin(LitElement) {
     // 【标注】获取认证提供者列表（用户名密码、MFA、OAuth等）
     this._fetchAuthProviders();
 
-    // 【标注】如果系统偏好深色模式，主动应用深色主题到 document
-    if (matchMedia("(prefers-color-scheme: dark)").matches) {
-      applyThemesOnElement(
-        document.documentElement,
-        {
-          default_theme: "default",
-          default_dark_theme: null,
-          themes: {},
-          darkMode: true,
-          theme: "default",
-        },
-        undefined,
-        undefined,
-        true
-      );
-    }
+    // 【修改】强制应用深色主题，不依赖系统偏好
+    applyThemesOnElement(
+      document.documentElement,
+      {
+        default_theme: "default",
+        default_dark_theme: null,
+        themes: {},
+        darkMode: true,
+        theme: "default",
+      },
+      undefined,
+      undefined,
+      true
+    );
 
     // 【标注】如果 redirectUri 指向本实例，注册 Service Worker 用于预加载资源
     if (url.host === location.host) {
