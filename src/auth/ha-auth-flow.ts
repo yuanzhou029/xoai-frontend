@@ -97,35 +97,70 @@ export class HaAuthFlow extends LitElement {
   protected render() {
     return html`
       <style>
+        ha-auth-flow {
+          display: block;
+          width: 100%;
+        }
         ha-auth-flow .store-token {
           margin-left: -16px;
           margin-inline-start: -16px;
           margin-inline-end: initial;
         }
         a.forgot-password {
-          color: var(--primary-color);
+          color: var(--primary-color, #03a9f4);
           text-decoration: none;
           font-size: 0.875rem;
-          margin-left: auto;
+          white-space: nowrap;
+          transition: color 0.2s;
+          font-weight: 500;
+        }
+        a.forgot-password:hover {
+          color: var(--primary-color-dark, #0288d1);
+          text-decoration: underline;
         }
         .space-between {
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
           align-items: center;
-          gap: 16px;
-          margin-top: 8px;
+          margin-top: 16px;
+          margin-bottom: 8px;
+          padding: 0 4px;
         }
         form {
           text-align: center;
           max-width: 336px;
           width: 100%;
+          margin: 0 auto;
         }
         ha-auth-form {
           display: block;
-          margin-top: 16px;
+          margin-top: 20px;
+          margin-bottom: 8px;
         }
         .action ha-button {
           width: 100%;
+          margin-top: 8px;
+        }
+        h1.welcome-title {
+          font-size: 1.75rem;
+          font-weight: 600;
+          margin: 0 0 8px 0;
+          color: var(--primary-text-color, #212121);
+          line-height: 1.3;
+        }
+        .subtitle-text {
+          font-size: 0.95rem;
+          color: var(--secondary-text-color, #757575);
+          margin: 0 0 20px 0;
+          line-height: 1.5;
+        }
+        @media (prefers-color-scheme: dark) {
+          h1.welcome-title {
+            color: #f8fafc;
+          }
+          .subtitle-text {
+            color: #94a3b8;
+          }
         }
       </style>
       <form>${this._renderForm()}</form>
@@ -228,12 +263,14 @@ export class HaAuthFlow extends LitElement {
         `;
       case "form":
         return html`
-          <h1>
+          <h1 class="welcome-title">
             ${!["select_mfa_module", "mfa"].includes(step.step_id)
               ? this.localize("ui.panel.page-authorize.welcome_home")
               : this.localize("ui.panel.page-authorize.just_checking")}
           </h1>
-          ${this._computeStepDescription(step)}
+          ${this._computeStepDescription(step)
+            ? html`<p class="subtitle-text">${this._computeStepDescription(step)}</p>`
+            : nothing}
           ${keyed(
             step.step_id,
             html`<ha-auth-form
@@ -264,11 +301,12 @@ export class HaAuthFlow extends LitElement {
                     ></ha-checkbox>
                   </ha-formfield>
                 `
-              : ""}
+              : html`<div></div>`}
             <a
               class="forgot-password"
-              href="/auth/forgot-password"
-              
+              href="https://www.home-assistant.io/docs/locked_out/#forgot-password"
+              target="_blank"
+              rel="noreferrer noopener"
               >${this.localize("ui.panel.page-authorize.forgot_password")}</a
             >
           </div>
