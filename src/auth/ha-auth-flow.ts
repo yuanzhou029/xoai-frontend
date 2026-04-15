@@ -147,27 +147,30 @@ export class HaAuthFlow extends LitElement {
         .action ha-button {
           width: 100%;
           margin-top: 8px;
-          background: linear-gradient(135deg, #3b82f6, #6366f1);
-          border: none;
-          border-radius: 8px;
-          padding: 12px 24px;
-          color: white;
-          font-weight: 600;
-          font-size: 1rem;
-          letter-spacing: 0.5px;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-          /* 【新增】确保按钮没有额外的边框或底框 */
-          outline: none;
+          /* 【修复】强制覆盖所有默认样式 */
+          background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          color: white !important;
+          font-weight: 600 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.5px !important;
+          transition: all 0.3s ease !important;
+          /* 【修复】移除阴影，避免底色问题 */
+          box-shadow: none !important;
+          outline: none !important;
           position: relative;
           overflow: hidden;
+          /* 【新增】覆盖 ha-button 组件的 CSS 变量 */
+          --ha-button-box-shadow: none !important;
+          --wa-form-control-background-color: transparent !important;
         }
         .action ha-button:hover {
-          background: linear-gradient(135deg, #2563eb, #4f46e5);
-          box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+          background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+          box-shadow: none !important;
           transform: translateY(-1px);
-          /* 【新增】确保悬停状态也没有额外边框 */
-          outline: none;
+          outline: none !important;
         }
         .action ha-button:active {
           transform: translateY(0);
