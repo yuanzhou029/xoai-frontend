@@ -103,25 +103,26 @@ class OnboardingWelcome extends LitElement {
           width: 100%;
         }
 
-        /* 【修改】标题样式 - 白色文字 */
+        /* 【优化】标题样式 - 提升对比度 */
         h1 {
           font-size: 1.75rem;
           font-weight: 700;
           margin: 0 0 8px 0;
-          color: #f8fafc;
+          color: #ffffff;
           line-height: 1.3;
           letter-spacing: 0.5px;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        /* 【修改】副标题 - 浅灰色 */
+        /* 【优化】副标题 - 提升可读性 */
         p {
           font-size: 0.95rem;
-          color: #94a3b8;
+          color: #cbd5e1;
           margin: 0 0 20px 0;
           line-height: 1.5;
         }
 
-        /* 【优化】主按钮 - 渐变蓝色 + 阴影效果 */
+        /* 【优化】主按钮 - 无阴影 */
         .start {
           width: 100%;
           margin: var(--ha-space-6) 0;
@@ -134,13 +135,11 @@ class OnboardingWelcome extends LitElement {
           font-size: 1rem !important;
           letter-spacing: 0.5px !important;
           transition: all 0.3s ease !important;
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
         }
 
         .start:hover {
           background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
         /* 【优化】分隔线 - 深色主题 */
@@ -167,7 +166,7 @@ class OnboardingWelcome extends LitElement {
           font-size: 0.9rem;
         }
 
-        /* 【优化】列表项 - 深色主题配色 */
+        /* 【优化】列表项 - 完全透明，无阴影 */
         ha-md-list {
           width: 100%;
           padding-bottom: 0;
@@ -176,29 +175,27 @@ class OnboardingWelcome extends LitElement {
         }
 
         ha-md-list-item {
-          background: rgba(15, 23, 42, 0.5);
-          border: 1px solid rgba(96, 165, 250, 0.15);
+          background: transparent;
+          border: 1px solid rgba(96, 165, 250, 0.25);
           border-radius: 12px;
           margin-bottom: 12px;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         ha-md-list-item:hover {
-          background: rgba(15, 23, 42, 0.7);
-          border-color: rgba(96, 165, 250, 0.3);
+          background: transparent;
+          border-color: rgba(96, 165, 250, 0.4);
           transform: translateX(4px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
-        /* 【修改】列表项文字颜色 */
+        /* 【优化】列表项文字颜色 - 提升对比度 */
         ha-md-list-item div[slot="headline"] {
-          color: #f8fafc;
+          color: #ffffff;
           font-weight: 500;
         }
 
         ha-md-list-item div[slot="supporting-text"] {
-          color: #94a3b8;
+          color: #cbd5e1;
           font-size: 0.85rem;
         }
 
