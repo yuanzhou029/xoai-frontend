@@ -75,20 +75,22 @@ class OnboardingWelcomeLinks extends LitElement {
       max-width: 440px;
     }
 
-    /* 【修改】链接卡片 - 毛玻璃效果 */
+    /* 【优化】链接卡片 - 增强毛玻璃效果和阴影 */
     onboarding-welcome-link {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 16px 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 18px 14px;
       transition: all 0.3s ease;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     onboarding-welcome-link:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(96, 165, 250, 0.3);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(96, 165, 250, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
     /* 【修改】颜色主题 */
