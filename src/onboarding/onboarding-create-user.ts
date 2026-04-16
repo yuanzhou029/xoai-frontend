@@ -253,10 +253,10 @@ class OnboardingCreateUser extends LitElement {
           line-height: 1.5;
         }
 
-        /* 【优化】表单样式 - 增强输入框效果 */
+        /* 【优化】表单样式 - 深色主题配色 */
         ha-form {
-          --ha-text-field-background: rgba(255, 255, 255, 0.1);
-          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.2);
+          --ha-text-field-background: rgba(15, 23, 42, 0.6);
+          --ha-text-field-border: 1px solid rgba(96, 165, 250, 0.2);
           --ha-text-field-border-radius: 12px;
           --ha-text-field-color: #ffffff;
           --ha-text-field-placeholder-color: #94a3b8;
@@ -264,7 +264,7 @@ class OnboardingCreateUser extends LitElement {
 
         /* 【优化】输入框聚焦效果 */
         ha-form ha-textfield {
-          --mdc-text-field-fill-color: rgba(255, 255, 255, 0.08);
+          --mdc-text-field-fill-color: rgba(15, 23, 42, 0.5);
           --mdc-text-field-hover-line-color: rgba(96, 165, 250, 0.5);
           --mdc-text-field-focus-line-color: #60a5fa;
         }
