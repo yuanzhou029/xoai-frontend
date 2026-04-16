@@ -253,13 +253,20 @@ class OnboardingCreateUser extends LitElement {
           line-height: 1.5;
         }
 
-        /* 【修改】表单样式 - 半透明背景 */
+        /* 【优化】表单样式 - 增强输入框效果 */
         ha-form {
-          --ha-text-field-background: rgba(255, 255, 255, 0.08);
-          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.15);
-          --ha-text-field-border-radius: 8px;
+          --ha-text-field-background: rgba(255, 255, 255, 0.1);
+          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.2);
+          --ha-text-field-border-radius: 12px;
           --ha-text-field-color: #ffffff;
           --ha-text-field-placeholder-color: #94a3b8;
+        }
+
+        /* 【优化】输入框聚焦效果 */
+        ha-form ha-textfield {
+          --mdc-text-field-fill-color: rgba(255, 255, 255, 0.08);
+          --mdc-text-field-hover-line-color: rgba(96, 165, 250, 0.5);
+          --mdc-text-field-focus-line-color: #60a5fa;
         }
 
         /* 【修改】错误提示样式 */
@@ -277,23 +284,24 @@ class OnboardingCreateUser extends LitElement {
           justify-content: flex-end;
         }
 
-        /* 【修改】创建按钮 - 渐变蓝色 */
+        /* 【优化】创建按钮 - 渐变蓝色 + 增强阴影 */
         .footer ha-button {
           background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
           border: none !important;
-          border-radius: 8px !important;
-          padding: 12px 24px !important;
+          border-radius: 12px !important;
+          padding: 14px 24px !important;
           color: white !important;
           font-weight: 600 !important;
           font-size: 1rem !important;
           letter-spacing: 0.5px !important;
           transition: all 0.3s ease !important;
-          box-shadow: none !important;
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
         }
 
         .footer ha-button:hover:not([disabled]) {
           background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
         .footer ha-button[disabled] {
