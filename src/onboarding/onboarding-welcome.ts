@@ -143,7 +143,7 @@ class OnboardingWelcome extends LitElement {
           box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
-        /* 【修改】分隔线 - 半透明 */
+        /* 【优化】分隔线 - 深色主题 */
         .divider {
           width: 100%;
           position: relative;
@@ -161,13 +161,13 @@ class OnboardingWelcome extends LitElement {
         }
 
         .divider div span {
-          background-color: rgba(255, 255, 255, 0.04);
+          background-color: rgba(15, 23, 42, 0.6);
           color: #94a3b8;
           padding: 0 var(--ha-space-4);
           font-size: 0.9rem;
         }
 
-        /* 【优化】列表项 - 增强毛玻璃效果 */
+        /* 【优化】列表项 - 深色主题配色 */
         ha-md-list {
           width: 100%;
           padding-bottom: 0;
@@ -176,19 +176,19 @@ class OnboardingWelcome extends LitElement {
         }
 
         ha-md-list-item {
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(15, 23, 42, 0.5);
+          border: 1px solid rgba(96, 165, 250, 0.15);
           border-radius: 12px;
           margin-bottom: 12px;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         ha-md-list-item:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(96, 165, 250, 0.4);
+          background: rgba(15, 23, 42, 0.7);
+          border-color: rgba(96, 165, 250, 0.3);
           transform: translateX(4px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         /* 【修改】列表项文字颜色 */
