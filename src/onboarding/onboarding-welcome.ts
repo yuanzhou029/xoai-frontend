@@ -82,6 +82,16 @@ class OnboardingWelcome extends LitElement {
     });
   }
 
+  // ═══════════════════════════════════════════════════════
+  // 【样式修改】对齐登录界面样式 - 卡片内元素样式
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 标题改为白色文字（#f8fafc）
+  //   2. 副标题改为浅灰色（#94a3b8）
+  //   3. 主按钮改为渐变蓝色（#3b82f6 → #6366f1）
+  //   4. 列表项添加半透明背景和边框
+  //   5. 文字颜色调整为白色/浅灰
+  // ═══════════════════════════════════════════════════════
   static get styles(): CSSResultGroup {
     return [
       onBoardingStyles,
@@ -90,25 +100,55 @@ class OnboardingWelcome extends LitElement {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          margin-bottom: calc(var(--ha-space-4) * -1);
-        }
-        h1 {
-          margin-top: var(--ha-space-4);
-          margin-bottom: var(--ha-space-2);
-        }
-        p {
-          margin: 0;
-        }
-        .start {
-          margin: var(--ha-space-8) 0;
           width: 100%;
         }
-        .divider {
-          width: calc(100% + var(--ha-space-16));
-          position: relative;
-          margin-left: calc(var(--ha-space-8) * -1);
-          margin-right: calc(var(--ha-space-8) * -1);
+
+        /* 【修改】标题样式 - 白色文字 */
+        h1 {
+          font-size: 1.75rem;
+          font-weight: 700;
+          margin: 0 0 8px 0;
+          color: #f8fafc;
+          line-height: 1.3;
+          letter-spacing: 0.5px;
         }
+
+        /* 【修改】副标题 - 浅灰色 */
+        p {
+          font-size: 0.95rem;
+          color: #94a3b8;
+          margin: 0 0 20px 0;
+          line-height: 1.5;
+        }
+
+        /* 【修改】主按钮 - 渐变蓝色 */
+        .start {
+          width: 100%;
+          margin: var(--ha-space-6) 0;
+          background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          color: white !important;
+          font-weight: 600 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.5px !important;
+          transition: all 0.3s ease !important;
+          box-shadow: none !important;
+        }
+
+        .start:hover {
+          background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+          transform: translateY(-1px);
+        }
+
+        /* 【修改】分隔线 - 半透明 */
+        .divider {
+          width: 100%;
+          position: relative;
+          margin: var(--ha-space-4) 0;
+        }
+
         .divider div {
           position: absolute;
           display: flex;
@@ -118,16 +158,50 @@ class OnboardingWelcome extends LitElement {
           bottom: 0;
           width: 100%;
         }
+
         .divider div span {
-          background-color: var(--card-background-color);
+          background-color: rgba(255, 255, 255, 0.04);
+          color: #94a3b8;
           padding: 0 var(--ha-space-4);
+          font-size: 0.9rem;
         }
 
+        /* 【修改】列表项 - 半透明背景 */
         ha-md-list {
           width: 100%;
           padding-bottom: 0;
           --md-list-item-leading-space: 0;
           --md-list-item-trailing-space: 0;
+        }
+
+        ha-md-list-item {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          margin-bottom: 8px;
+          transition: all 0.2s ease;
+        }
+
+        ha-md-list-item:hover {
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        /* 【修改】列表项文字颜色 */
+        ha-md-list-item div[slot="headline"] {
+          color: #f8fafc;
+          font-weight: 500;
+        }
+
+        ha-md-list-item div[slot="supporting-text"] {
+          color: #94a3b8;
+          font-size: 0.85rem;
+        }
+
+        /* 【修改】箭头图标颜色 */
+        ha-icon-button-next {
+          --mdc-icon-button-icon-color: #60a5fa;
+          color: #60a5fa;
         }
       `,
     ];
