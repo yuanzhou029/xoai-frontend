@@ -544,18 +544,12 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
   }
 
   // ═══════════════════════════════════════════════════════
-  // 【样式修改】对齐登录界面样式 - 深色主题 + 左右分栏布局
+  // 【样式修改】完全对齐登录界面样式
   // 修改时间：2026-04-16
-  // 修改内容：
-  //   1. 添加深色渐变背景（#0a0f1c → #111827 → #1a2236）
-  //   2. 添加网格背景纹理
-  //   3. 实现左右分栏布局（50%-50%）
-  //   4. 左侧添加品牌宣传区（呼吸灯动画 + 功能介绍）
-  //   5. 右侧操作区添加毛玻璃卡片效果
-  //   6. 完整的响应式设计
+  // 参考文件：src/auth/ha-authorize.ts
   // ═══════════════════════════════════════════════════════
   static styles = css`
-    /* 【新增】深色渐变背景 - 与登录界面保持一致 */
+    /* 深色渐变背景 */
     :host {
       display: block;
       height: 100vh;
@@ -564,7 +558,25 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
     }
 
-    /* 【新增】左右分栏布局 */
+    /* 深色主题表单 CSS 变量 —— 与登录界面完全一致 */
+    ha-onboarding {
+      --ha-color-form-background: rgba(255, 255, 255, 0.08);
+      --ha-color-form-background-hover: rgba(255, 255, 255, 0.12);
+      --ha-color-form-background-disabled: rgba(255, 255, 255, 0.04);
+      --ha-color-border-neutral-quiet: rgba(255, 255, 255, 0.15);
+      --ha-color-border-neutral-loud: rgba(255, 255, 255, 0.25);
+      --ha-color-text-secondary: #94a3b8;
+      --ha-color-neutral-60: #64748b;
+      --secondary-text-color: #94a3b8;
+      --card-background-color: rgba(255, 255, 255, 0.08);
+      --ha-color-fill-danger-loud-resting: #ef4444;
+      --ha-color-on-danger-quiet: #f87171;
+      --primary-color: #60a5fa;
+      width: 100vw;
+      min-width: 100vw;
+    }
+
+    /* 左右分栏布局 */
     .split-layout {
       display: flex;
       height: 100%;
@@ -572,7 +584,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       position: relative;
     }
 
-    /* 【新增】网格背景纹理 - 增强科技感 */
+    /* 网格背景纹理 */
     .split-layout::before {
       content: '';
       position: absolute;
@@ -588,7 +600,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       z-index: 0;
     }
 
-    /* 【新增】左侧宣传区 - 品牌展示 + 动画 */
+    /* 左侧宣传区 */
     .promo-side {
       flex: 0 0 50%;
       width: 50%;
@@ -612,7 +624,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       position: relative;
     }
 
-    /* 【新增】呼吸灯容器 - 包裹品牌文字 */
+    /* 呼吸灯容器 */
     .tech-circle-wrapper {
       position: relative;
       width: 280px;
@@ -623,7 +635,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       align-items: center;
     }
 
-    /* 【新增】外圈呼吸灯 - 蓝色边框 + pulse 动画 */
+    /* 外圈呼吸灯 */
     .tech-circle {
       position: absolute;
       width: 100%;
@@ -634,7 +646,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       box-sizing: border-box;
     }
 
-    /* 【新增】内圈呼吸灯 - 延迟 1s 启动，紫色边框 */
+    /* 内圈呼吸灯 */
     .tech-circle::before {
       content: '';
       position: absolute;
@@ -648,7 +660,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       animation: pulse 4s ease-in-out infinite 1s;
     }
 
-    /* 【新增】第三圈呼吸灯 - 延迟 2s 启动 */
+    /* 第三圈呼吸灯 */
     .tech-circle::after {
       content: '';
       position: absolute;
@@ -662,7 +674,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       animation: pulse 4s ease-in-out infinite 2s;
     }
 
-    /* 【新增】呼吸灯动画关键帧 */
+    /* 呼吸灯动画关键帧 */
     @keyframes pulse {
       0%, 100% {
         transform: scale(0.95);
@@ -755,7 +767,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       border-color: rgba(96, 165, 250, 0.4);
     }
 
-    /* 【新增】右侧操作区 - 占 50% 宽度，垂直居中 */
+    /* 右侧操作区 */
     .action-side {
       flex: 0 0 50%;
       width: 50%;
@@ -770,12 +782,12 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       z-index: 1;
     }
 
-    /* 【优化】完全透明卡片 - 无阴影 */
+    /* 卡片样式 —— 与登录界面完全一致，无阴影 */
     .card-content {
-      background: transparent;
-      backdrop-filter: blur(30px) saturate(180%);
-      -webkit-backdrop-filter: blur(30px) saturate(180%);
-      border: 1px solid rgba(96, 165, 250, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 24px;
       padding: 48px 40px 40px 40px;
       width: 100%;
@@ -784,7 +796,7 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       overflow: hidden;
     }
 
-    /* 【新增】卡片顶部光条装饰 */
+    /* 卡片顶部光条 */
     .card-content::before {
       content: '';
       position: absolute;
