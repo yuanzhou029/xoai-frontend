@@ -558,17 +558,17 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
     }
 
-    /* 深色主题表单 CSS 变量 —— 与登录界面完全一致 */
+    /* 深色主题表单 CSS 变量 —— 完全透明 */
     ha-onboarding {
-      --ha-color-form-background: rgba(255, 255, 255, 0.08);
-      --ha-color-form-background-hover: rgba(255, 255, 255, 0.12);
-      --ha-color-form-background-disabled: rgba(255, 255, 255, 0.04);
-      --ha-color-border-neutral-quiet: rgba(255, 255, 255, 0.15);
-      --ha-color-border-neutral-loud: rgba(255, 255, 255, 0.25);
+      --ha-color-form-background: transparent;
+      --ha-color-form-background-hover: transparent;
+      --ha-color-form-background-disabled: transparent;
+      --ha-color-border-neutral-quiet: rgba(96, 165, 250, 0.3);
+      --ha-color-border-neutral-loud: rgba(96, 165, 250, 0.4);
       --ha-color-text-secondary: #94a3b8;
       --ha-color-neutral-60: #64748b;
       --secondary-text-color: #94a3b8;
-      --card-background-color: rgba(255, 255, 255, 0.08);
+      --card-background-color: transparent;
       --ha-color-fill-danger-loud-resting: #ef4444;
       --ha-color-on-danger-quiet: #f87171;
       --primary-color: #60a5fa;
@@ -782,12 +782,12 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       z-index: 1;
     }
 
-    /* 卡片样式 —— 与登录界面完全一致，无阴影 */
+    /* 卡片样式 —— 完全透明，无白色痕迹 */
     .card-content {
-      background: rgba(255, 255, 255, 0.04);
+      background: transparent;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 24px;
       padding: 48px 40px 40px 40px;
       width: 100%;
