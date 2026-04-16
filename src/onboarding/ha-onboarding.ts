@@ -125,32 +125,74 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
     this._page = extractSearchParam("page");
   };
 
+  // ═══════════════════════════════════════════════════════
+  // 【布局修改】添加左右分栏布局
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 添加左侧品牌宣传区（XOAI Home + 呼吸灯动画）
+  //   2. 添加右侧操作区（原有内容）
+  //   3. 保持所有原有功能不变
+  // ═══════════════════════════════════════════════════════
   protected render() {
     return html`<mwc-linear-progress
         .progress=${this._progress}
       ></mwc-linear-progress>
-      <ha-card>
-        <div class="card-content">${this._renderStep()}</div>
-      </ha-card>
-      ${this._init && !this._restoring
-        ? html`<onboarding-welcome-links
-            .localize=${this.localize}
-            .mobileApp=${this._mobileApp}
-          ></onboarding-welcome-links>`
-        : nothing}
-      <div class="footer">
-        <ha-language-picker
-          .value=${this.language}
-          .label=${""}
-          native-name
-          @value-changed=${this._languageChanged}
-        ></ha-language-picker>
-        <a
-          href="https://www.home-assistant.io/getting-started/onboarding/"
-          target="_blank"
-          rel="noreferrer noopener"
-          >${this.localize("ui.panel.page-onboarding.help")}</a
-        >
+      <div class="split-layout">
+        <!-- 【新增】左侧：品牌宣传与动画区 -->
+        <div class="promo-side">
+          <div class="promo-content">
+            <!-- 呼吸灯包裹品牌文字 -->
+            <div class="tech-circle-wrapper">
+              <div class="tech-circle"></div>
+              <div class="circle-content">
+                <h1>XOAI Home</h1>
+                <p class="subtitle">智控未来 · 极简生活</p>
+              </div>
+            </div>
+
+            <!-- 广告/功能介绍区域 -->
+            <div class="ad-section">
+              <div class="ad-title">智慧生活 从这里开始</div>
+              <div class="ad-text">
+                一站式智能家居控制中心，让您的生活更加便捷、舒适、安全。<br>
+                支持多种设备接入，场景自由定制。
+              </div>
+              <div class="ad-tags">
+                <span class="ad-tag">全屋智能</span>
+                <span class="ad-tag">语音控制</span>
+                <span class="ad-tag">场景联动</span>
+                <span class="ad-tag">远程控制</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 【修改】右侧：操作区（原有内容移至此处） -->
+        <div class="action-side">
+          <ha-card>
+            <div class="card-content">${this._renderStep()}</div>
+          </ha-card>
+          ${this._init && !this._restoring
+            ? html`<onboarding-welcome-links
+                .localize=${this.localize}
+                .mobileApp=${this._mobileApp}
+              ></onboarding-welcome-links>`
+            : nothing}
+          <div class="footer">
+            <ha-language-picker
+              .value=${this.language}
+              .label=${""}
+              native-name
+              @value-changed=${this._languageChanged}
+            ></ha-language-picker>
+            <a
+              href="https://www.home-assistant.io/getting-started/onboarding/"
+              target="_blank"
+              rel="noreferrer noopener"
+              >${this.localize("ui.panel.page-onboarding.help")}</a
+            >
+          </div>
+        </div>
       </div>`;
   }
 
@@ -501,10 +543,262 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
     }
   }
 
+  // ═══════════════════════════════════════════════════════
+  // 【样式修改】对齐登录界面样式 - 深色主题 + 左右分栏布局
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 添加深色渐变背景（#0a0f1c → #111827 → #1a2236）
+  //   2. 添加网格背景纹理
+  //   3. 实现左右分栏布局（50%-50%）
+  //   4. 左侧添加品牌宣传区（呼吸灯动画 + 功能介绍）
+  //   5. 右侧操作区添加毛玻璃卡片效果
+  //   6. 完整的响应式设计
+  // ═══════════════════════════════════════════════════════
   static styles = css`
-    .card-content {
-      padding: 32px;
+    /* 【新增】深色渐变背景 - 与登录界面保持一致 */
+    :host {
+      display: block;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
     }
+
+    /* 【新增】左右分栏布局 */
+    .split-layout {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    /* 【新增】网格背景纹理 - 增强科技感 */
+    .split-layout::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 【新增】左侧宣传区 - 品牌展示 + 动画 */
+    .promo-side {
+      flex: 0 0 50%;
+      width: 50%;
+      min-width: 50%;
+      background: transparent;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 40px;
+      z-index: 1;
+    }
+
+    .promo-content {
+      z-index: 2;
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+    }
+
+    /* 【新增】呼吸灯容器 - 包裹品牌文字 */
+    .tech-circle-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 3rem auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 【新增】外圈呼吸灯 - 蓝色边框 + pulse 动画 */
+    .tech-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid rgba(96, 165, 250, 0.3);
+      animation: pulse 4s ease-in-out infinite;
+      box-sizing: border-box;
+    }
+
+    /* 【新增】内圈呼吸灯 - 延迟 1s 启动，紫色边框 */
+    .tech-circle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 75%;
+      height: 75%;
+      border: 1px solid rgba(167, 139, 250, 0.25);
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite 1s;
+    }
+
+    /* 【新增】第三圈呼吸灯 - 延迟 2s 启动 */
+    .tech-circle::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      height: 50%;
+      border: 1px solid rgba(96, 165, 250, 0.15);
+      border-radius: 50%;
+      animation: pulse 4s ease-in-out infinite 2s;
+    }
+
+    /* 【新增】呼吸灯动画关键帧 */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(0.95);
+        opacity: 0.6;
+        box-shadow: 0 0 20px rgba(96, 165, 250, 0.2);
+      }
+      50% {
+        transform: scale(1.02);
+        opacity: 1;
+        box-shadow: 0 0 60px rgba(96, 165, 250, 0.4), 0 0 100px rgba(167, 139, 250, 0.2);
+      }
+    }
+
+    /* 中心品牌文字 */
+    .circle-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .circle-content h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient 3s ease infinite;
+      text-shadow: none;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+      100% { background-position: 0% center; }
+    }
+
+    .circle-content .subtitle {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+
+    /* 广告/介绍区域 */
+    .ad-section {
+      margin-top: 0;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .ad-section .ad-title {
+      font-size: 1.1rem;
+      color: #60a5fa;
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .ad-section .ad-text {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .ad-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .ad-tag {
+      padding: 6px 14px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      transition: all 0.3s ease;
+    }
+
+    .ad-tag:hover {
+      background: rgba(96, 165, 250, 0.2);
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+
+    /* 【新增】右侧操作区 - 占 50% 宽度，垂直居中 */
+    .action-side {
+      flex: 0 0 50%;
+      width: 50%;
+      min-width: 50%;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 【修改】毛玻璃卡片效果 - 与登录界面一致 */
+    .card-content {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 48px 40px 40px 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 【新增】卡片顶部光条装饰 */
+    .card-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.6), transparent);
+    }
+
     mwc-linear-progress {
       position: fixed;
       top: 0;
@@ -512,32 +806,62 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       width: 100%;
       z-index: 10;
     }
+
     .footer {
-      padding-top: 8px;
+      margin-top: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
+      max-width: 440px;
+      font-size: 0.9rem;
     }
-    ha-language-picker {
+
+    /* 底部链接和按钮颜色 */
+    .footer ha-button {
+      --ha-color-button-text: #60a5fa;
+      color: #60a5fa;
+    }
+
+    .footer ha-language-picker {
+      --ha-color-button-text: #60a5fa;
+      color: #60a5fa;
       display: block;
       width: 200px;
       border-radius: var(--ha-border-radius-sm);
       overflow: hidden;
       --ha-select-height: 40px;
       --mdc-select-fill-color: none;
-      --mdc-select-label-ink-color: var(--primary-text-color, #212121);
-      --mdc-select-ink-color: var(--primary-text-color, #212121);
+      --mdc-select-label-ink-color: #94a3b8;
+      --mdc-select-ink-color: #94a3b8;
       --mdc-select-idle-line-color: transparent;
       --mdc-select-hover-line-color: transparent;
-      --mdc-select-dropdown-icon-color: var(--primary-text-color, #212121);
+      --mdc-select-dropdown-icon-color: #60a5fa;
       --mdc-shape-small: 0;
     }
+
     a {
       text-decoration: none;
-      color: var(--primary-text-color);
+      color: #60a5fa;
       margin-right: 16px;
       margin-inline-end: 16px;
       margin-inline-start: initial;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .promo-side {
+        display: none;
+      }
+      .action-side {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 100%;
+      }
+      .card-content {
+        padding: 32px 24px 24px 24px;
+        max-width: 100%;
+      }
     }
   `;
 }
