@@ -121,25 +121,26 @@ class OnboardingWelcome extends LitElement {
           line-height: 1.5;
         }
 
-        /* 【修改】主按钮 - 渐变蓝色 */
+        /* 【优化】主按钮 - 渐变蓝色 + 阴影效果 */
         .start {
           width: 100%;
           margin: var(--ha-space-6) 0;
           background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
           border: none !important;
-          border-radius: 8px !important;
-          padding: 12px 24px !important;
+          border-radius: 12px !important;
+          padding: 14px 24px !important;
           color: white !important;
           font-weight: 600 !important;
           font-size: 1rem !important;
           letter-spacing: 0.5px !important;
           transition: all 0.3s ease !important;
-          box-shadow: none !important;
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
         }
 
         .start:hover {
           background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
         /* 【修改】分隔线 - 半透明 */
@@ -166,7 +167,7 @@ class OnboardingWelcome extends LitElement {
           font-size: 0.9rem;
         }
 
-        /* 【修改】列表项 - 半透明背景 */
+        /* 【优化】列表项 - 增强毛玻璃效果 */
         ha-md-list {
           width: 100%;
           padding-bottom: 0;
@@ -175,16 +176,19 @@ class OnboardingWelcome extends LitElement {
         }
 
         ha-md-list-item {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          margin-bottom: 8px;
-          transition: all 0.2s ease;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          border-radius: 12px;
+          margin-bottom: 12px;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         ha-md-list-item:hover {
-          background: rgba(255, 255, 255, 0.08);
-          border-color: rgba(96, 165, 250, 0.3);
+          background: rgba(255, 255, 255, 0.12);
+          border-color: rgba(96, 165, 250, 0.4);
+          transform: translateX(4px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         /* 【修改】列表项文字颜色 */
