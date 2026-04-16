@@ -253,9 +253,9 @@ class OnboardingCreateUser extends LitElement {
           line-height: 1.5;
         }
 
-        /* 【优化】表单样式 - 深色主题配色 */
+        /* 【优化】表单样式 - 完全透明背景 */
         ha-form {
-          --ha-text-field-background: rgba(15, 23, 42, 0.6);
+          --ha-text-field-background: transparent;
           --ha-text-field-border: 1px solid rgba(96, 165, 250, 0.2);
           --ha-text-field-border-radius: 12px;
           --ha-text-field-color: #ffffff;
@@ -264,7 +264,7 @@ class OnboardingCreateUser extends LitElement {
 
         /* 【优化】输入框聚焦效果 */
         ha-form ha-textfield {
-          --mdc-text-field-fill-color: rgba(15, 23, 42, 0.5);
+          --mdc-text-field-fill-color: transparent;
           --mdc-text-field-hover-line-color: rgba(96, 165, 250, 0.5);
           --mdc-text-field-focus-line-color: #60a5fa;
         }
@@ -284,7 +284,7 @@ class OnboardingCreateUser extends LitElement {
           justify-content: flex-end;
         }
 
-        /* 【优化】创建按钮 - 渐变蓝色 + 增强阴影 */
+        /* 【优化】创建按钮 - 无阴影 */
         .footer ha-button {
           background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
           border: none !important;
@@ -295,13 +295,11 @@ class OnboardingCreateUser extends LitElement {
           font-size: 1rem !important;
           letter-spacing: 0.5px !important;
           transition: all 0.3s ease !important;
-          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
         }
 
         .footer ha-button:hover:not([disabled]) {
           background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
         .footer ha-button[disabled] {
