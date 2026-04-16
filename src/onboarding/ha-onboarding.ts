@@ -770,21 +770,16 @@ class HaOnboarding extends litLocalizeLiteMixin(HassElement) {
       z-index: 1;
     }
 
-    /* 【优化】毛玻璃卡片效果 - 深色主题配色 */
+    /* 【优化】完全透明卡片 - 无阴影 */
     .card-content {
-      background: rgba(15, 23, 42, 0.6);
+      background: transparent;
       backdrop-filter: blur(30px) saturate(180%);
       -webkit-backdrop-filter: blur(30px) saturate(180%);
-      border: 1px solid rgba(96, 165, 250, 0.2);
+      border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 24px;
       padding: 48px 40px 40px 40px;
       width: 100%;
       max-width: 440px;
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.5),
-        0 2px 8px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(96, 165, 250, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
       position: relative;
       overflow: hidden;
     }
