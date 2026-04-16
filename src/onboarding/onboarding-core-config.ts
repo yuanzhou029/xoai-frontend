@@ -194,12 +194,15 @@ class OnboardingCoreConfig extends LitElement {
     }
 
     .secondary {
-      color: var(--secondary-text-color);
+      color: #94a3b8;
     }
 
+    /* 【修改】文字样式 - 浅灰色 */
     p {
-      font-size: var(--ha-font-size-m);
-      line-height: var(--ha-line-height-condensed);
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin: 0 0 24px 0;
     }
 
     .flex {
@@ -208,6 +211,7 @@ class OnboardingCoreConfig extends LitElement {
 
     .middle-text {
       margin: 16px 0;
+      color: #94a3b8;
     }
 
     .row {
@@ -228,12 +232,39 @@ class OnboardingCoreConfig extends LitElement {
       flex: 1;
     }
 
+    /* 【修改】底部按钮区域 */
     .footer {
-      margin-top: 16px;
-      text-align: right;
+      margin-top: 24px;
+      display: flex;
+      justify-content: flex-end;
     }
+
+    /* 【修改】完成按钮 - 渐变蓝色 */
+    .footer ha-button {
+      background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 12px 24px !important;
+      color: white !important;
+      font-weight: 600 !important;
+      font-size: 1rem !important;
+      letter-spacing: 0.5px !important;
+      transition: all 0.3s ease !important;
+      box-shadow: none !important;
+    }
+
+    .footer ha-button:hover:not([disabled]) {
+      background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+      transform: translateY(-1px);
+    }
+
+    .footer ha-button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     a {
-      color: var(--primary-color);
+      color: #60a5fa;
     }
   `;
 }
