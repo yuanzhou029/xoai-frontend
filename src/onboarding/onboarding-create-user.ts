@@ -1,6 +1,6 @@
 import { genClientId } from "home-assistant-js-websocket";
 import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
-import { html, LitElement } from "lit";
+import { css, html, LitElement } from "lit";
 import { customElement, property, query, state } from "lit/decorators";
 import { fireEvent } from "../common/dom/fire_event";
 import type { LocalizeFunc } from "../common/translations/localize";
@@ -215,8 +215,93 @@ class OnboardingCreateUser extends LitElement {
     }
   }
 
+  // ═══════════════════════════════════════════════════════
+  // 【样式修改】对齐登录界面样式 - 用户创建页面
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 标题改为白色文字（#f8fafc）
+  //   2. 副标题改为浅灰色（#94a3b8）
+  //   3. 表单输入框半透明背景
+  //   4. 按钮改为渐变蓝色
+  //   5. 错误提示样式调整
+  // ═══════════════════════════════════════════════════════
   static get styles(): CSSResultGroup {
-    return onBoardingStyles;
+    return [
+      onBoardingStyles,
+      css`
+        :host {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        /* 【修改】标题样式 - 白色文字 */
+        h1 {
+          font-size: 1.75rem;
+          font-weight: 700;
+          margin: 0 0 8px 0;
+          color: #f8fafc;
+          line-height: 1.3;
+          letter-spacing: 0.5px;
+        }
+
+        /* 【修改】副标题 - 浅灰色 */
+        p {
+          font-size: 0.95rem;
+          color: #94a3b8;
+          margin: 0 0 24px 0;
+          line-height: 1.5;
+        }
+
+        /* 【修改】表单样式 - 半透明背景 */
+        ha-form {
+          --ha-text-field-background: rgba(255, 255, 255, 0.08);
+          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.15);
+          --ha-text-field-border-radius: 8px;
+          --ha-text-field-color: #ffffff;
+          --ha-text-field-placeholder-color: #94a3b8;
+        }
+
+        /* 【修改】错误提示样式 */
+        ha-alert {
+          margin: 16px 0;
+          background-color: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          color: #fca5a5;
+        }
+
+        /* 【修改】底部按钮区域 */
+        .footer {
+          margin-top: 24px;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        /* 【修改】创建按钮 - 渐变蓝色 */
+        .footer ha-button {
+          background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          color: white !important;
+          font-weight: 600 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.5px !important;
+          transition: all 0.3s ease !important;
+          box-shadow: none !important;
+        }
+
+        .footer ha-button:hover:not([disabled]) {
+          background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+          transform: translateY(-1px);
+        }
+
+        .footer ha-button[disabled] {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      `,
+    ];
   }
 }
 
