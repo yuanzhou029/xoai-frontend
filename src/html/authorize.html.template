@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Home Assistant</title>
+    <title>Xo Ai</title>
     <%= renderTemplate("_header.html.template") %>
     <%= renderTemplate("_style_base.html.template") %>
     <style>
