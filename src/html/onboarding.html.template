@@ -5,40 +5,40 @@
     <%= renderTemplate("_header.html.template") %>
     <%= renderTemplate("_style_base.html.template") %>
     <style>
+      /* 【修改】全屏布局 - 对齐登录界面样式 */
       html {
-        background-color: var(--primary-background-color, #fafafa);
-        color: var(--primary-text-color, #212121);
+        background-color: #0a0f1c;
+        color: #e1e1e1;
+        height: 100%;
       }
-      @media (prefers-color-scheme: dark) {
-        html {
-          background-color: var(--primary-background-color, #111111);
-          color: var(--primary-text-color, #e1e1e1);
-        }
-      }
+
       body {
-        height: auto;
-        padding: 32px 0;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        display: block;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        /* 【修改】深色渐变背景 */
+        background: linear-gradient(135deg, #0a0f1c 0%, #111827 25%, #1a2236 50%, #111827 75%, #0a0f1c 100%);
       }
 
+      /* 【修改】让 content 容器负责全屏布局 */
       .content {
-        max-width: min(560px, calc(100vw - var(--safe-area-inset-right, 0px) - var(--safe-area-inset-left, 0px)));
-        margin: 0 auto;
-        padding: 0 16px;
-        box-sizing: content-box;
-      }
-
-      .header {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        height: 100vh;
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        margin-bottom: 32px;
-        margin-left: 32px;
-        padding-top: var(--safe-area-inset-top);
+        flex-direction: row;
       }
 
-      .header img {
-        height: 56px;
-        width: 56px;
+      /* 【修改】隐藏原有的 header，因为左侧宣传区已有品牌展示 */
+      .header {
+        display: none;
       }
     </style>
   </head>
