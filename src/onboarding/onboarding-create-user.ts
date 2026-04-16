@@ -1,88 +1,91 @@
-import type { PropertyValues, TemplateResult } from "lit";
-import { css, html, LitElement, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators";
-import { LOCAL_TIME_ZONE } from "../common/datetime/resolve-time-zone";
+import { genClientId } from "home-assistant-js-websocket";
+import type { CSSResultGroup, PropertyValues, TemplateResult } from "lit";
+import { css, html, LitElement } from "lit";
+import { customElement, property, query, state } from "lit/decorators";
 import { fireEvent } from "../common/dom/fire_event";
 import type { LocalizeFunc } from "../common/translations/localize";
-import "../components/ha-alert";
+import { debounce } from "../common/util/debounce";
 import "../components/ha-button";
-import { COUNTRIES } from "../components/ha-country-picker";
-import "../components/ha-spinner";
-import type { ConfigUpdateValues } from "../data/core";
-import { saveCoreConfig } from "../data/core";
-import { countryCurrency } from "../data/currency";
-import { onboardCoreConfigStep } from "../data/onboarding";
-import type { HomeAssistant, ValueChangedEvent } from "../types";
-import { getLocalLanguage } from "../util/common-translation";
-import "./onboarding-location";
+import "../components/ha-form/ha-form";
+import type { HaForm } from "../components/ha-form/ha-form";
+import type {
+  HaFormDataContainer,
+  HaFormSchema,
+} from "../components/ha-form/types";
+import { onboardUserStep } from "../data/onboarding";
+import type { ValueChangedEvent } from "../types";
+import { onBoardingStyles } from "./styles";
 
-@customElement("onboarding-core-config")
-class OnboardingCoreConfig extends LitElement {
-  @property({ attribute: false }) public hass!: HomeAssistant;
+const CHECK_USERNAME_REGEX = /\s|[A-Z]/;
 
-  @property({ attribute: false }) public onboardingLocalize!: LocalizeFunc;
+const CREATE_USER_SCHEMA: HaFormSchema[] = [
+  {
+    name: "name",
+    required: true,
+    selector: { text: { autocomplete: "name" } },
+  },
+  {
+    name: "username",
+    required: true,
+    selector: { text: { autocomplete: "username" } },
+  },
+  {
+    name: "password",
+    required: true,
+    selector: { text: { type: "password", autocomplete: "new-password" } },
+  },
+  {
+    name: "password_confirm",
+    required: true,
+    selector: { text: { type: "password", autocomplete: "new-password" } },
+  },
+];
 
-  @state() private _working = false;
+@customElement("onboarding-create-user")
+class OnboardingCreateUser extends LitElement {
+  @property({ attribute: false }) public localize!: LocalizeFunc;
 
-  @state() private _location?: [number, number];
+  @property() public language!: string;
 
-  private _elevation = "0";
+  @state() private _loading = false;
 
-  private _timeZone: ConfigUpdateValues["time_zone"] = LOCAL_TIME_ZONE;
+  @state() private _errorMsg?: string;
 
-  private _language: ConfigUpdateValues["language"] = getLocalLanguage();
+  @state() private _formError: Record<string, string> = {};
 
-  @state() private _country?: ConfigUpdateValues["country"];
+  @state() private _newUser: HaFormDataContainer = {};
 
-  private _unitSystem?: ConfigUpdateValues["unit_system"];
-
-  private _currency?: ConfigUpdateValues["currency"];
-
-  @state() private _error?: string;
-
-  @state() private _skipCore = false;
+  @query("ha-form", true) private _form?: HaForm;
 
   protected render(): TemplateResult {
-    if (!this._location) {
-      return html`<onboarding-location
-        .hass=${this.hass}
-        .onboardingLocalize=${this.onboardingLocalize}
-        @value-changed=${this._locationChanged}
-      ></onboarding-location>`;
-    }
-    if (this._skipCore) {
-      return html`<div class="row center">
-        <ha-spinner></ha-spinner>
-      </div>`;
-    }
     return html`
-      ${this._error
-        ? html`<ha-alert alert-type="error">${this._error}</ha-alert>`
-        : nothing}
+      <h1>${this.localize("ui.panel.page-onboarding.user.header")}</h1>
+      <p>${this.localize("ui.panel.page-onboarding.user.intro")}</p>
 
-      <p>
-        ${this.onboardingLocalize(
-          "ui.panel.page-onboarding.core-config.country_intro"
-        )}
-      </p>
+      ${this._errorMsg
+        ? html`<ha-alert alert-type="error">${this._errorMsg}</ha-alert>`
+        : ""}
 
-      <ha-country-picker
-        class="flex"
-        .hass=${this.hass}
-        .label=${this.hass.localize(
-          "ui.panel.config.core.section.core.core_config.country"
-        ) || "Country"}
-        required
-        .disabled=${this._working}
-        .value=${this._countryValue}
-        @value-changed=${this._handleCountryChanged}
-      ></ha-country-picker>
-
+      <ha-form
+        .computeLabel=${this._computeLabel(this.localize)}
+        .computeHelper=${this._computeHelper(this.localize)}
+        .data=${this._newUser}
+        .disabled=${this._loading}
+        .error=${this._formError}
+        .schema=${CREATE_USER_SCHEMA}
+        @value-changed=${this._handleValueChanged}
+      ></ha-form>
       <div class="footer">
-        <ha-button @click=${this._save} .disabled=${this._working}>
-          ${this.onboardingLocalize(
-            "ui.panel.page-onboarding.core-config.finish"
-          )}
+        <ha-button
+          @click=${this._submitForm}
+          .disabled=${this._loading ||
+          !this._newUser.name ||
+          !this._newUser.username ||
+          !this._newUser.password ||
+          !this._newUser.password_confirm ||
+          this._newUser.password !== this._newUser.password_confirm}
+        >
+          ${this.localize("ui.panel.page-onboarding.user.create_account")}
         </ha-button>
       </div>
     `;
@@ -90,187 +93,220 @@ class OnboardingCoreConfig extends LitElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
-    this.addEventListener("keyup", (ev) => {
-      if (this._location && ev.key === "Enter") {
-        this._save(ev);
+    setTimeout(() => this._form?.focus(), 100);
+    this.addEventListener("keypress", (ev) => {
+      if (
+        ev.key === "Enter" &&
+        this._newUser.name &&
+        this._newUser.username &&
+        this._newUser.password &&
+        this._newUser.password_confirm &&
+        this._newUser.password === this._newUser.password_confirm
+      ) {
+        this._submitForm(ev);
       }
     });
   }
 
-  private get _countryValue() {
-    return this._country || "";
+  private _computeLabel(localize) {
+    return (schema: HaFormSchema) =>
+      localize(`ui.panel.page-onboarding.user.data.${schema.name}`);
   }
 
-  private _handleCountryChanged(ev: ValueChangedEvent<string>) {
-    this._country = ev.detail.value;
+  private _computeHelper(localize) {
+    return (schema: HaFormSchema) =>
+      localize(`ui.panel.page-onboarding.user.helper.${schema.name}`);
   }
 
-  private async _locationChanged(ev) {
-    this._location = ev.detail.value.location;
-    if (ev.detail.value.country) {
-      this._country = ev.detail.value.country;
+  private _handleValueChanged(
+    ev: ValueChangedEvent<HaFormDataContainer>
+  ): void {
+    const nameChanged = ev.detail.value.name !== this._newUser.name;
+    const usernameChanged = ev.detail.value.username !== this._newUser.username;
+    const passwordChanged =
+      ev.detail.value.password !== this._newUser.password ||
+      ev.detail.value.password_confirm !== this._newUser.password_confirm;
+    this._newUser = ev.detail.value;
+    if (nameChanged) {
+      this._maybePopulateUsername();
     }
-    if (ev.detail.value.elevation) {
-      this._elevation = ev.detail.value.elevation;
-    }
-    if (ev.detail.value.currency) {
-      this._currency = ev.detail.value.currency;
-    }
-    if (ev.detail.value.language) {
-      this._language = ev.detail.value.language;
-    }
-    if (ev.detail.value.timezone) {
-      this._timeZone = ev.detail.value.timezone;
-    }
-    if (ev.detail.value.unit_system) {
-      this._unitSystem = ev.detail.value.unit_system;
-    }
-    if (this._country) {
-      this._skipCore = true;
-      this._save(ev);
-      return;
-    }
-
-    // Set suggested country
-    let suggested: string | undefined;
-    if (navigator.language) {
-      const lang = navigator.language.split("-").pop()!.toUpperCase();
-      if (COUNTRIES.includes(lang)) {
-        suggested = lang;
+    if (passwordChanged) {
+      if (this._formError.password_confirm) {
+        this._checkPasswordMatch();
+      } else {
+        this._debouncedCheckPasswordMatch();
       }
     }
-    this._country = suggested;
-
-    fireEvent(this, "onboarding-progress", { increase: 0.5 });
-    await this.updateComplete;
-    setTimeout(
-      () => this.renderRoot.querySelector("ha-country-picker")!.focus(),
-      100
-    );
+    if (usernameChanged) {
+      this._checkUsername();
+    }
   }
 
-  private async _save(ev) {
-    if (!this._location || !this._country) {
+  private _debouncedCheckPasswordMatch = debounce(
+    () => this._checkPasswordMatch(),
+    500
+  );
+
+  private _checkPasswordMatch(): void {
+    const old = this._formError.password_confirm;
+    this._formError.password_confirm =
+      this._newUser.password_confirm &&
+      this._newUser.password !== this._newUser.password_confirm
+        ? this.localize(
+            "ui.panel.page-onboarding.user.error.password_not_match"
+          )
+        : "";
+    if (old !== this._formError.password_confirm) {
+      this.requestUpdate("_formError");
+    }
+  }
+
+  private _maybePopulateUsername(): void {
+    if (!this._newUser.name || this._newUser.name === this._newUser.username) {
       return;
     }
+
+    const parts = String(this._newUser.name).split(" ");
+    if (parts.length) {
+      this._newUser.username = parts[0].toLowerCase();
+      this._checkUsername();
+    }
+  }
+
+  private _checkUsername(): void {
+    const old = this._formError.username;
+    if (CHECK_USERNAME_REGEX.test(this._newUser.username as string)) {
+      this._formError.username = this.localize(
+        "ui.panel.page-onboarding.user.error.username_not_normalized"
+      );
+    } else {
+      this._formError.username = "";
+    }
+    if (old !== this._formError.username) {
+      this.requestUpdate("_formError");
+    }
+  }
+
+  private async _submitForm(ev): Promise<void> {
     ev.preventDefault();
-    this._working = true;
+    this._loading = true;
+    this._errorMsg = "";
+
     try {
-      await saveCoreConfig(this.hass, {
-        location_name: this.onboardingLocalize(
-          "ui.panel.page-onboarding.core-config.location_name_default"
-        ),
-        latitude: this._location[0],
-        longitude: this._location[1],
-        elevation: Number(this._elevation),
-        unit_system:
-          this._unitSystem || ["US", "MM", "LR"].includes(this._country)
-            ? "us_customary"
-            : "metric",
-        time_zone: this._timeZone || "UTC",
-        currency: this._currency || countryCurrency[this._country] || "EUR",
-        country: this._country,
-        language: this._language,
+      const clientId = genClientId();
+
+      const result = await onboardUserStep({
+        client_id: clientId,
+        name: String(this._newUser.name),
+        username: String(this._newUser.username),
+        password: String(this._newUser.password),
+        language: this.language,
       });
-      const result = await onboardCoreConfigStep(this.hass);
+
       fireEvent(this, "onboarding-step", {
-        type: "core_config",
+        type: "user",
         result,
       });
     } catch (err: any) {
-      this._skipCore = false;
-      this._working = false;
-      this._error = err.message;
+      // eslint-disable-next-line
+      console.error(err);
+      this._loading = false;
+      this._errorMsg = err.body.message;
     }
   }
 
-  static styles = css`
-    .row {
-      display: flex;
-      flex-direction: row;
-      margin: 0 -8px;
-      align-items: center;
-      --ha-select-min-width: 100px;
-    }
+  // ═══════════════════════════════════════════════════════
+  // 【样式修改】对齐登录界面样式 - 用户创建页面
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 标题改为白色文字（#f8fafc）
+  //   2. 副标题改为浅灰色（#94a3b8）
+  //   3. 表单输入框半透明背景
+  //   4. 按钮改为渐变蓝色
+  //   5. 错误提示样式调整
+  // ═══════════════════════════════════════════════════════
+  static get styles(): CSSResultGroup {
+    return [
+      onBoardingStyles,
+      css`
+        :host {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
 
-    .secondary {
-      color: #94a3b8;
-    }
+        /* 【修改】标题样式 - 白色文字 */
+        h1 {
+          font-size: 1.75rem;
+          font-weight: 700;
+          margin: 0 0 8px 0;
+          color: #f8fafc;
+          line-height: 1.3;
+          letter-spacing: 0.5px;
+        }
 
-    /* 【修改】文字样式 - 浅灰色 */
-    p {
-      font-size: 0.95rem;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin: 0 0 24px 0;
-    }
+        /* 【修改】副标题 - 浅灰色 */
+        p {
+          font-size: 0.95rem;
+          color: #94a3b8;
+          margin: 0 0 24px 0;
+          line-height: 1.5;
+        }
 
-    .flex {
-      flex: 1;
-    }
+        /* 【修改】表单样式 - 半透明背景 */
+        ha-form {
+          --ha-text-field-background: rgba(255, 255, 255, 0.08);
+          --ha-text-field-border: 1px solid rgba(255, 255, 255, 0.15);
+          --ha-text-field-border-radius: 8px;
+          --ha-text-field-color: #ffffff;
+          --ha-text-field-placeholder-color: #94a3b8;
+        }
 
-    .middle-text {
-      margin: 16px 0;
-      color: #94a3b8;
-    }
+        /* 【修改】错误提示样式 */
+        ha-alert {
+          margin: 16px 0;
+          background-color: rgba(239, 68, 68, 0.1);
+          border: 1px solid rgba(239, 68, 68, 0.3);
+          color: #fca5a5;
+        }
 
-    .row {
-      margin-top: 16px;
-    }
+        /* 【修改】底部按钮区域 */
+        .footer {
+          margin-top: 24px;
+          display: flex;
+          justify-content: flex-end;
+        }
 
-    .center {
-      justify-content: center;
-    }
+        /* 【修改】创建按钮 - 渐变蓝色 */
+        .footer ha-button {
+          background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          color: white !important;
+          font-weight: 600 !important;
+          font-size: 1rem !important;
+          letter-spacing: 0.5px !important;
+          transition: all 0.3s ease !important;
+          box-shadow: none !important;
+        }
 
-    .row > * {
-      margin: 0 8px;
-    }
+        .footer ha-button:hover:not([disabled]) {
+          background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+          transform: translateY(-1px);
+        }
 
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    /* 【修改】底部按钮区域 */
-    .footer {
-      margin-top: 24px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* 【修改】完成按钮 - 渐变蓝色 */
-    .footer ha-button {
-      background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
-      border: none !important;
-      border-radius: 8px !important;
-      padding: 12px 24px !important;
-      color: white !important;
-      font-weight: 600 !important;
-      font-size: 1rem !important;
-      letter-spacing: 0.5px !important;
-      transition: all 0.3s ease !important;
-      box-shadow: none !important;
-    }
-
-    .footer ha-button:hover:not([disabled]) {
-      background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
-      transform: translateY(-1px);
-    }
-
-    .footer ha-button[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    a {
-      color: #60a5fa;
-    }
-  `;
+        .footer ha-button[disabled] {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      `,
+    ];
+  }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "onboarding-core-config": OnboardingCoreConfig;
+    "onboarding-create-user": OnboardingCreateUser;
   }
 }
