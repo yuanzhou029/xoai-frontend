@@ -166,7 +166,7 @@ class OnboardingWelcome extends LitElement {
           font-size: 0.9rem;
         }
 
-        /* 【优化】列表项 - 完全透明，无阴影 */
+        /* 【优化】列表项 - 完全透明，无白色痕迹 */
         ha-md-list {
           width: 100%;
           padding-bottom: 0;
@@ -176,7 +176,7 @@ class OnboardingWelcome extends LitElement {
 
         ha-md-list-item {
           background: transparent;
-          border: 1px solid rgba(96, 165, 250, 0.25);
+          border: 1px solid rgba(96, 165, 250, 0.3);
           border-radius: 12px;
           margin-bottom: 12px;
           transition: all 0.3s ease;
@@ -184,7 +184,7 @@ class OnboardingWelcome extends LitElement {
 
         ha-md-list-item:hover {
           background: transparent;
-          border-color: rgba(96, 165, 250, 0.4);
+          border-color: rgba(96, 165, 250, 0.5);
           transform: translateX(4px);
         }
 
