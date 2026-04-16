@@ -56,27 +56,57 @@ class OnboardingWelcomeLinks extends LitElement {
     showAppDialog(this, { localize: this.localize });
   }
 
+  // ═══════════════════════════════════════════════════════
+  // 【样式修改】对齐登录界面样式 - 底部链接卡片
+  // 修改时间：2026-04-16
+  // 修改内容：
+  //   1. 链接卡片添加毛玻璃效果
+  //   2. 添加悬停动画效果
+  //   3. 调整颜色主题（绿色、紫色）
+  //   4. 优化响应式布局
+  // ═══════════════════════════════════════════════════════
   static styles = css`
     :host {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       margin-top: 16px;
-      column-gap: var(--ha-space-4);
-      row-gap: var(--ha-space-4);
+      gap: var(--ha-space-3);
+      width: 100%;
+      max-width: 440px;
     }
+
+    /* 【修改】链接卡片 - 毛玻璃效果 */
+    onboarding-welcome-link {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px 12px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    onboarding-welcome-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(96, 165, 250, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* 【修改】颜色主题 */
+    .community {
+      --welcome-link-color: #10b981;
+    }
+    .app {
+      --welcome-link-color: #a78bfa;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
     @media (max-width: 550px) {
       :host {
         grid-template-columns: 1fr;
       }
-    }
-    .community {
-      --welcome-link-color: #008142;
-    }
-    .app {
-      --welcome-link-color: #6e41ab;
-    }
-    a {
-      text-decoration: none;
     }
   `;
 }
