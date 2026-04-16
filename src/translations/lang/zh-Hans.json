@@ -622,8 +622,8 @@
         "triggered_by_event": "由事件触发",
         "triggered_by_time": "由时间触发",
         "triggered_by_time_pattern": "由时间模式触发",
-        "triggered_by_homeassistant_stopping": "由 Home Assistant 停止触发",
-        "triggered_by_homeassistant_starting": "由 Home Assistant 启动触发",
+        "triggered_by_xoai_stopping": "由 XOAI 停止触发",
+        "triggered_by_xoai_starting": "由 XOAI 启动触发",
         "show_trace": "跟踪",
         "retrieval_error": "无法加载活动",
         "not_loaded": "{platform} 组件尚未加载。请在 'default_config:' 或 \"{platform}:\" 中选择一种写法，将其加入配置中。",
@@ -1202,7 +1202,7 @@
           "deleting": "正在删除 {count} 个文件",
           "deselect_all": "取消全部选择",
           "select_all": "全选",
-          "tip_media_storage": "可以在“{storage}”面板中向 Home Assistant 添加网络存储。",
+          "tip_media_storage": "可以在“{storage}”面板中向 XOAI 添加网络存储。",
           "tip_storage_panel": "存储"
         },
         "class": {
@@ -1444,7 +1444,7 @@
       },
       "safe_mode": {
         "title": "安全模式",
-        "text": "Home Assistant 正在安全模式下运行，自定义集成和前端模块不可用。重新启动 Home Assistant 可退出安全模式。"
+        "text": "XOAI 正在安全模式下运行，自定义集成和前端模块不可用。重新启动 XOAI 可退出安全模式。"
       },
       "quick-bar": {
         "commands_title": "命令",
@@ -1487,7 +1487,7 @@
             "themes": "主题（themes）"
           },
           "home_assistant_control": {
-            "perform_action": "{action} Home Assistant",
+            "perform_action": "{action} XOAI",
             "restart": "重启（restart）",
             "stop": "停止（stop）"
           },
@@ -1546,13 +1546,13 @@
         },
         "filter_placeholder": "搜索实体",
         "filter_placeholder_devices": "搜索设备",
-        "title": "搜索 Home Assistant",
+        "title": "搜索 XOAI",
         "key_c_tip": "在任意页面上按下 {keyboard_shortcut} “c” 即可打开命令对话框",
         "nothing_found": "什么都没找到！"
       },
       "voice_command": {
         "title": "语音助手",
-        "did_not_hear": "Home Assistant 什么也没有听到",
+        "did_not_hear": "XOAI 什么也没有听到",
         "did_not_understand": "我不太明白",
         "found": "为您找到以下结果：",
         "error": "糟糕，发生错误",
@@ -1562,8 +1562,8 @@
         "send_text": "发送文本",
         "start_listening": "开始聆听",
         "manage_assistants": "管理助手",
-        "not_supported_microphone_browser": "与 Home Assistant 的连接未使用 HTTPS 进行保护，将导致浏览器阻止 Home Assistant 访问麦克风。",
-        "not_supported_microphone_documentation": "使用 Home Assistant 应用或访问{documentation_link}了解如何使用安全网址",
+        "not_supported_microphone_browser": "与 XOAI 的连接未使用 HTTPS 进行保护，将导致浏览器阻止 XOAI 访问麦克风。",
+        "not_supported_microphone_documentation": "使用 XOAI 应用或访问{documentation_link}了解如何使用安全网址",
         "not_supported_microphone_documentation_link": "文档",
         "unknown_error_load_assist": "加载语音助手管道失败",
         "not_found_error_load_assist": "找不到语音助手管道",
@@ -1633,13 +1633,13 @@
           "install": "安装",
           "update": "更新",
           "auto_update_enabled_title": "无法跳过版本",
-          "auto_update_enabled_text": "此项目的自动更新已启用，因此无法跳过。您可以立即安装此更新，或者等待 Home Assistant 自动更新。",
+          "auto_update_enabled_text": "此项目的自动更新已启用，因此无法跳过。您可以立即安装此更新，或者等待 XOAI 自动更新。",
           "create_backup": {
             "automatic": "更新前自动备份",
             "automatic_description_last": "上次自动备份 {relative_time} 。",
             "automatic_description_none": "尚无自动备份。",
             "manual": "更新前创建手动备份",
-            "manual_description": "包含 Home Assistant 设置和历史记录。",
+            "manual_description": "包含 XOAI 设置和历史记录。",
             "app": "保留上个版本的备份",
             "app_description": "轻松还原到版本 {version}",
             "generic": "创建备份"
@@ -1876,9 +1876,9 @@
           "switch_as_x_confirm": "此开关将被隐藏，并添加为一个新的{domain}。您现有的使用此开关的配置仍将正常工作。",
           "switch_as_x_remove_confirm": "此 {domain} 将被移除，原始开关将再次可见。使用 {domain} 的现有配置将不再有效！",
           "switch_as_x_change_confirm": "此 {domain_1} 将被移除，并替换为新的 {domain_2}。使用 {domain_1} 的现有配置将不再有效！",
-          "enabled_description": "已禁用的实体不会被添加到 Home Assistant。",
-          "enabled_delay_confirm": "已启用的实体将在 {delay} 秒后被添加到 Home Assistant",
-          "enabled_restart_confirm": "重启 Home Assistant 完成实体的启用",
+          "enabled_description": "已禁用的实体不会被添加到 XOAI。",
+          "enabled_delay_confirm": "已启用的实体将在 {delay} 秒后被添加到 XOAI",
+          "enabled_restart_confirm": "重启 XOAI 完成实体的启用",
           "hidden_explanation": "隐藏实体不会包含在自动填充的仪表板中，也不会在引用其区域、设备或标签时包含在内。其历史记录仍会被跟踪，您仍然可以通过动作与它们进行交互。",
           "delete": "删除",
           "confirm_delete_title": "删除实体",
@@ -1901,7 +1901,7 @@
             "preload_stream": "预加载视频流",
             "preload_stream_description": "使视频流在后台保持打开状态，以便加快显示速度。警告！这会显著消耗设备资源。",
             "stream_orientation": "视频流方向",
-            "stream_orientation_description": "用于相机数据流的方向转换。\n警告：数据流方向处理在 Home Assistant 设备上进行，可能会影响系统性能。如果可能，请直接在相机上配置此设置。",
+            "stream_orientation_description": "用于相机数据流的方向转换。\n警告：数据流方向处理在 XOAI 设备上进行，可能会影响系统性能。如果可能，请直接在相机上配置此设置。",
             "stream_orientation_1": "不改变方向",
             "stream_orientation_2": "左右翻转",
             "stream_orientation_3": "旋转 180 度",
@@ -1960,7 +1960,7 @@
         "view_entity": "关于实体的更多信息"
       },
       "restart": {
-        "heading": "重新启动 Home Assistant",
+        "heading": "重新启动 XOAI",
         "advanced_options": "高级选项",
         "backup_in_progress": "目前正在创建备份。备份过程完成后，该操作将自动继续。",
         "upload_in_progress": "目前正在上传备份。上传完成后，该操作将自动继续。",
@@ -1976,24 +1976,24 @@
           "failed": "重新加载配置失败"
         },
         "restart": {
-          "title": "重新启动 Home Assistant",
+          "title": "重新启动 XOAI",
           "description": "中断所有运行中的自动化和脚本。",
-          "confirm_title": "确认重新启动 Home Assistant？",
+          "confirm_title": "确认重新启动 XOAI？",
           "confirm_description": "这将中断所有运行中的自动化和脚本。",
-          "confirm_action": "重新启动 Home Assistant",
+          "confirm_action": "重新启动 XOAI",
           "confirm_action_backup": "等待并重启",
-          "failed": "重新启动 Home Assistant 失败"
+          "failed": "重新启动 XOAI 失败"
         },
         "stop": {
-          "confirm_title": "停止 Home Assistant？",
+          "confirm_title": "停止 XOAI？",
           "confirm_description": "这将中断所有正在运行的自动化和脚本。",
           "confirm_action": "停止"
         },
         "reboot": {
           "title": "重新启动系统",
-          "description": "重新启动系统，包括 Home Assistant 和所有应用。",
+          "description": "重新启动系统，包括 XOAI 和所有应用。",
           "confirm_title": "确认重新启动系统？",
-          "confirm_description": "这将重新启动整个系统，包括 Home Assistant 和所有应用。",
+          "confirm_description": "这将重新启动整个系统，包括 XOAI 和所有应用。",
           "confirm_action": "重新启动",
           "action_toast": "正在重新启动系统",
           "confirm_action_backup": "等待并重启",
@@ -2001,22 +2001,22 @@
         },
         "shutdown": {
           "title": "关闭系统",
-          "description": "关闭系统，包括 Home Assistant 和所有应用。",
+          "description": "关闭系统，包括 XOAI 和所有应用。",
           "confirm_title": "确定要关闭系统吗？",
-          "confirm_description": "这将关闭整个系统，包括 Home Assistant 和所有应用。",
+          "confirm_description": "这将关闭整个系统，包括 XOAI 和所有应用。",
           "confirm_action": "关机",
           "confirm_action_backup": "等待并关闭",
           "action_toast": "正在关闭系统",
           "failed": "关闭系统失败"
         },
         "restart-safe-mode": {
-          "title": "以安全模式重新启动 Home Assistant",
-          "description": "重新启动 Home Assistant，但不加载任何自定义集成和前端模块。",
-          "confirm_title": "要以安全模式重新启动 Home Assistant 吗？",
-          "confirm_description": "这将重新启动 Home Assistant，但不加载任何自定义集成和前端模块。",
+          "title": "以安全模式重新启动 XOAI",
+          "description": "重新启动 XOAI，但不加载任何自定义集成和前端模块。",
+          "confirm_title": "要以安全模式重新启动 XOAI 吗？",
+          "confirm_description": "这将重新启动 XOAI，但不加载任何自定义集成和前端模块。",
           "confirm_action": "重新启动",
           "confirm_action_backup": "等待并重启",
-          "failed": "重新启动 Home Assistant 失败"
+          "failed": "重新启动 XOAI 失败"
         }
       },
       "aliases": {
@@ -2077,12 +2077,12 @@
           "minimum": "最小值",
           "maximum": "最大值",
           "initial": "初始值",
-          "restore": "当 Home Assistant 启动时，还原为最后已知的值",
+          "restore": "当 XOAI 启动时，还原为最后已知的值",
           "step": "步长"
         },
         "timer": {
           "duration": "时长",
-          "restore": "还原 Home Assistant 启动时的状态和时间"
+          "restore": "还原 XOAI 启动时的状态和时间"
         },
         "schedule": {
           "delete": "删除项目？",
@@ -2130,8 +2130,8 @@
         "enable_new_entities_label": "启用新增实体",
         "enable_new_entities_description": "是否自动添加由“{integration}”新发现的设备。",
         "enable_polling_label": "启用轮询更新",
-        "enable_polling_description": "是否让 Home Assistant 轮询“{integration}”的实体，以便更新其状态。",
-        "restart_home_assistant": "您需要重新启动 Home Assistant 才能使更改生效。",
+        "enable_polling_description": "是否让 XOAI 轮询“{integration}”的实体，以便更新其状态。",
+        "restart_home_assistant": "您需要重新启动 XOAI 才能使更改生效。",
         "update": "更新"
       },
       "zha_reconfigure_device": {
@@ -2230,7 +2230,7 @@
         "reasons": {
           "docker": "Docker 环境无法正常工作",
           "oserror_bad_message": "操作系统出错：错误消息",
-          "duplicate_os_installation": "重复安装 Home Assistant 操作系统",
+          "duplicate_os_installation": "重复安装 XOAI 操作系统",
           "privileged": "Supervisor 权限不够",
           "supervisor": "Supervisor 未能更新",
           "setup": "Supervisor 设置失败",
@@ -2278,7 +2278,7 @@
         },
         "new": {
           "header": "添加 Matter 设备",
-          "note": "您需要在手机上使用 Home Assistant Companion 应用来添加 Matter 设备。",
+          "note": "您需要在手机上使用 XOAI Companion 应用来添加 Matter 设备。",
           "download_app": "从 Google Play 商店或 App Store 安装（如果您没有）。如果您在使用 iOS 应用，请确保 iPhone 或 iPad 运行的 iOS 版本是 iOS 16 或更新的版本。",
           "playstore": "从 Google Play 获取",
           "appstore": "从 App Store 下载"
@@ -2297,8 +2297,8 @@
           "step_3": "点击 {link_apps_services} 并从列表中选择 {home_assistant}。",
           "linked_matter_apps_services": "已链接 Matter 应用和服务",
           "link_apps_services": "链接应用和服务",
-          "no_home_assistant": "我在列表中找不到 Home Assistant",
-          "redirect": "您将被重定向至 Home Assistant 应用。请按照说明操作。"
+          "no_home_assistant": "我在列表中找不到 XOAI",
+          "redirect": "您将被重定向至 XOAI 应用。请按照说明操作。"
         },
         "google_home_fallback": {
           "header": "复制配对代码",
@@ -2372,7 +2372,7 @@
         },
         "other": {
           "title": "其他",
-          "my_link": "获取“我的 My Home Assistant” 链接",
+          "my_link": "获取“我的 My XOAI” 链接",
           "show_shortcuts": "显示键盘快捷键"
         }
       }
@@ -2426,8 +2426,8 @@
     "notification_toast": {
       "action_failed": "无法执行动作“{service}” 。",
       "connection_lost": "连接中断。正在重新连接…",
-      "started": "Home Assistant 已启动！",
-      "starting": "正在启动 Home Assistant 。在启动完成前，部分功能暂不可用。",
+      "started": "XOAI 已启动！",
+      "starting": "正在启动 XOAI 。在启动完成前，部分功能暂不可用。",
       "wrapping_up_startup": "启动即将完成。完成后即可使用全部功能。",
       "integration_starting": "正在启动 {integration}。在启动完成前，部分功能暂不可用。",
       "triggered": "已触发 {name}",
@@ -2463,7 +2463,7 @@
         "editor": {
           "title": "编辑“概览”页面",
           "description": "配置“概览”页面显示首选项。",
-          "favorite_entities_helper": "显示您收藏的实体。Home Assistant 仍会根据常用选项（最多 8 个）提供建议。",
+          "favorite_entities_helper": "显示您收藏的实体。XOAI 仍会根据常用选项（最多 8 个）提供建议。",
           "save_failed": "保存“概览”页面配置失败",
           "areas_hint": "您可以在“{areas_page}”根据自己房屋的实际情况，重新排列楼层和区域。",
           "areas_page": "区域页面",
@@ -2489,14 +2489,14 @@
         }
       },
       "my": {
-        "not_supported": "您的 Home Assistant 不支持此重定向。请查阅{link}以获取受支持的重定向及其引入的版本。",
-        "component_not_loaded": "您的 Home Assistant 不支持此重定向。需要使用 {integration} 集成才能使用它。",
-        "no_supervisor": "您安装的 Home Assistant 不支持此重定向。要求 Home Assistant 操作系统或者 Home Assistant Supervised 安装方式。有关更多信息，请参阅 {docs_link} 。",
-        "not_app": "此重定向仅适用于安装了 Home Assistant Companion 应用的移动设备。{link}。",
+        "not_supported": "您的 XOAI 不支持此重定向。请查阅{link}以获取受支持的重定向及其引入的版本。",
+        "component_not_loaded": "您的 XOAI 不支持此重定向。需要使用 {integration} 集成才能使用它。",
+        "no_supervisor": "您安装的 XOAI 不支持此重定向。要求 XOAI 操作系统或者 XOAI Supervised 安装方式。有关更多信息，请参阅 {docs_link} 。",
+        "not_app": "此重定向仅适用于安装了 XOAI Companion 应用的移动设备。{link}。",
         "url_error": "提供的网址无效。",
         "documentation": "文档",
         "download_app": "单击此处下载应用程序",
-        "faq_link": "我的 Home Assistant 常见问题",
+        "faq_link": "我的 XOAI 常见问题",
         "error": "发生未知错误"
       },
       "config": {
@@ -2514,7 +2514,7 @@
             "actions": "动作"
           }
         },
-        "header": "配置 Home Assistant",
+        "header": "配置 XOAI",
         "dashboard": {
           "devices": {
             "main": "设备与服务",
@@ -2526,11 +2526,11 @@
           },
           "backup": {
             "main": "备份",
-            "secondary": "创建 Home Assistant 配置的备份"
+            "secondary": "创建 XOAI 配置的备份"
           },
           "apps": {
             "main": "应用",
-            "secondary": "与 Home Assistant 同时运行附加应用程序"
+            "secondary": "与 XOAI 同时运行附加应用程序"
           },
           "dashboards": {
             "main": "仪表盘",
@@ -2569,7 +2569,7 @@
             "secondary": "用于检查和调试系统的高级工具"
           },
           "about": {
-            "main": "关于 Home Assistant",
+            "main": "关于 XOAI",
             "secondary": "版本和更多信息"
           },
           "cloud": {
@@ -2622,7 +2622,7 @@
         },
         "updates": {
           "caption": "更新",
-          "description": "管理 Home Assistant 、应用和设备的更新",
+          "description": "管理 XOAI 、应用和设备的更新",
           "no_updates": "没有可用的更新",
           "no_update_entities": {
             "title": "无法检查更新",
@@ -2646,7 +2646,7 @@
         },
         "repairs": {
           "caption": "修复",
-          "description": "查找并修复 Home Assistant 实例的问题",
+          "description": "查找并修复 XOAI 实例的问题",
           "title": "{count} 个{count, plural,\n  one {修复}\n  other {修复}\n}",
           "no_repairs": "目前没有待定的修复",
           "more_repairs": "显示全部修复",
@@ -2693,7 +2693,7 @@
         },
         "ai_task": {
           "header": "AI 建议",
-          "description": "Home Assistant 可以使用生成式 AI 来帮助您完成任务。在 Home Assistant 中查找带有{button}图标的按钮即可获取建议。选择一个 AI 任务实体即可使用此功能。",
+          "description": "XOAI 可以使用生成式 AI 来帮助您完成任务。在 XOAI 中查找带有{button}图标的按钮即可获取建议。选择一个 AI 任务实体即可使用此功能。",
           "gen_data_header": "数据生成任务",
           "gen_data_description": "建议自动化名称。",
           "gen_image_header": "图像生成任务",
@@ -2790,7 +2790,7 @@
             "option": {
               "boot": {
                 "title": "开机启动",
-                "description": "Home Assistant 启动时自动启动此应用。"
+                "description": "XOAI 启动时自动启动此应用。"
               },
               "watchdog": {
                 "title": "自动恢复",
@@ -2818,7 +2818,7 @@
                 "rating": "评级",
                 "host": "主机",
                 "hardware": "硬件访问",
-                "core": "Home Assistant",
+                "core": "XOAI",
                 "docker": "Docker",
                 "host_pid": "主机 PID",
                 "apparmor": "AppArmor",
@@ -2829,7 +2829,7 @@
               "role": {
                 "manager": "主管",
                 "default": "默认",
-                "homeassistant": "homeassistant",
+                "xoai": "xoai",
                 "backup": "备份",
                 "admin": "超级管理"
               },
@@ -2849,9 +2849,9 @@
                 "title": "完全硬件访问权限",
                 "description": "此应用拥有对硬件的完全访问权限。"
               },
-              "homeassistant_api": {
-                "title": "Home Assistant API",
-                "description": "此应用可以访问 Home Assistant API 。"
+              "xoai_api": {
+                "title": "XOAI API",
+                "description": "此应用可以访问 XOAI API 。"
               },
               "hassio_api": {
                 "title": "Supervisor API",
@@ -3007,7 +3007,7 @@
           },
           "picker": {
             "header": "区域",
-            "introduction": "区域用于组织设备所在的位置。此信息可被用于 Home Assistant 的各个地方，帮助您组织界面、权限以及与其它系统的集成。",
+            "introduction": "区域用于组织设备所在的位置。此信息可被用于 XOAI 的各个地方，帮助您组织界面、权限以及与其它系统的集成。",
             "introduction2": "要将设备置入某个区域，请使用下面的链接转到集成页面，然后点击一个已配置的集成以进入设备卡片。",
             "integrations_page": "集成页面",
             "no_areas": "您还没有建立区域。",
@@ -3064,7 +3064,7 @@
         "backup": {
           "caption": "备份",
           "description": "上次备份于 {relative_time}",
-          "description_no_backup": "管理备份或将 Home Assistant 还原到以前的状态",
+          "description_no_backup": "管理备份或将 XOAI 还原到以前的状态",
           "create_backup": "创建备份",
           "creating_backup": "当前正在创建备份",
           "download_backup": "下载备份",
@@ -3097,7 +3097,7 @@
           "dialogs": {
             "local_backup_location": {
               "title": "更改默认本地备份位置",
-              "description": "更改 Home Assistant 实例上存储本地备份的默认位置。",
+              "description": "更改 XOAI 实例上存储本地备份的默认位置。",
               "note": "例如当你在自动化里使用 Supervisor 动作创建备份时，会将备份保存至此目录。",
               "options": {
                 "default_backup_mount": {
@@ -3122,7 +3122,7 @@
               "supports_tar": "支持 .tar 文件",
               "unsupported": {
                 "title": "不支持的文件格式",
-                "text": "请选择 Home Assistant 备份文件 (.tar)"
+                "text": "请选择 XOAI 备份文件 (.tar)"
               }
             },
             "generate": {
@@ -3136,8 +3136,8 @@
                   "custom": "自定义"
                 },
                 "ha_cloud_alert": {
-                  "title": "Home Assistant Cloud 无法同步",
-                  "description": "添加要同步此备份到 Home Assistant Cloud 的 Home Assistant 设置数据。"
+                  "title": "XOAI Cloud 无法同步",
+                  "description": "添加要同步此备份到 XOAI Cloud 的 XOAI 设置数据。"
                 }
               },
               "data": {
@@ -3173,7 +3173,7 @@
                 "input_label": "加密密钥"
               },
               "progress": {
-                "restarting": "重启 Home Assistant",
+                "restarting": "重启 XOAI",
                 "restoring": "正在还原备份"
               },
               "actions": {
@@ -3198,7 +3198,7 @@
               },
               "schedule": {
                 "title": "自动备份",
-                "description": "让 Home Assistant 负责您的备份，方法是创建计划备份并移除旧备份。"
+                "description": "让 XOAI 负责您的备份，方法是创建计划备份并移除旧备份。"
               },
               "data": {
                 "title": "备份数据",
@@ -3206,7 +3206,7 @@
               },
               "locations": {
                 "title": "位置",
-                "description": "自动备份时，Home Assistant 会上传到这些位置。您可以使用所有位置进行手动备份。"
+                "description": "自动备份时，XOAI 会上传到这些位置。您可以使用所有位置进行手动备份。"
               },
               "save_and_create": "保存并创建备份"
             },
@@ -3261,7 +3261,7 @@
           },
           "agents": {
             "cloud_agent_description": "注意：无论您的保留设置如何，它都仅存储最近的备份，最大大小为 5 GB 。",
-            "cloud_agent_no_subcription": "您当前没有有效的 Home Assistant Cloud 订阅。",
+            "cloud_agent_no_subcription": "您当前没有有效的 XOAI Cloud 订阅。",
             "network_mount_agent_description": "网络存储",
             "unavailable_agents": "位置不可用",
             "no_agents": "未配置位置",
@@ -3272,7 +3272,7 @@
             "retention_days": "保留 {count} {count, plural,\n one {天}\n other {天}\n}"
           },
           "data": {
-            "ha_settings": "Home Assistant 设置",
+            "ha_settings": "XOAI 设置",
             "ha_settings_description": "还原系统所需的最低限度。",
             "ha_settings_included_description": "还原系统所需的最低限度。它始终包含在自动备份数据中。",
             "history": "历史",
@@ -3309,9 +3309,9 @@
             "time": "时间",
             "custom_time": "自定义时间",
             "custom_time_label": "备份于",
-            "custom_time_description": "最佳时间是 Home Assistant 完成数据库清理之后。此操作在 {time} 完成。",
+            "custom_time_description": "最佳时间是 XOAI 完成数据库清理之后。此操作在 {time} 完成。",
             "schedule_description": "您想多久创建一次备份。",
-            "schedule_time_description": "何时启动备份创建进程。默认情况下，Home Assistant 会在 {time_range_start} 和 {time_range_end} 之间选择最佳时间。",
+            "schedule_time_description": "何时启动备份创建进程。默认情况下，XOAI 会在 {time_range_start} 和 {time_range_end} 之间选择最佳时间。",
             "tip": "您可以使用 {backup_create} 动作创建自己的自定义备份自动化",
             "schedule_options": {
               "never": "永不",
@@ -3361,8 +3361,8 @@
             "set_encryption_key_action": "设置"
           },
           "emergency_kit_file": {
-            "title": "Home Assistant 备份应急套件",
-            "description": "此应急工具包包含您的备份加密密钥。您需要此密钥才能还原您的 Home Assistant 备份。",
+            "title": "XOAI 备份应急套件",
+            "description": "此应急工具包包含您的备份加密密钥。您需要此密钥才能还原您的 XOAI 备份。",
             "date": "日期：",
             "instance": "实例：",
             "url": "网址：",
@@ -3398,7 +3398,7 @@
                   "docker_config": "正在备份 Docker 配置",
                   "finishing_file": "正在完成备份文件",
                   "folders": "正在备份文件夹",
-                  "home_assistant": "正在备份 Home Assistant",
+                  "home_assistant": "正在备份 XOAI",
                   "upload_to_agents": "正在上传至位置",
                   "cleaning_up": "清理"
                 },
@@ -3409,12 +3409,12 @@
                   "app_repositories": "正在还原应用存储库",
                   "apps": "正在还原应用",
                   "await_app_restarts": "正在等待应用重启",
-                  "await_home_assistant_restart": "正在等待 Home Assistant 重启",
-                  "check_home_assistant": "正在检查 Home Assistant",
+                  "await_home_assistant_restart": "正在等待 XOAI 重启",
+                  "check_home_assistant": "正在检查 XOAI",
                   "docker_config": "正在还原 Docker 配置",
                   "download_from_agent": "正在从位置下载",
                   "folders": "正在还原文件夹",
-                  "home_assistant": "正在还原 Home Assistant",
+                  "home_assistant": "正在还原 XOAI",
                   "remove_delta_addons": "正在移除增量应用",
                   "remove_delta_apps": "正在移除增量应用"
                 },
@@ -3424,7 +3424,7 @@
                 }
               },
               "segments": {
-                "home_assistant": "Home Assistant",
+                "home_assistant": "XOAI",
                 "apps": "应用",
                 "media": "媒体",
                 "upload": "正在上传备份",
@@ -3481,7 +3481,7 @@
               "schedule_optimized_daily": "每天",
               "schedule_optimized_days": "每{days}",
               "schedule_never": "没有安排自动备份",
-              "data": "包含的 Home Assistant 数据",
+              "data": "包含的 XOAI 数据",
               "data_settings_history": "设置和历史记录",
               "data_settings_only": "仅限设置",
               "apps": "已包含的应用",
@@ -3529,7 +3529,7 @@
             },
             "schedule": {
               "title": "自动备份",
-              "description": "让 Home Assistant 负责您的备份，方法是创建计划备份并移除旧备份。"
+              "description": "让 XOAI 负责您的备份，方法是创建计划备份并移除旧备份。"
             },
             "data": {
               "title": "备份数据"
@@ -3596,7 +3596,7 @@
             "error": "无法获取位置详情",
             "configuration": {
               "title": "配置",
-              "cloud_description": "Home Assistant 云备份仅存储一个备份。最旧的备份将会被删除。"
+              "cloud_description": "XOAI 云备份仅存储一个备份。最旧的备份将会被删除。"
             },
             "encryption": {
               "title": "加密",
@@ -3604,7 +3604,7 @@
               "location_encrypted": "在此位置的备份将被加密",
               "location_unencrypted": "在此位置进行的备份将不加密",
               "location_encrypted_description": "通过使用加密密钥加密备份，您的数据是私密且安全的。",
-              "location_encrypted_cloud_description": "Home Assistant Cloud 是注重隐私的云。这就是为什么它只接受加密备份，并且我们不存储您的加密密钥。",
+              "location_encrypted_cloud_description": "XOAI Cloud 是注重隐私的云。这就是为什么它只接受加密备份，并且我们不存储您的加密密钥。",
               "location_encrypted_cloud_learn_more": "了解更多信息",
               "location_unencrypted_description": "请确保您的备份的私密性和安全性。",
               "encryption_turn_on": "开启",
@@ -3656,7 +3656,7 @@
           "tabs": {
             "assist": {
               "title": "语句解析器",
-              "description": "输入语句并查看 Home Assistant 将如何解析它们。每一行作为一个单独的语句进行处理。实际意向（intent）不会在您的实例上执行。",
+              "description": "输入语句并查看 XOAI 将如何解析它们。每一行作为一个单独的语句进行处理。实际意向（intent）不会在您的实例上执行。",
               "parse_sentences": "解析语句",
               "sentences": "语句",
               "download_results": "下载结果",
@@ -3704,7 +3704,7 @@
             },
             "actions": {
               "title": "动作",
-              "description": "动作开发工具可让您执行 Home Assistant 中任何可用的动作。",
+              "description": "动作开发工具可让您执行 XOAI 中任何可用的动作。",
               "call_service": "执行动作",
               "response": "响应",
               "column_parameter": "参数",
@@ -3737,7 +3737,7 @@
             },
             "states": {
               "title": "状态",
-              "description1": "设置实体在 Home Assistant 中的当前状态表现形式。",
+              "description1": "设置实体在 XOAI 中的当前状态表现形式。",
               "description2": "如果实体属于某个设备，则不会与此设备进行实际通信。",
               "entity": "实体",
               "state": "状态",
@@ -3757,7 +3757,7 @@
             },
             "templates": {
               "title": "模板",
-              "description": "模板使用 jinja2 模板引擎和一些 Home Assistant 特定扩展进行渲染。",
+              "description": "模板使用 jinja2 模板引擎和一些 XOAI 特定扩展进行渲染。",
               "editor": "模板编辑器",
               "result": "结果",
               "reset": "重置为演示模板",
@@ -3765,7 +3765,7 @@
               "confirm_clear": "您想清空当前模板吗 ？",
               "result_type": "结果类型",
               "jinja_documentation": "Jinja2 模板文档",
-              "template_extensions": "Home Assistant 模板扩展",
+              "template_extensions": "XOAI 模板扩展",
               "unknown_error_template": "渲染模板时发生了未知错误",
               "time": "此模板在每一分钟开始时更新。",
               "all_listeners": "此模板监听所有的状态变化事件。",
@@ -3882,9 +3882,9 @@
               "section": {
                 "validation": {
                   "heading": "检查并重启",
-                  "introduction": "服务重启前会自动执行配置的基本校验。此基本校验可以确保 YAML 配置没有错误，不会阻止 Home Assistant 或集成的启动。您也可以只执行校验而不重启服务。",
+                  "introduction": "服务重启前会自动执行配置的基本校验。此基本校验可以确保 YAML 配置没有错误，不会阻止 XOAI 或集成的启动。您也可以只执行校验而不重启服务。",
                   "check_config": "检查配置",
-                  "valid": "配置不会阻止 Home Assistant 启动！",
+                  "valid": "配置不会阻止 XOAI 启动！",
                   "invalid": "配置无效！",
                   "warnings": "配置警告",
                   "errors": "配置错误"
@@ -3892,7 +3892,7 @@
                 "reloading": {
                   "all": "所有 YAML 配置",
                   "heading": "YAML 配置重新加载",
-                  "introduction": "Home Assistant 的某些部分无需重启即可重新加载。选择以下选项之一将卸载其当前的 YAML 配置并加载新的配置。",
+                  "introduction": "XOAI 的某些部分无需重启即可重新加载。选择以下选项之一将卸载其当前的 YAML 配置并加载新的配置。",
                   "reload": "{domain}（reload）",
                   "core": "位置和自定义（core）",
                   "group": "分组、分组实体以及通知服务（group）",
@@ -3929,11 +3929,11 @@
                   "themes": "主题（themes）"
                 },
                 "server_management": {
-                  "heading": "Home Assistant（heading）",
+                  "heading": "XOAI（heading）",
                   "restart": "重启（restart）",
                   "stop": "停止（stop）",
-                  "confirm_stop": "您确定要停止 Home Assistant 吗 ？（confirm_stop）",
-                  "restart_error": "重新启动 Home Assistant 失败（restart_error）"
+                  "confirm_stop": "您确定要停止 XOAI 吗 ？（confirm_stop）",
+                  "restart_error": "重新启动 XOAI 失败（restart_error）"
                 }
               }
             }
@@ -3952,7 +3952,7 @@
           "delete_integration": "您确定要移除此集成吗 ？由此集成提供的实体将一并删除。",
           "grid": {
             "title": "电力公司",
-            "sub": "配置从电网消耗的电量，以及自发电用户返还给电力公司的电量，以便 Home Assistant 可以监测您的全屋能耗。",
+            "sub": "配置从电网消耗的电量，以及自发电用户返还给电力公司的电量，以便 XOAI 可以监测您的全屋能耗。",
             "learn_more": "进一步了解如何开始使用",
             "grid_connections": "电网连接",
             "add_connection": "添加电网连接",
@@ -3969,7 +3969,7 @@
               "energy_to_grid": "输出电网的能源",
               "energy_to_helper": "选取测量电网输出的传感器（单位为 {unit} 之一） 。",
               "import_cost": "成本跟踪",
-              "import_cost_para": "选择 Home Assistant 如何跟踪输入能源的成本。",
+              "import_cost_para": "选择 XOAI 如何跟踪输入能源的成本。",
               "no_cost_tracking": "不追踪成本",
               "cost_stat": "使用可跟踪总成本的实体",
               "cost_stat_label": "总成本实体",
@@ -4013,7 +4013,7 @@
           },
           "solar": {
             "title": "太阳能电池板",
-            "sub": "让 Home Assistant 监控您的太阳能板，并向您展示其性能。",
+            "sub": "让 XOAI 监控您的太阳能板，并向您展示其性能。",
             "learn_more": "进一步了解如何开始使用",
             "solar_production": "光伏发电量",
             "edit_solar_production": "编辑光伏发电数据",
@@ -4063,7 +4063,7 @@
           },
           "gas": {
             "title": "燃气消耗",
-            "sub": "让 Home Assistant 监控您的燃气用量。",
+            "sub": "让 XOAI 监控您的燃气用量。",
             "learn_more": "进一步了解如何开始使用",
             "gas_consumption": "耗气量",
             "edit_gas_source": "编辑燃气数据",
@@ -4074,7 +4074,7 @@
               "paragraph": "耗气量是家中的燃气用量，或通过燃烧燃气而消耗的能量。",
               "entity_para": "选择测量耗气量的传感器，单位为 {unit} 之一。",
               "note_para": "注意：不能同时添加表示燃气用量的传感器和表示消耗燃气能量的传感器。",
-              "cost_para": "选择 Home Assistant 如何监测消耗燃气的费用。",
+              "cost_para": "选择 XOAI 如何监测消耗燃气的费用。",
               "no_cost": "不跟踪成本",
               "cost_stat": "使用可跟踪总成本的实体",
               "cost_stat_input": "总成本实体",
@@ -4092,7 +4092,7 @@
           },
           "water": {
             "title": "自来水消耗",
-            "sub": "让 Home Assistant 监控您家的用水量。",
+            "sub": "让 XOAI 监控您家的用水量。",
             "learn_more": "进一步了解如何开始使用",
             "water_consumption": "自来水消耗",
             "edit_water_source": "编辑自来水数据",
@@ -4102,7 +4102,7 @@
               "header": "配置耗水量",
               "paragraph": "用水量就是流入您家的水量。",
               "entity_para": "选择测量用水量的传感器，单位为 {unit} 之一。",
-              "cost_para": "选择 Home Assistant 如何监测消耗自来水的费用。",
+              "cost_para": "选择 XOAI 如何监测消耗自来水的费用。",
               "no_cost": "不跟踪成本",
               "cost_stat": "使用可跟踪总成本的实体",
               "cost_stat_input": "总成本实体",
@@ -4118,7 +4118,7 @@
           },
           "device_consumption": {
             "title": "单个电气设备",
-            "sub": "通过跟踪单个设备的能耗，Home Assistant 可以将能耗细化到每个设备。",
+            "sub": "通过跟踪单个设备的能耗，XOAI 可以将能耗细化到每个设备。",
             "learn_more": "进一步了解如何开始使用",
             "add_stat": "选择要监测能耗的实体",
             "selected_stat": "能耗监测:",
@@ -4137,7 +4137,7 @@
           },
           "device_consumption_water": {
             "title": "各个用水设备",
-            "sub": "通过追踪各个设备的用水量，Home Assistant 可以按设备细分您的用水量。",
+            "sub": "通过追踪各个设备的用水量，XOAI 可以按设备细分您的用水量。",
             "learn_more": "更多入门信息",
             "devices": "设备",
             "add_device": "添加设备",
@@ -4195,7 +4195,7 @@
               "header": "通用配置",
               "introduction": "管理您的位置、网络信息和分析数据的处理方式。",
               "core_config": {
-                "edit_requires_storage": "您无法在用户界面中更改这些设置，因为您已将配置存储在 configuration.yaml 中的 homeassistant 键下面。",
+                "edit_requires_storage": "您无法在用户界面中更改这些设置，因为您已将配置存储在 configuration.yaml 中的 xoai 键下面。",
                 "location_name": "名称",
                 "latitude": "纬度",
                 "longitude": "经度",
@@ -4235,18 +4235,18 @@
           }
         },
         "url": {
-          "caption": "Home Assistant 网址",
-          "description": "当其它设备需要从 Home Assistant 获取数据（例如播放文本转语音或托管媒体）时，配置 Home Assistant 应共享给这些设备的网站地址。",
+          "caption": "XOAI 网址",
+          "description": "当其它设备需要从 XOAI 获取数据（例如播放文本转语音或托管媒体）时，配置 XOAI 应共享给这些设备的网站地址。",
           "internal_url_label": "本地网络",
           "external_url_label": "互联网",
-          "external_use_ha_cloud": "使用 Home Assistant Cloud",
-          "manage_ha_cloud": "管理 Home Assistant Cloud",
-          "external_get_ha_cloud": "如果您正在寻找一种无论身在何处都能快速安全地连接到 Home Assistant 的方式，请立即开始试用 Home Assistant Cloud。您的每次购买行为都是在支持 Home Assistant 的开发。",
-          "ha_cloud_remote_not_enabled": "Home Assistant Cloud 远程连接当前未启用。",
+          "external_use_ha_cloud": "使用 XOAI Cloud",
+          "manage_ha_cloud": "管理 XOAI Cloud",
+          "external_get_ha_cloud": "如果您正在寻找一种无论身在何处都能快速安全地连接到 XOAI 的方式，请立即开始试用 XOAI Cloud。您的每次购买行为都是在支持 XOAI 的开发。",
+          "ha_cloud_remote_not_enabled": "XOAI Cloud 远程连接当前未启用。",
           "enable_remote": "启用",
           "internal_url_automatic": "自动",
           "internal_url_https_error_title": "本地网络网址无效",
-          "internal_url_https_error_description": "您已经为 Home Assistant 配置了 SSL 证书。因此本地网络地址的域名需要在此证书的域名范围内。",
+          "internal_url_https_error_description": "您已经为 XOAI 配置了 SSL 证书。因此本地网络地址的域名需要在此证书的域名范围内。",
           "internal_url_automatic_description": "使用配置的网络设置",
           "internal_url_placeholder": "http://<some IP address>:8123",
           "invalid_url": "无效网址"
@@ -4274,7 +4274,7 @@
           "documentation": "文档",
           "configure": "配置",
           "documentation_description": "查找关于您的设备的更多信息",
-          "restart_homeassistant": "重启 Home Assistant",
+          "restart_xoai": "重启 XOAI",
           "loading_system_data": "正在加载处理器和内存信息..."
         },
         "info": {
@@ -4285,7 +4285,7 @@
           "copy_raw": "原始文本",
           "copy_github": "用于 GitHub",
           "description": "版本号、已加载的集成和各类文档的链接",
-          "home_assistant_logo": "Home Assistant 图标",
+          "home_assistant_logo": "XOAI 图标",
           "developed_by": "由一群了不起的人开发。",
           "license": "根据 Apache 2.0 许可发布",
           "source": "源：",
@@ -4445,7 +4445,7 @@
               "set_default": "设为默认",
               "remove_default": "取消默认",
               "set_default_confirm_title": "设置为默认仪表盘 ？",
-              "set_default_confirm_text": "此仪表盘将在用户打开 Home Assistant 时显示。",
+              "set_default_confirm_text": "此仪表盘将在用户打开 XOAI 时显示。",
               "set_default_confirm_note": "已在个人资料中选择特定仪表盘的用户不会受到影响。他们必须将其设置回“自动（使用系统设置）”才能使用此仪表盘。",
               "set_default_admin_only_title": "无法设置为默认",
               "set_default_admin_only_text": "此仪表盘设置为仅限管理员使用。在将其设置为默认之前，请取消此限制。"
@@ -4585,7 +4585,7 @@
               "features": {
                 "assistants": {
                   "title": "Google Assistant 和 Amazon Alexa",
-                  "text": "通过任何支持 Google Assistant 或 Alexa 的设备控制所有 Home Assistant 设备。"
+                  "text": "通过任何支持 Google Assistant 或 Alexa 的设备控制所有 XOAI 设备。"
                 },
                 "speech": {
                   "title": "优质的语音体验",
@@ -4593,7 +4593,7 @@
                 },
                 "remote_access": {
                   "title": "远程访问",
-                  "text": "在支持 Home Assistant 开发的同时，安全地远程访问您的系统。"
+                  "text": "在支持 XOAI 开发的同时，安全地远程访问您的系统。"
                 }
               },
               "and_more": "了解更多信息",
@@ -4689,8 +4689,8 @@
             "check": {
               "title": "您好 ！",
               "secondary": "在接下来的几个步骤中，我们将个性化您的语音助手。",
-              "failed_title": "语音助手无法连接到 Home Assistant",
-              "failed_secondary": "要播放音频，语音助手设备必须连接到 Home Assistant 才能获取文件。我们的测试表明该设备无法连接到 Home Assistant 服务器。",
+              "failed_title": "语音助手无法连接到 XOAI",
+              "failed_secondary": "要播放音频，语音助手设备必须连接到 XOAI 才能获取文件。我们的测试表明该设备无法连接到 XOAI 服务器。",
               "help": "帮我",
               "retry": "重试"
             },
@@ -4728,8 +4728,8 @@
               },
               "options": {
                 "cloud": {
-                  "label": "Home Assistant Cloud",
-                  "description": "将语音处理卸载到快速的私有云。提供有最高的准确度和最广泛的语言支持。Home Assistant Cloud 是一项包含语音处理的订阅服务。"
+                  "label": "XOAI Cloud",
+                  "description": "将语音处理卸载到快速的私有云。提供有最高的准确度和最广泛的语言支持。XOAI Cloud 是一项包含语音处理的订阅服务。"
                 },
                 "focused_local": {
                   "label": "重点本地处理",
@@ -4749,7 +4749,7 @@
               }
             },
             "cloud": {
-              "title": "Home Assistant Cloud 的强大功能",
+              "title": "XOAI Cloud 的强大功能",
               "register": {
                 "confirm_email": "确认电子邮件"
               }
@@ -4837,7 +4837,7 @@
               "disable": "禁用"
             },
             "empty_header": "开始自动化",
-            "empty_text_1": "自动化使 Home Assistant 能够自动响应在您的家中和周围发生的事情。",
+            "empty_text_1": "自动化使 XOAI 能够自动响应在您的家中和周围发生的事情。",
             "empty_text_2": "自动化就是“当‘触发条件’被触发时，就执行‘动作’”的行为。这种行为可以通过“环境条件”加以限制。例如：“当太阳落山时，如果 {user} 在家，则打开灯光”。",
             "migrate_automation": "迁移自动化 ？",
             "migrate_automation_description": "您可以迁移此自动化，以便可以在用户界面中编辑它。迁移并保存后，您必须从配置中手动删除旧自动化。是否要迁移此自动化 ？"
@@ -4853,7 +4853,7 @@
               "author": "作者：{author}",
               "local": "由您创建",
               "community": "由社区提供",
-              "homeassistant": "由 Home Assistant 提供"
+              "xoai": "由 XOAI 提供"
             },
             "discover_blueprint_tip": "发现更多社区蓝图"
           },
@@ -5052,7 +5052,7 @@
                   "context_user_picked": "用户触发事件",
                   "context_user_pick": "选择用户",
                   "description": {
-                    "picker": "当接收到某个事件（事件是 Home Assistant 的一个高级概念）时触发。",
+                    "picker": "当接收到某个事件（事件是 XOAI 的一个高级概念）时触发。",
                     "full": "当“{eventTypes}”事件被触发时"
                   }
                 },
@@ -5080,15 +5080,15 @@
                     "full": "当 {hasEntity, select, \n true {{entity}} \n other {某个实体}\n} {hasAttribute, select, \n true {的 {attribute} } \n other {}\n}{fromChoice, select, \n fromUsed {从 {fromString} }\n null {从 任意状态 } \n other {}\n}{toChoice, select, \n toUsed {变为 {toString} } \n null {变为 任意状态 } \n special {的状态或任一属性发生变化} \n other {变为 其它任意状态 }\n}{hasDuration, select, \n true {，并且持续了 {duration}} \n other {}\n}"
                   }
                 },
-                "homeassistant": {
-                  "label": "Home Assistant",
+                "xoai": {
+                  "label": "XOAI",
                   "event": "事件：",
                   "start": "启动",
                   "shutdown": "关闭",
                   "description": {
-                    "picker": "当 Home Assistant 启动或关闭时触发。",
-                    "started": "当 Home Assistant 启动后",
-                    "shutdown": "当 Home Assistant 关闭时"
+                    "picker": "当 XOAI 启动或关闭时触发。",
+                    "started": "当 XOAI 启动后",
+                    "shutdown": "当 XOAI 关闭时"
                   }
                 },
                 "mqtt": {
@@ -5219,7 +5219,7 @@
                   "webhook_id_helper": "请将此标识符视同密码：保密并使其难以推测。",
                   "webhook_settings": "Webhook 设置",
                   "description": {
-                    "picker": "当 Home Assistant 接收到对 webhook 端点的网络请求时触发。",
+                    "picker": "当 XOAI 接收到对 webhook 端点的网络请求时触发。",
                     "full": "当收到某个 Webhook 有效载荷时"
                   }
                 },
@@ -5542,7 +5542,7 @@
                   "event": "事件类型",
                   "event_data": "事件数据",
                   "description": {
-                    "picker": "手动触发某个事件（事件是 Home Assistant 中的一个高级概念）。",
+                    "picker": "手动触发某个事件（事件是 XOAI 中的一个高级概念）。",
                     "full": "手动触发事件“{name}”",
                     "template": "基于一个模板"
                   }
@@ -5831,7 +5831,7 @@
             "override_description": "导入它将覆盖现有的蓝图。如果更新的蓝图不兼容，可能会破坏您的自动化。自动化将必须手动调整。",
             "error_no_url": "请输入蓝图地址。",
             "source_warning_title": "检查此蓝图来源",
-            "source_warning_description": "此蓝图并非来自 GitHub 或 Home Assistant 官方网站。仅当您信任此来源时才继续。",
+            "source_warning_description": "此蓝图并非来自 GitHub 或 XOAI 官方网站。仅当您信任此来源时才继续。",
             "unsupported_blueprint": "此蓝图不受支持",
             "file_name": "蓝图路径"
           }
@@ -5878,7 +5878,7 @@
               "author": "作者：{author}",
               "local": "由您创建",
               "community": "由社区提供",
-              "homeassistant": "由 Home Assistant 提供"
+              "xoai": "由 XOAI 提供"
             },
             "discover_blueprint_tip": "发现更多社区蓝图"
           },
@@ -6037,11 +6037,11 @@
           "description_features": "离家时也可控制家居，还可接入 Alexa 和 Google Assistant",
           "login": {
             "title": "云登录",
-            "introduction": "当您不在家时，Home Assistant Cloud 可让您安全地远程连接到您的实例。它还允许您连接 Amazon Alexa 和 Google Assistant（仅限云服务）。",
+            "introduction": "当您不在家时，XOAI Cloud 可让您安全地远程连接到您的实例。它还允许您连接 Amazon Alexa 和 Google Assistant（仅限云服务）。",
             "introduction2": "此服务由我们的合作伙伴运行：",
-            "introduction2a": "，是由 Home Assistant 的创始人创立的公司。",
-            "introduction3": "Home Assistant Cloud 是一项订阅服务，提供一个月免费试用。无需提供付款信息。",
-            "learn_more_link": "详细了解 Home Assistant Cloud",
+            "introduction2a": "，是由 XOAI 的创始人创立的公司。",
+            "introduction3": "XOAI Cloud 是一项订阅服务，提供一个月免费试用。无需提供付款信息。",
+            "learn_more_link": "详细了解 XOAI Cloud",
             "sign_in": "登录",
             "email": "电子邮箱",
             "email_error_msg": "电子邮件无效",
@@ -6059,8 +6059,8 @@
             "alert_mfa_code_required": "您需要输入您的双因素身份验证码。",
             "alert_mfa_expired_or_not_started": "多因素身份验证已过期或未启动。请重试。",
             "alert_totp_code_invalid": "双因素身份验证代码无效。",
-            "cloud_pipeline_title": "想要使用 Home Assistant Cloud 作为您的语音助手吗？",
-            "cloud_pipeline_text": "我们为您创建了一个新助手，使用来自 Home Assistant Cloud 的高级文本到语音和语音到文本引擎。您要将此助手设置为首选助手吗？"
+            "cloud_pipeline_title": "想要使用 XOAI Cloud 作为您的语音助手吗？",
+            "cloud_pipeline_text": "我们为您创建了一个新助手，使用来自 XOAI Cloud 的高级文本到语音和语音到文本引擎。您要将此助手设置为首选助手吗？"
           },
           "forgot_password": {
             "title": "忘记密码",
@@ -6074,14 +6074,14 @@
           "register": {
             "title": "注册账户",
             "headline": "开始您的免费试用",
-            "information": "创建一个账户，开始 Home Assistant Cloud 的一个月免费试用。无需提供付款信息。",
-            "information2": "试用期将为您提供 Home Assistant Cloud 的所有权益，包括：",
-            "feature_remote_control": "离家时可控制 Home Assistant",
+            "information": "创建一个账户，开始 XOAI Cloud 的一个月免费试用。无需提供付款信息。",
+            "information2": "试用期将为您提供 XOAI Cloud 的所有权益，包括：",
+            "feature_remote_control": "离家时可控制 XOAI",
             "feature_google_home": "与 Google Assistant 集成",
             "feature_amazon_alexa": "与 Amazon Alexa 集成",
             "feature_webhook_apps": "轻松接入基于 Webhook 的应用程序（如 OwnTracks）",
             "information3": "此服务由我们的合作伙伴运行：",
-            "information3a": "，是由 Home Assistant 的创始人创立的公司。",
+            "information3a": "，是由 XOAI 的创始人创立的公司。",
             "information4": "注册账户即表示您同意以下条款和条件。",
             "link_terms_conditions": "条款和条件",
             "link_privacy_policy": "隐私政策",
@@ -6103,14 +6103,14 @@
             "reset_data_confirm_text": "这将重置您的所有云设置。包括您的远程连接、Google Assistant 和 Amazon Alexa 集成。此操作无法撤消。",
             "reset": "重置",
             "reset_data_failed": "重置云数据失败",
-            "thank_you_note": "感谢您加入 Home Assistant Cloud。正是因为像您这样的人，我们才得以为每个人带来出色的智能家居体验。谢谢！",
+            "thank_you_note": "感谢您加入 XOAI Cloud。正是因为像您这样的人，我们才得以为每个人带来出色的智能家居体验。谢谢！",
             "nabu_casa_account": "Nabu Casa 账户",
             "connection_status": "云连接状态",
             "manage_account": "管理账户",
             "sign_out": "退出",
             "sign_out_confirm": "您确定要退出登录吗？",
             "integrations": "集成",
-            "integrations_introduction": "Home Assistant Cloud 集成可让您连接云中的服务，而不必在互联网上公开 Home Assistant 实例。",
+            "integrations_introduction": "XOAI Cloud 集成可让您连接云中的服务，而不必在互联网上公开 XOAI 实例。",
             "integrations_introduction2": "浏览网站以查找",
             "integrations_link_all_features": "所有可用功能",
             "tip_moved_voice_assistants": "在寻找 Google Assistant 和 Amazon Alexa 设置？它们已经移动到新的语音助手页面。",
@@ -6143,7 +6143,7 @@
               "cerificate_loading": "您的证书正在加载。",
               "cerificate_loaded": "您的证书已加载，等待验证。",
               "cerificate_error": "生成证书时出错，请检查日志。",
-              "info": "Home Assistant Cloud 可在您离家时提供安全的远程访问。有关远程访问和这些设置的更多信息，请访问我们的安全文档。",
+              "info": "XOAI Cloud 可在您离家时提供安全的远程访问。有关远程访问和这些设置的更多信息，请访问我们的安全文档。",
               "info_instance_will_be_available": "您的实例将在您的 Nabu Casa 网址上可用。",
               "link_learn_how_it_works": "了解其工作原理",
               "security_options": "安全选项",
@@ -6157,16 +6157,16 @@
             },
             "ice_servers": {
               "title": "WebRTC 连接",
-              "info": "Home Assistant Cloud 提供 WebRTC 服务器。这提高了您在外出时查看摄像头流视频的能力。",
+              "info": "XOAI Cloud 提供 WebRTC 服务器。这提高了您在外出时查看摄像头流视频的能力。",
               "link_learn_how_it_works": "了解其工作原理"
             },
             "alexa": {
               "title": "Alexa",
-              "info": "借助于 Home Assistant Cloud 的 Alexa 集成，您将能够通过任何支持 Alexa 的设备来控制所有 Home Assistant 设备。",
-              "enable_ha_skill": "为 Alexa 启用 Home Assistant 技能",
+              "info": "借助于 XOAI Cloud 的 Alexa 集成，您将能够通过任何支持 Alexa 的设备来控制所有 XOAI 设备。",
+              "enable_ha_skill": "为 Alexa 启用 XOAI 技能",
               "config_documentation": "配置文档",
               "enable_state_reporting": "启用状态报告",
-              "info_state_reporting": "如果启用状态报告，则 Home Assistant 会将已公开实体的所有状态变化发送给 Amazon。这样您就可以在 Alexa 应用中始终看到最新状态，并使用状态变化来创建例程。",
+              "info_state_reporting": "如果启用状态报告，则 XOAI 会将已公开实体的所有状态变化发送给 Amazon。这样您就可以在 Alexa 应用中始终看到最新状态，并使用状态变化来创建例程。",
               "state_reporting_error": "无法{enable_disable}报告状态。",
               "show_entities": "显示实体",
               "exposed_entities": "{number} {number, plural,\n  one {个实体}\n  other {个实体}\n} 已公开",
@@ -6174,19 +6174,19 @@
               "enable": "启用",
               "disable": "禁用",
               "not_configured_title": "继续设置 Alexa",
-              "not_configured_text": "在使用 Alexa 之前，需要在 Alexa 应用程序中激活 Alexa 的 Home Assistant 技能。",
+              "not_configured_text": "在使用 Alexa 之前，需要在 Alexa 应用程序中激活 Alexa 的 XOAI 技能。",
               "link_learn_how_it_works": "了解其工作原理",
               "expose_new_entities": "公开新实体",
               "expose_new_entities_info": "新实体是否应自动向 Alexa 公开？支持公开的设备不会被归类为安全设备。"
             },
             "google": {
               "title": "Google Assistant",
-              "info": "通过 Home Assistant Cloud 的 Google Assistant 集成，您将可以通过任何启用了 Google Assistant 的设备来控制所有 Home Assistant 设备。",
+              "info": "通过 XOAI Cloud 的 Google Assistant 集成，您将可以通过任何启用了 Google Assistant 的设备来控制所有 XOAI 设备。",
               "http_use_ssl_warning_title": "本地通信不可用",
-              "http_use_ssl_warning_text": "Google 设备将无法与 Home Assistant 本地通信，因为您为 HTTP 集成配置了 SSL 证书。",
+              "http_use_ssl_warning_text": "Google 设备将无法与 XOAI 本地通信，因为您为 HTTP 集成配置了 SSL 证书。",
               "config_documentation": "配置文档",
               "enable_state_reporting": "启用状态报告",
-              "info_state_reporting": "如果启用状态报告，则 Home Assistant 会将已公开实体的所有状态变化发送给 Google。这样可以让语音命令响应更快，还能让您始终能在 Google 应用中看到最新状态。",
+              "info_state_reporting": "如果启用状态报告，则 XOAI 会将已公开实体的所有状态变化发送给 Google。这样可以让语音命令响应更快，还能让您始终能在 Google 应用中看到最新状态。",
               "security_devices": "安全设备",
               "enter_pin_info": "请输入一个 PIN 码以和安全设备交互。安全设备就是门、车库开门器和锁之类的物品。通过 Google Assistant 与此类设备互动时，会要求您说出或输入此 PIN 码。",
               "devices_pin": "安全设备 PIN 码",
@@ -6196,14 +6196,14 @@
               "manual_config": "通过用户界面编辑可公开实体的功能已禁用，因为您在 configuration.yaml 中已配置了实体过滤器。",
               "enter_pin_error": "无法存储 PIN ：",
               "not_configured_title": "继续设置 Google Assistant",
-              "not_configured_text": "要开始使用 Google Assistant，请在智能手机上的 Google Home 应用中添加 “Nabu Casa 的 Home Assistant Cloud” 服务。",
+              "not_configured_text": "要开始使用 Google Assistant，请在智能手机上的 Google Home 应用中添加 “Nabu Casa 的 XOAI Cloud” 服务。",
               "link_learn_how_it_works": "了解其工作原理",
               "expose_new_entities": "公开新实体",
               "expose_new_entities_info": "新实体是否应自动向 Google Assistant 公开？支持公开的设备不会被归类为安全设备。"
             },
             "webhooks": {
               "title": "Webhook",
-              "info": "任何配置为由 Webhook 触发的自动化，都可以被赋予可公开访问的网址，以便您可以从任何地方将数据发送回 Home Assistant ，而无需将您的实例公开在互联网上。",
+              "info": "任何配置为由 Webhook 触发的自动化，都可以被赋予可公开访问的网址，以便您可以从任何地方将数据发送回 XOAI ，而无需将您的实例公开在互联网上。",
               "no_hooks_yet": "您还没有 webhook。您可以配置一个",
               "no_hooks_yet_link_integration": "基于 Webhook 的集成",
               "no_hooks_yet2": "或创建一个",
@@ -6223,9 +6223,9 @@
             "close": "关闭"
           },
           "dialog_already_connected": {
-            "heading": "已链接到其它 Home Assistant 的账户",
-            "description": "我们注意到另一个实例目前已连接到您的 Home Assistant 云账户。您的 Home Assistant 云账户一次只能登录一个 Home Assistant 实例。如果您在此处登录，另一个实例及其云服务将断开连接，您需要亲自到场才能重新连接。Nabu Casa 支持人员无法远程重新连接已断开连接的 Home Assistant 实例。",
-            "other_home_assistant": "其它 Home Assistant",
+            "heading": "已链接到其它 XOAI 的账户",
+            "description": "我们注意到另一个实例目前已连接到您的 XOAI 云账户。您的 XOAI 云账户一次只能登录一个 XOAI 实例。如果您在此处登录，另一个实例及其云服务将断开连接，您需要亲自到场才能重新连接。Nabu Casa 支持人员无法远程重新连接已断开连接的 XOAI 实例。",
+            "other_home_assistant": "其它 XOAI",
             "instance_name": "实例名称",
             "instance_version": "实例版本",
             "ip_address": "IP 地址",
@@ -6235,7 +6235,7 @@
               "hide": "隐藏 IP 地址"
             },
             "info_backups": {
-              "title": "Home Assistant Cloud 备份",
+              "title": "XOAI Cloud 备份",
               "description": "如果继续，您的云备份可能会被覆盖。我们强烈建议您在继续之前从您的 Nabu Casa 账户页面下载当前备份。"
             },
             "close": "关闭",
@@ -6403,7 +6403,7 @@
           "esphome": {
             "show_encryption_key": "显示加密密钥",
             "encryption_key_title": "ESPHome 加密密钥",
-            "encryption_key_description": "这是您的 ESPHome 设备的加密密钥。请妥善保管，因为在 Home Assistant 实例之间迁移设备时可能需要用到它。"
+            "encryption_key_description": "这是您的 ESPHome 设备的加密密钥。请妥善保管，因为在 XOAI 实例之间迁移设备时可能需要用到它。"
           }
         },
         "entities": {
@@ -6411,8 +6411,8 @@
           "description": "管理已知实体",
           "picker": {
             "header": "实体",
-            "introduction": "Home Assistant 会在注册表中保存其见过的每个可唯一识别的实体。每个实体都会被分配一个只保留给它使用的实体标识符。",
-            "introduction2": "使用实体注册表可重写名称、更改实体标识符或者从 Home Assistant 移除实体。",
+            "introduction": "XOAI 会在注册表中保存其见过的每个可唯一识别的实体。每个实体都会被分配一个只保留给它使用的实体标识符。",
+            "introduction2": "使用实体注册表可重写名称、更改实体标识符或者从 XOAI 移除实体。",
             "search": "搜索到 {number} {number, plural,\n  one {个实体}\n  other {个实体}\n}",
             "unnamed_entity": "未命名实体",
             "filtering_by_config_entry": "按配置条目过滤",
@@ -6442,12 +6442,12 @@
             "enable_selected": {
               "button": "启用所选项",
               "confirm_title": "您想要启用 {number} {number, plural,\n  one {个实体}\n  other {个实体}\n}吗?",
-              "confirm_text": "如果它们正在被禁用，这将使它们在 Home Assistant 重新可用。"
+              "confirm_text": "如果它们正在被禁用，这将使它们在 XOAI 重新可用。"
             },
             "disable_selected": {
               "button": "禁用所选项",
               "confirm_title": "您想要禁用 {number} {number, plural,\n  one {个实体}\n  other {个实体}\n}吗?",
-              "confirm_text": "已禁用的实体将不会被添加到 Home Assistant。"
+              "confirm_text": "已禁用的实体将不会被添加到 XOAI。"
             },
             "restore_entity_id_selected": {
               "button": "重新创建选定实体的标识符",
@@ -6459,7 +6459,7 @@
               "button": "删除所选项",
               "confirm_title": "删除所选的实体？",
               "confirm_text": "您确定要删除这些实体吗？\n\n如果您的仪表盘和自动化中包含这些实体，请从这些仪表盘和自动化中也移除它们。",
-              "confirm_partly_text": "在所选的 {selected} 个实体中只有 {deletable} 个可被删除。其余的实体需要集成先停止提供它们，有时还需要重新启动 Home Assistant。您确定要删除可删除的实体吗？\n\n如果您的仪表盘和自动化中包含这些实体，请从这些仪表盘和自动化中也删除它们。"
+              "confirm_partly_text": "在所选的 {selected} 个实体中只有 {deletable} 个可被删除。其余的实体需要集成先停止提供它们，有时还需要重新启动 XOAI。您确定要删除可删除的实体吗？\n\n如果您的仪表盘和自动化中包含这些实体，请从这些仪表盘和自动化中也删除它们。"
             },
             "hide_selected": {
               "button": "隐藏所选项",
@@ -6476,7 +6476,7 @@
         },
         "person": {
           "caption": "人员",
-          "introduction": "管理 Home Assistant 识别的人员并控制他们的访问权限。",
+          "introduction": "管理 XOAI 识别的人员并控制他们的访问权限。",
           "note_about_persons_configured_in_yaml": "通过 configuration.yaml 配置的人员不能在用户界面中编辑。",
           "learn_more": "详细了解人员",
           "no_persons_created_yet": "您尚未添加任何人员。",
@@ -6538,7 +6538,7 @@
             "create": "创建",
             "update": "更新"
           },
-          "core_location_dialog": "Home Assistant 位置"
+          "core_location_dialog": "XOAI 位置"
         },
         "integrations": {
           "caption": "集成",
@@ -6561,7 +6561,7 @@
           "no_ignored_integrations": "无被忽略的集成",
           "note_about_integrations": "没有与您的搜索相匹配的集成，您想要设置的集成可能还无法通过用户界面进行设置。",
           "note_about_website_reference": "更多信息可访问",
-          "home_assistant_website": "Home Assistant 网站",
+          "home_assistant_website": "XOAI 网站",
           "configure": "配置",
           "reconfigure": "重新配置",
           "none": "尚未配置任何集成",
@@ -6654,11 +6654,11 @@
             "enable_debug_logging": "启用调试日志",
             "reconfigure": "重新配置",
             "reload": "重新加载",
-            "restart_confirm": "重启 Home Assistant 以完成此集成的删除",
+            "restart_confirm": "重启 XOAI 以完成此集成的删除",
             "reload_confirm": "集成已重新加载",
-            "reload_restart_confirm": "重启 Home Assistant 完成此集成的重新加载",
-            "disable_restart_confirm": "重启 Home Assistant 完成此集成的禁用",
-            "enable_restart_confirm": "重启 Home Assistant 完成此集成的启用",
+            "reload_restart_confirm": "重启 XOAI 完成此集成的重新加载",
+            "disable_restart_confirm": "重启 XOAI 完成此集成的禁用",
+            "enable_restart_confirm": "重启 XOAI 完成此集成的启用",
             "disable_confirm_title": "禁用“{title}”？",
             "disable_confirm_text": "其设备和实体将被禁用。",
             "disable_error": "启用或禁用集成失败",
@@ -6721,7 +6721,7 @@
             "yaml_only_title": "此设备无法通过用户界面添加",
             "yaml_only": "您可以将此集成添加到 configuration.yaml 配置文件中来添加它。有关详细信息，请参阅文档。",
             "open_documentation": "打开文档",
-            "no_config_flow": "此集成不支持通过用户界面进行配置。如果您是从 Home Assistant 网站点击链接前来，请确保您运行的是最新版本的 Home Assistant。",
+            "no_config_flow": "此集成不支持通过用户界面进行配置。如果您是从 XOAI 网站点击链接前来，请确保您运行的是最新版本的 XOAI。",
             "not_all_required_fields": "请填写所有必填字段",
             "error_saving_device": "更新设备时出错：{error}",
             "error_saving_entity": "更新实体时出错：{error}",
@@ -6737,7 +6737,7 @@
             },
             "error": "错误",
             "could_not_load": "无法加载配置向导",
-            "not_loaded": "集成未能加载，请尝试重启 Home Assistant。",
+            "not_loaded": "集成未能加载，请尝试重启 XOAI。",
             "supported_brand_flow": "“{supported_brand}”设备由“{flow_domain_name}”提供支持。您想要继续吗？",
             "missing_zwave_zigbee_title": "“{integration}”未设置",
             "missing_zwave_zigbee": "要添加“{brand}”的设备，需要拥有{supported_hardware_link}并设置好“{integration}”集成。如果您已经拥有相关硬件，可继续设置“{integration}”。",
@@ -6750,7 +6750,7 @@
         },
         "users": {
           "caption": "用户",
-          "description": "管理 Home Assistant 用户账户",
+          "description": "管理 XOAI 用户账户",
           "users_privileges_note": "用户组功能正在开发中。该功能使普通用户无法通过 UI 进行管理操作。我们正在审计所有管理 API，确保其仅限管理员访问。",
           "is_not_active": "已禁用",
           "is_system": "系统用户",
@@ -6823,7 +6823,7 @@
           "description": "管理集成使用的 OAuth 应用程序凭据",
           "editor": {
             "caption": "添加应用程序凭据",
-            "description": "OAuth 用于授予 Home Assistant 对其它网站上信息的安全委托访问权限，而无需泄露您的个人凭据。",
+            "description": "OAuth 用于授予 XOAI 对其它网站上信息的安全委托访问权限，而无需泄露您的个人凭据。",
             "missing_credentials": "设置“{integration}”需要配置应用程序凭据。",
             "missing_credentials_domain_link": "查看“{integration}”文档",
             "view_documentation": "查看应用程序凭据文档",
@@ -6956,16 +6956,16 @@
           "add_dataset_label": "操作数据集 TLV",
           "add_dataset_button": "添加数据集",
           "confirm_reset_border_router": "重置边界路由器？",
-          "confirm_reset_border_router_text": "Home Assistant 将创建一个新的 Thread 网络。当前加入此 Home Assistant Thread 网络的任何设备都需要重新加入。",
+          "confirm_reset_border_router_text": "XOAI 将创建一个新的 Thread 网络。当前加入此 XOAI Thread 网络的任何设备都需要重新加入。",
           "confirm_set_dataset_border_router": "重新配置边界路由器？",
-          "confirm_set_dataset_border_router_text": "Home Assistant 将加入现有的 Thread 网络。当前加入此 Home Assistant Thread 网络的任何设备都需要重新加入。",
+          "confirm_set_dataset_border_router_text": "XOAI 将加入现有的 Thread 网络。当前加入此 XOAI Thread 网络的任何设备都需要重新加入。",
           "otbr_config_failed": "配置边界路由器失败",
           "confirm_delete_dataset": "删除“{name}”数据集？",
-          "confirm_delete_dataset_text": "此网络将从 Home Assistant 中删除。",
+          "confirm_delete_dataset_text": "此网络将从 XOAI 中删除。",
           "no_border_routers": "未找到边界路由器",
           "no_preferred_router": "未定义首选边界路由器",
           "border_routers": "{count} 个边界 {count, plural,\n  one {路由器}\n  other {路由器}\n}",
-          "managed_by_home_assistant": "由 Home Assistant 管理",
+          "managed_by_home_assistant": "由 XOAI 管理",
           "operational_dataset": "操作数据集",
           "change_channel": "更改信道",
           "change_channel_initiated_title": "信道变更进行中",
@@ -6975,11 +6975,11 @@
           "change_channel_multiprotocol_enabled_title": "Thread 适配器已启用多协议",
           "change_channel_multiprotocol_enabled_text": "要在 Thread 适配器启用多协议时更改信道，请使用硬件设置菜单。",
           "change_channel_range": "信道必须在 11 到 26 范围内",
-          "change_channel_text": "启动 Home Assistant Thread 网络的信道更改时应谨慎执行。某些 Thread 设备可能无法自动迁移到新的信道，如果新信道拥塞，您的 Thread 设备可能会间歇性无法使用。某些设备可能需要手动重新加入您的 Thread 网络，然后才能再次显示在 Home Assistant 中。此操作无法撤消（不会执行另一次信道更改）。",
+          "change_channel_text": "启动 XOAI Thread 网络的信道更改时应谨慎执行。某些 Thread 设备可能无法自动迁移到新的信道，如果新信道拥塞，您的 Thread 设备可能会间歇性无法使用。某些设备可能需要手动重新加入您的 Thread 网络，然后才能再次显示在 XOAI 中。此操作无法撤消（不会执行另一次信道更改）。",
           "thread_network_info": "Thread 网络信息",
           "thread_network_delete_credentials": "删除 Thread 网络凭据",
-          "thread_network_send_credentials_ha": "将凭据发送至 Home Assistant",
-          "thread_network_send_credentials_ha_description": "将手机上的 Thread 网络凭据导入到 Home Assistant 。如果您已经通过其他平台（例如 Apple Home 或 Google Home）设置了 Thread 网络，请使用此方法。",
+          "thread_network_send_credentials_ha": "将凭据发送至 XOAI",
+          "thread_network_send_credentials_ha_description": "将手机上的 Thread 网络凭据导入到 XOAI 。如果您已经通过其他平台（例如 Apple Home 或 Google Home）设置了 Thread 网络，请使用此方法。",
           "thread_network_send_credentials_phone": "将凭据发送至手机",
           "thread_network_send_credentials_phone_description": "将您的 Thread 网络凭据共享给您的手机，使其能够直接将新的 Thread 设备连接到您的网络。",
           "thread_network_make_preferred": "设定首选网络"
@@ -7053,7 +7053,7 @@
             "light_transitioning_flag_description": "在光线变化过程中，保持亮度条在选定级别，防止亮度突然跳动",
             "consider_unavailable_mains_description": "当市电供电设备停止响应时，需要等待多久才能将其显示为不可用",
             "consider_unavailable_battery_description": "当电池供电设备停止响应时，需要等待多久才能将其显示为不可用",
-            "enable_mains_startup_polling_description": "在 Home Assistant 启动时获取市电供电设备的当前状态",
+            "enable_mains_startup_polling_description": "在 XOAI 启动时获取市电供电设备的当前状态",
             "channel_label": "信道",
             "radio_type": "广播类型",
             "serial_port": "串口",
@@ -7320,7 +7320,7 @@
           "hard_reset_controller": {
             "NotStarted": {
               "title": "将适配器重置为出厂设置",
-              "body": "如果您决定继续操作，您的适配器将恢复出厂设置。这样一来，适配器将忘记所有与其配对的设备，并且将从 Home Assistant 中移除该网络的所有 Z-Wave 设备。如果重置后仍有任何设备与适配器配对，则这些设备必须先进行排除过程才能重新配对。您要继续吗 ？"
+              "body": "如果您决定继续操作，您的适配器将恢复出厂设置。这样一来，适配器将忘记所有与其配对的设备，并且将从 XOAI 中移除该网络的所有 Z-Wave 设备。如果重置后仍有任何设备与适配器配对，则这些设备必须先进行排除过程才能重新配对。您要继续吗 ？"
             },
             "InProgress": {
               "title": "正在重置适配器",
@@ -7514,7 +7514,7 @@
               "device_name": "名称",
               "device_area": "区域",
               "choose_network_type": "选择网络类型",
-              "long_range_description": "直接连接到 Home Assistant 可扩大覆盖范围，无需 Mesh 网络。",
+              "long_range_description": "直接连接到 XOAI 可扩大覆盖范围，无需 Mesh 网络。",
               "mesh_label": "Mesh 网络",
               "mesh_description": "设备相互传递信号，增强覆盖范围和可靠性。",
               "add_device": "添加设备",
@@ -7558,7 +7558,7 @@
             "not_included": "未包含",
             "confirm_unprovision_title": "确定要移除设备吗 ？",
             "confirm_unprovision_text": "将从您的 Z-Wave 网络中永久移除该设备。",
-            "confirm_unprovision_text_included": "将从 Home Assistant 和您的 Z-Wave 网络中永久移除该设备。",
+            "confirm_unprovision_text_included": "将从 XOAI 和您的 Z-Wave 网络中永久移除该设备。",
             "active": "活动"
           },
           "security_classes": {
@@ -7586,7 +7586,7 @@
             "title": "移除设备",
             "introduction": "根据设备的状态，有两种方法可以从 Z-Wave 网络中移除设备。如果设备正在运行，您可以按照设备附带的说明将其置于排除模式来移除。如果设备不可用，您可以将其从网络中强制移除。",
             "exclusion_intro": "当设备被卡在另一个网络中，必须先将其排除，然后才能再次将其包含在内时，该功能非常有用。",
-            "failed_node_intro": "{name}无法连接到您的 Z-Wave 网络。Home Assistant 可以为您强制移除设备。移除后，您可能需要将设备恢复出厂设置。",
+            "failed_node_intro": "{name}无法连接到您的 Z-Wave 网络。XOAI 可以为您强制移除设备。移除后，您可能需要将设备恢复出厂设置。",
             "menu_exclude_device": "移除正在工作的设备",
             "menu_remove_device": "强制移除不可用设备",
             "start_exclusion": "开始移除",
@@ -7644,8 +7644,8 @@
           },
           "update_firmware": {
             "title": "更新设备固件",
-            "warning": "警告：若您未正确按照制造商的指引更新固件，设备可能变砖。Home Assistant 和 Z-Wave JS 团队不对更新固件导致的任何设备损坏负责，也不会对变砖的设备提供协助。您确定要继续吗？",
-            "warning_controller": "警告：如果您使用的固件文件不正确，或者在固件更新完成之前尝试停止更新，固件更新可能会导致适配器变砖。Home Assistant 和 Z-Wave JS 团队对因固件更新导致的适配器损坏不承担任何责任，如果您的适配器变砖，我们将无法为您提供帮助。您还想继续吗 ？",
+            "warning": "警告：若您未正确按照制造商的指引更新固件，设备可能变砖。XOAI 和 Z-Wave JS 团队不对更新固件导致的任何设备损坏负责，也不会对变砖的设备提供协助。您确定要继续吗？",
+            "warning_controller": "警告：如果您使用的固件文件不正确，或者在固件更新完成之前尝试停止更新，固件更新可能会导致适配器变砖。XOAI 和 Z-Wave JS 团队对因固件更新导致的适配器损坏不承担任何责任，如果您的适配器变砖，我们将无法为您提供帮助。您还想继续吗 ？",
             "introduction": "选择用于更新“{device}”的固件文件。",
             "introduction_controller": "选择用于更新“{device}”的固件文件。请注意，一旦开始固件更新，必须等待更新完成。",
             "firmware_target_intro": "选择此更新固件的目标。（0 为 Z-Wave 芯片，≥1 为可能存在的其它芯片）",
@@ -7846,7 +7846,7 @@
           },
           "open_commissioning_window": {
             "title": "共享设备",
-            "description": "要继续，请选择{startCommissioning} 。然后，Home Assistant 会将您的设备置于调试模式，允许其与另一个 Matter 控制器配对。",
+            "description": "要继续，请选择{startCommissioning} 。然后，XOAI 会将您的设备置于调试模式，允许其与另一个 Matter 控制器配对。",
             "prevent_misuse_description": "注意：请勿按下设备上的物理设置按钮，因为这会重置它。",
             "start_commissioning": "共享设备",
             "in_progress": "正在与设备通信。可能需要一些时间。",
@@ -7966,12 +7966,12 @@
           "join_chat": "聊天",
           "join_blog": "博客",
           "join_newsletter": "时事通讯",
-          "media_storage": "可以在“{storage}”面板中向 Home Assistant 添加网络存储。"
+          "media_storage": "可以在“{storage}”面板中向 XOAI 添加网络存储。"
         },
         "analytics": {
           "caption": "分析",
-          "header": "Home Assistant",
-          "description": "了解如何共享数据来改进 Home Assistant",
+          "header": "XOAI",
+          "description": "了解如何共享数据来改进 XOAI",
           "preferences": {
             "base": {
               "title": "基础分析",
@@ -7979,7 +7979,7 @@
             },
             "usage": {
               "title": "使用情况",
-              "description": "您使用 Home Assistant 的详细信息"
+              "description": "您使用 XOAI 的详细信息"
             },
             "statistics": {
               "title": "统计数据",
@@ -8003,7 +8003,7 @@
           },
           "need_base_enabled": "需要启用“基础分析数据”才能使用此选项",
           "learn_more": "了解我们如何处理您的数据",
-          "intro": "共享匿名的信息，让 Home Assistant 变得更好，并帮助我们与厂商沟通，增加本地控制和注重隐私的功能。",
+          "intro": "共享匿名的信息，让 XOAI 变得更好，并帮助我们与厂商沟通，增加本地控制和注重隐私的功能。",
           "download_device_info": "预览设备分析"
         },
         "ai_tasks": {
@@ -8015,9 +8015,9 @@
           "custom_integration": "自定义集成",
           "description": "预览新功能",
           "description_enabled": "已启用预览功能",
-          "intro_title": "Home Assistant Labs",
+          "intro_title": "XOAI Labs",
           "intro_subtitle": "预览即将推出的功能",
-          "intro_description": "Home Assistant Labs 让您可以预览我们正在积极开发的新功能。这些功能稳定且功能齐全，但可能尚未包含我们设想的全部功能。我们仍在根据您的反馈不断改进设计和方案。",
+          "intro_description": "XOAI Labs 让您可以预览我们正在积极开发的新功能。这些功能稳定且功能齐全，但可能尚未包含我们设想的全部功能。我们仍在根据您的反馈不断改进设计和方案。",
           "intro_warning": "预览功能可能会在未来的版本中发生改变，或者被其他解决方案取代。",
           "empty": {
             "title": "暂无预览功能",
@@ -8038,15 +8038,15 @@
           "disable_failed": "禁用预览功能失败：{error}",
           "progress": {
             "creating_backup": "创建备份",
-            "backing_up_before_enabling": "在启用 Home Assistant Labs 预览功能之前，Home Assistant 正在进行备份。",
-            "backing_up_before_disabling": "在禁用 Home Assistant Labs 预览功能之前，Home Assistant 正在进行备份。"
+            "backing_up_before_enabling": "在启用 XOAI Labs 预览功能之前，XOAI 正在进行备份。",
+            "backing_up_before_disabling": "在禁用 XOAI Labs 预览功能之前，XOAI 正在进行备份。"
           },
           "create_backup": {
             "automatic": "启用前自动备份",
             "automatic_description_last": "上次自动备份 {relative_time} 。",
             "automatic_description_none": "尚无自动备份。",
             "manual": "启用前创建手动备份",
-            "manual_description": "包含 Home Assistant 设置和历史记录。"
+            "manual_description": "包含 XOAI 设置和历史记录。"
           }
         },
         "network": {
@@ -8087,13 +8087,13 @@
           },
           "discovery": {
             "title": "网络发现",
-            "description": "探索 Home Assistant 可以在网络上看到哪些数据。",
+            "description": "探索 XOAI 可以在网络上看到哪些数据。",
             "dhcp": "DHCP 浏览器",
             "dhcp_info": "显示使用 DHCP 、ARP+PTR 查找和基于路由器的设备跟踪器等方法检测到的设备。",
             "ssdp": "SSDP 浏览器",
             "ssdp_info": "显示使用 SSDP/UPnP 发现的设备。",
             "zeroconf": "Zeroconf 浏览器",
-            "zeroconf_info": "显示使用 mDNS 发现的服务。不包括 Home Assistant 未知的服务。"
+            "zeroconf_info": "显示使用 mDNS 发现的服务。不包括 XOAI 未知的服务。"
           },
           "network_adapter": "网络适配器",
           "network_adapter_info": "配置集成将使用的网络适配器。需要重启才能应用这些设置。",
@@ -8120,7 +8120,7 @@
             "media": "媒体",
             "share": "共享",
             "backup": "备份",
-            "homeassistant": "Home Assistant",
+            "xoai": "XOAI",
             "ssl": "SSL"
           },
           "lifetime": "寿命",
@@ -8130,7 +8130,7 @@
           "change_chart_type": "更改图表类型",
           "datadisk": {
             "title": "迁移数据磁盘",
-            "description": "您正在使用“{current_path}”作为数据磁盘。迁移数据磁盘大约需要 {time} 分钟，设备将重新启动。在此期间，Home Assistant 将无法访问。迁移过程中请勿切断电源！",
+            "description": "您正在使用“{current_path}”作为数据磁盘。迁移数据磁盘大约需要 {time} 分钟，设备将重新启动。在此期间，XOAI 将无法访问。迁移过程中请勿切断电源！",
             "extra_information": "容量：{size}，序列号：{serial}",
             "select_device": "选择新的数据磁盘",
             "no_devices_title": "未找到合适的存储设备",
@@ -8151,7 +8151,7 @@
             "not_supported": {
               "title": "此操作系统不支持网络存储",
               "supervised": "此主机不支持网络存储",
-              "os": "要使用网络存储，需要运行 Home Assistant 操作系统 {version} 以上版本",
+              "os": "要使用网络存储，需要运行 XOAI 操作系统 {version} 以上版本",
               "navigate_to_updates": "前往更新"
             },
             "mount_usage": {
@@ -8230,7 +8230,7 @@
           "integration_start_time": "集成启动耗时"
         },
         "system_dashboard": {
-          "restart_homeassistant": "重启 Home Assistant"
+          "restart_xoai": "重启 XOAI"
         }
       },
       "lovelace": {
@@ -8362,14 +8362,14 @@
             "more_info": "显示更多信息：{name}"
           },
           "iframe": {
-            "error_secure_context": "无法加载 iframe，因为其指向的网站使用 {target_protocol}，而 Home Assistant 正通过 {context_protocol} 提供服务。"
+            "error_secure_context": "无法加载 iframe，因为其指向的网站使用 {target_protocol}，而 XOAI 正通过 {context_protocol} 提供服务。"
           },
           "recovery-mode": {
             "header": "恢复模式已激活",
-            "description": "Home Assistant 在加载您的配置时遇到了问题，现正在恢复模式下运行。请查看错误日志以查找问题。"
+            "description": "XOAI 在加载您的配置时遇到了问题，现正在恢复模式下运行。请查看错误日志以查找问题。"
           },
           "starting": {
-            "description": "Home Assistant 正在启动，请稍候。"
+            "description": "XOAI 正在启动，请稍候。"
           },
           "map": {
             "reset_focus": "重置焦点",
@@ -8518,11 +8518,11 @@
           "search_entities": "搜索实体",
           "assist": "语音助手",
           "assist_tooltip": "语音助手",
-          "search_home_assistant": "搜索 Home Assistant",
+          "search_home_assistant": "搜索 XOAI",
           "reload_resources": "重载资源",
           "exit_edit_mode": "完成",
           "close": "关闭",
-          "add": "添加至 Home Assistant",
+          "add": "添加至 XOAI",
           "add_device": "添加设备",
           "create_automation": "创建自动化",
           "create_area": "创建区域",
@@ -8856,7 +8856,7 @@
           },
           "save_config": {
             "header": "自行编辑仪表盘",
-            "para": "该仪表盘目前由 Home Assistant 维护，当新的实体或仪表盘组件可用时会自动更新。如果您选择自行编辑，将不再自动更新仪表盘。您始终可以在“设置”中新建一个仪表盘用于试验。",
+            "para": "该仪表盘目前由 XOAI 维护，当新的实体或仪表盘组件可用时会自动更新。如果您选择自行编辑，将不再自动更新仪表盘。您始终可以在“设置”中新建一个仪表盘用于试验。",
             "para_sure": "您确定要自行编辑用户界面吗？",
             "yaml_mode": "此仪表盘正在使用 YAML 模式，因此无法在用户界面中更改其配置。若要从用户界面管理此仪表盘，请在 configuration.yaml 中您的仪表盘配置中去除 mode: yaml 条目。",
             "yaml_control": "要以 YAML 模式下自行编辑，请创建 YAML 文件并命名为在配置中为此仪表盘指定的名称，或使用默认的 'ui-lovelace.yaml'。",
@@ -8868,7 +8868,7 @@
           "migrate": {
             "header": "配置不兼容",
             "para_no_id": "此元素没有标识符。请在 ui-lovelace.yaml 中为此元素添加标识符。",
-            "para_migrate": "通过点击“迁移配置”按钮，Home Assistant 可以自动为您的所有卡片和视图添加标识符。",
+            "para_migrate": "通过点击“迁移配置”按钮，XOAI 可以自动为您的所有卡片和视图添加标识符。",
             "migrate": "迁移配置"
           },
           "action-editor": {
@@ -9294,7 +9294,7 @@
             },
             "iframe": {
               "name": "网页",
-              "description": "此卡片可让您将喜欢的网页直接嵌入到 Home Assistant 中。",
+              "description": "此卡片可让您将喜欢的网页直接嵌入到 XOAI 中。",
               "hide_background": "隐藏背景",
               "hide_background_helper": "适用于允许透明背景的页面。"
             },
@@ -10057,7 +10057,7 @@
           "entity_not_found": "实体 {entity} 不可用",
           "entity_non_numeric": "实体 {entity} 非数值",
           "entity_unavailable": "实体当前不可用：{entity}",
-          "starting": "正在启动 Home Assistant 。部分功能暂不可用"
+          "starting": "正在启动 XOAI 。部分功能暂不可用"
         },
         "externally_updated_toast": {
           "message": "仪表盘已在另一个会话中更新。刷新页面将丢弃您未保存的更改。"
@@ -10212,7 +10212,7 @@
           "link_promo": "了解主题",
           "dropdown_label": "主题",
           "migrate_header": "迁移主题设置",
-          "migrate_description": "将您选择的主题保存到您的 Home Assistant 用户配置中。",
+          "migrate_description": "将您选择的主题保存到您的 XOAI 用户配置中。",
           "migrate_button": "迁移",
           "migrate_success": "主题设置已迁移。",
           "migrate_failed": "主题设置迁移失败。",
@@ -10297,7 +10297,7 @@
         },
         "long_lived_access_tokens": {
           "header": "长期访问令牌",
-          "description": "创建长期访问令牌可允许脚本与 Home Assistant 实例进行交互。每个令牌在创建后有效期为 10 年。以下是当前活动的长期访问令牌。",
+          "description": "创建长期访问令牌可允许脚本与 XOAI 实例进行交互。每个令牌在创建后有效期为 10 年。以下是当前活动的长期访问令牌。",
           "learn_auth_requests": "了解如何创建经过身份验证的请求。",
           "created": "创建于 {date}",
           "confirm_delete_title": "删除长期访问令牌吗 ？",
@@ -10323,13 +10323,13 @@
         "information": "更多信息",
         "delete_confirm_title": "删除“{name}”？",
         "delete_confirm_text": "您确定要删除此清单及其包含的所有项目吗？",
-        "restart_confirm": "重启 Home Assistant 完成此待办事项清单的删除"
+        "restart_confirm": "重启 XOAI 完成此待办事项清单的删除"
       },
       "page-authorize": {
         "initializing": "正在初始化",
-        "authorizing": "登录到您的 Home Assistant 实例",
-        "authorizing_app": "您将向 Home Assistant Companion 应用授予“{app}”访问 Home Assistant 实例的权限。",
-        "authorizing_client": "您即将授权“{clientId}”访问您的 Home Assistant 实例。",
+        "authorizing": "登录到您的 XOAI 实例",
+        "authorizing_app": "您将向 XOAI Companion 应用授予“{app}”访问 XOAI 实例的权限。",
+        "authorizing_client": "您即将授权“{clientId}”访问您的 XOAI 实例。",
         "pick_auth_provider": "或者用以下方式登录",
         "abort_intro": "登录中断",
         "store_token": "保持登录状态",
@@ -10373,7 +10373,7 @@
                 "login_expired": "会话已过期，请重新登录。"
               }
             },
-            "homeassistant": {
+            "xoai": {
               "step": {
                 "init": {
                   "data": {
@@ -10441,8 +10441,8 @@
           "demo": {
             "demo_by": "来自 {name}",
             "next_demo": "下一个演示",
-            "introduction": "欢迎回家！您已进入 Home Assistant 演示，这里展示了我们社区创作的最佳用户界面。",
-            "learn_more": "详细了解 Home Assistant"
+            "introduction": "欢迎回家！您已进入 XOAI 演示，这里展示了我们社区创作的最佳用户界面。",
+            "learn_more": "详细了解 XOAI"
           }
         },
         "config": {
@@ -10512,7 +10512,7 @@
           "vision": "阅读我们的愿景",
           "community": "加入我们的社区",
           "download_app": "下载我们的应用程序",
-          "forums": "Home Assistant 论坛",
+          "forums": "XOAI 论坛",
           "open_home_newsletter": "《Building the Open Home》时事通讯",
           "discord": "Discord chat",
           "x": "X（原 Twitter）",
@@ -10541,13 +10541,13 @@
         },
         "core-config": {
           "location_header": "家的位置",
-          "intro_location": "此数据存储在您的 Home Assistant 系统中，某些基于云的集成可能会使用这些数据来运行。",
+          "intro_location": "此数据存储在您的 XOAI 系统中，某些基于云的集成可能会使用这些数据来运行。",
           "location_address": "由 {openstreetmap} ({osm_privacy_policy}) 提供支持。",
           "osm_privacy_policy": "隐私政策",
           "title_location_detect": "想让我们检测您的位置吗？",
           "intro_location_detect": "我们可以通过向外部服务发出一次性请求来检测您的位置。",
           "country_intro": "我们想知道您位于哪个国家或地区，以便我们可以使用正确的单位。",
-          "location_name": "Home Assistant 安装的名称",
+          "location_name": "XOAI 安装的名称",
           "location_name_default": "我的家",
           "address_label": "搜索地址",
           "button_detect": "自动检测",
@@ -10571,7 +10571,7 @@
             },
             "usage": {
               "title": "使用情况",
-              "description": "您使用 Home Assistant 的详细信息"
+              "description": "您使用 XOAI 的详细信息"
             },
             "statistics": {
               "title": "统计数据",
@@ -10584,7 +10584,7 @@
           },
           "need_base_enabled": "需要启用“基础分析数据”才能使用此选项",
           "learn_more": "了解我们如何处理您的数据",
-          "intro": "共享匿名的信息，让 Home Assistant 变得更好，并帮助我们与厂商沟通，增加本地控制和注重隐私的功能。"
+          "intro": "共享匿名的信息，让 XOAI 变得更好，并帮助我们与厂商沟通，增加本地控制和注重隐私的功能。"
         },
         "restore": {
           "header": "还原备份",
@@ -10592,7 +10592,7 @@
           "upload_backup_subtitle": "从您的设备上传备份文件",
           "unsupported": {
             "title": "不支持的文件格式",
-            "text": "请选择 Home Assistant 备份文件 (.tar)"
+            "text": "请选择 XOAI 备份文件 (.tar)"
           },
           "ok": "确定",
           "upload_input_label": "选择备份文件",
@@ -10601,8 +10601,8 @@
           "delete": "删除",
           "uploading": "正在上传...",
           "details": {
-            "home_assistant_missing": "此备份不包括您的 Home Assistant 配置，您不能使用它来还原您的实例。",
-            "apps_unsupported": "您的安装方式不支持应用。如果您想恢复这些应用，则需要安装 Home Assistant OS",
+            "home_assistant_missing": "此备份不包括您的 XOAI 配置，您不能使用它来还原您的实例。",
+            "apps_unsupported": "您的安装方式不支持应用。如果您想恢复这些应用，则需要安装 XOAI OS",
             "summary": {
               "created": "已创建",
               "content": "内容"
@@ -10613,7 +10613,7 @@
               "encryption": {
                 "label": "加密",
                 "description": "备份已加密。请提供加密密钥以解密备份。",
-                "description_cloud": "Home Assistant Cloud 是注重隐私的云。我们不会存储您的加密密钥。输入您保存的加密密钥或使用您下载的应急工具包。",
+                "description_cloud": "XOAI Cloud 是注重隐私的云。我们不会存储您的加密密钥。输入您保存的加密密钥或使用您下载的应急工具包。",
                 "incorrect_key": "提供的加密密钥不正确，请重试。",
                 "input_label": "加密密钥"
               }
@@ -10628,9 +10628,9 @@
             "apps": "应用",
             "ssl": "SSL 证书"
           },
-          "restore_no_home_assistant": "备份不包含 Home Assistant 数据。若要还原 Home Assistant ，您需要有 Home Assistant Core 的备份。",
+          "restore_no_home_assistant": "备份不包含 XOAI 数据。若要还原 XOAI ，您需要有 XOAI Core 的备份。",
           "in_progress": "正在还原",
-          "in_progress_description": "还原过程正在后台运行。还原完成后，Home Assistant 将自动重新启动。请耐心等待，这可能需要一段时间。请勿关闭或刷新此页面。",
+          "in_progress_description": "还原过程正在后台运行。还原完成后，XOAI 将自动重新启动。请耐心等待，这可能需要一段时间。请勿关闭或刷新此页面。",
           "failed": "还原失败",
           "failed_status_description": "无法还原备份。请重试。",
           "failed_description": "上次还原尝试失败。请重试。",
@@ -10649,9 +10649,9 @@
           "password": "备份加密密钥",
           "confirm_password": "确认加密密钥",
           "confirm_restore_partial_backup_title": "还原部分备份",
-          "confirm_restore_partial_backup_text": "备份将被还原。根据备份的大小，这可能需要最多 45 分钟。Home Assistant 需要关闭，还原过程正在后台运行。如果还原成功，Home Assistant 将自动重新启动，您将看到登录屏幕。如果还原失败，它将带您返回到入门界面。",
+          "confirm_restore_partial_backup_text": "备份将被还原。根据备份的大小，这可能需要最多 45 分钟。XOAI 需要关闭，还原过程正在后台运行。如果还原成功，XOAI 将自动重新启动，您将看到登录屏幕。如果还原失败，它将带您返回到入门界面。",
           "confirm_restore_full_backup_title": "还原完整备份",
-          "confirm_restore_full_backup_text": "根据备份的大小，这可能需要长达 45 分钟。Home Assistant 将重新启动，还原后您将看到登录屏幕。",
+          "confirm_restore_full_backup_text": "根据备份的大小，这可能需要长达 45 分钟。XOAI 将重新启动，还原后您将看到登录屏幕。",
           "restore": "还原",
           "close": "关闭",
           "cancel": "取消",
@@ -10667,15 +10667,15 @@
             "no": "否"
           },
           "ha-cloud": {
-            "description": "从您的 Home Assistant Cloud 备份还原。",
+            "description": "从您的 XOAI Cloud 备份还原。",
             "no_cloud_backup": "没有可用的备份",
-            "no_cloud_backup_description": "此 Home Assistant Cloud 账户未存储备份。您可以在 Nabu Casa 网站上详细了解云备份的工作原理。",
+            "no_cloud_backup_description": "此 XOAI Cloud 账户未存储备份。您可以在 Nabu Casa 网站上详细了解云备份的工作原理。",
             "sign_out": "退出",
-            "sign_out_progress": "正在从 Home Assistant 云注销退出...",
-            "sign_out_success": "Home Assistant 云已注销退出",
-            "sign_out_error": "无法从 Home Assistant 云注销退出",
+            "sign_out_progress": "正在从 XOAI 云注销退出...",
+            "sign_out_success": "XOAI 云已注销退出",
+            "sign_out_error": "无法从 XOAI 云注销退出",
             "learn_more": "了解更多信息",
-            "sign_in_description": "登录您的 Nabu Casa 账户并还原您的 Home Assistant Cloud 备份。",
+            "sign_in_description": "登录您的 Nabu Casa 账户并还原您的 XOAI Cloud 备份。",
             "login": {
               "title": "云登录",
               "sign_in": "登录",
@@ -10708,14 +10708,14 @@
           },
           "options": {
             "title": "如何恢复 ？",
-            "upload_description": "上传并还原 Home Assistant 备份至此系统"
+            "upload_description": "上传并还原 XOAI 备份至此系统"
           }
         }
       },
       "custom": {
         "external_panel": {
           "question_trust": "您是否信任 {link} 处的外部面板 {name}？",
-          "complete_access": "它将有权访问 Home Assistant 中的所有数据。",
+          "complete_access": "它将有权访问 XOAI 中的所有数据。",
           "hide_message": "查看有关 panel_custom 的文档以隐藏此消息"
         }
       },
@@ -10774,24 +10774,24 @@
       "keyboard_shortcut": "键盘快捷键",
       "key_c_tip": "在任意页面上按下 {keyboard_shortcut} “c” 即可打开命令对话框",
       "key_e_tip": "在任意页面上按下 {keyboard_shortcut} “e” 即可打开实体搜索对话框",
-      "key_m_tip": "在任意页面上按下 {keyboard_shortcut} “m” 即可获取“我的 Home Assistant” 链接",
+      "key_m_tip": "在任意页面上按下 {keyboard_shortcut} “m” 即可获取“我的 XOAI” 链接",
       "key_a_tip": "在任意页面上按下 {keyboard_shortcut} “a” 即可打开“语音助手”对话框",
       "key_shortcut_quick_search": "任何页面按下 {keyboard_shortcut} ''{modifier}+k'' 可打开快速搜索"
     }
   },
   "landing-page": {
-    "header": "Preparing Home Assistant",
+    "header": "Preparing XOAI",
     "subheader": "This may take 20 minutes or more",
     "show_details": "Show details",
     "hide_details": "Hide details",
     "network_issue": {
       "title": "Networking issue detected",
       "error_get_network_info": "Cannot get network information",
-      "description": "Home Assistant OS detected a networking issue in your setup. As part of the initial setup, Home Assistant OS downloads the latest version of Home Assistant Core. This networking issue prevents this download. The network issue might be DNS related. The currently used DNS service is: {dns}.",
+      "description": "XOAI OS detected a networking issue in your setup. As part of the initial setup, XOAI OS downloads the latest version of XOAI Core. This networking issue prevents this download. The network issue might be DNS related. The currently used DNS service is: {dns}.",
       "resolve_different": "To resolve this, you can try a different DNS server. Select one of the options below. Alternatively, change your router configuration to use your own custom DNS server.",
       "use_cloudflare": "Use Cloudflare DNS",
       "use_google": "Use Google DNS",
-      "no_primary_interface": "Home Assistant OS wasn't able to detect a primary network interface, so you cannot define a DNS server!",
+      "no_primary_interface": "XOAI OS wasn't able to detect a primary network interface, so you cannot define a DNS server!",
       "failed": "Failed",
       "set_dns_failed": "An error occurred while setting the DNS server. Please check the logs for more information and try again.",
       "error": "Error",
@@ -10803,8 +10803,8 @@
       "retry": "Retry",
       "download_logs": "[%key:ui::panel::config::logs::download_logs%]"
     },
-    "error_title": "Error installing Home Assistant",
-    "error_description": "An error occurred while installing Home Assistant. Please check the logs for more information.",
+    "error_title": "Error installing XOAI",
+    "error_description": "An error occurred while installing XOAI. Please check the logs for more information.",
     "ui": {
       "panel": {
         "page-onboarding": {
