@@ -75,10 +75,10 @@ class OnboardingWelcomeLinks extends LitElement {
       max-width: 440px;
     }
 
-    /* 【优化】链接卡片 - 完全透明，无阴影 */
+    /* 【优化】链接卡片 - 完全透明，无白色痕迹 */
     onboarding-welcome-link {
       background: transparent;
-      border: 1px solid rgba(96, 165, 250, 0.25);
+      border: 1px solid rgba(96, 165, 250, 0.3);
       border-radius: 16px;
       padding: 18px 14px;
       transition: all 0.3s ease;
@@ -87,7 +87,7 @@ class OnboardingWelcomeLinks extends LitElement {
 
     onboarding-welcome-link:hover {
       background: transparent;
-      border-color: rgba(96, 165, 250, 0.4);
+      border-color: rgba(96, 165, 250, 0.5);
       transform: translateY(-4px);
     }
 
